@@ -1,7 +1,14 @@
 package fitnesseMain;
 
-import fitnesse.*;
+import java.io.File;
+
+import fitnesse.Arguments;
+import fitnesse.ComponentFactory;
+import fitnesse.FitNesse;
+import fitnesse.FitNesseContext;
 import fitnesse.FitNesseContext.Builder;
+import fitnesse.Updater;
+import fitnesse.WikiPageFactory;
 import fitnesse.authentication.Authenticator;
 import fitnesse.authentication.MultiUserAuthenticator;
 import fitnesse.authentication.OneUserAuthenticator;
@@ -13,8 +20,6 @@ import fitnesse.responders.run.formatters.TestTextFormatter;
 import fitnesse.updates.UpdaterImplementation;
 import fitnesse.wiki.PageVersionPruner;
 import util.CommandLine;
-
-import java.io.File;
 
 public class FitNesseMain {
   private static String extraOutput;
@@ -107,6 +112,7 @@ public class FitNesseMain {
     extraOutput = componentFactory.loadPlugins(context.responderFactory,
         wikiPageFactory);
     extraOutput += componentFactory.loadWikiPage(wikiPageFactory);
+    extraOutput += componentFactory.loadVersionsController(arguments.getDaysTillVersionsExpire());
     extraOutput += componentFactory.loadResponders(context.responderFactory);
     extraOutput += componentFactory.loadSymbolTypes();
     extraOutput += componentFactory.loadContentFilter();
@@ -184,8 +190,6 @@ public class FitNesseMain {
   private static void printStartMessage(Arguments args, FitNesseContext context) {
     System.out.println("FitNesse (" + FitNesse.VERSION + ") Started...");
     System.out.print(context.toString());
-    System.out.println("\tpage version expiration set to "
-      + args.getDaysTillVersionsExpire() + " days.");
     if (extraOutput != null)
       System.out.print(extraOutput);
   }
