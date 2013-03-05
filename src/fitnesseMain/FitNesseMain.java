@@ -18,7 +18,6 @@ import fitnesse.components.PluginsClassLoader;
 import fitnesse.responders.WikiImportTestEventListener;
 import fitnesse.responders.run.formatters.TestTextFormatter;
 import fitnesse.updates.UpdaterImplementation;
-import fitnesse.wiki.PageVersionPruner;
 import util.CommandLine;
 
 public class FitNesseMain {
@@ -41,8 +40,6 @@ public class FitNesseMain {
     Updater updater = null;
     if (!arguments.isOmittingUpdates())
       updater = new UpdaterImplementation(context);
-    PageVersionPruner.daysTillVersionsExpire = arguments
-      .getDaysTillVersionsExpire();
     FitNesse fitnesse = new FitNesse(context, updater);
     update(arguments, fitnesse);
     launch(arguments, context, fitnesse);
@@ -100,6 +97,9 @@ public class FitNesseMain {
     builder.defaultNewPageContent = componentFactory
         .getProperty(ComponentFactory.DEFAULT_NEWPAGE_CONTENT);
 
+    // This should be done before the root wiki page is created:
+    extraOutput = componentFactory.loadVersionsController(arguments.getDaysTillVersionsExpire());
+
     builder.root = wikiPageFactory.makeRootPage(builder.rootPath,
       builder.rootDirectoryName, componentFactory);
 
@@ -109,10 +109,9 @@ public class FitNesseMain {
 
     FitNesseContext context = builder.createFitNesseContext();
 
-    extraOutput = componentFactory.loadPlugins(context.responderFactory,
+    extraOutput += componentFactory.loadPlugins(context.responderFactory,
         wikiPageFactory);
     extraOutput += componentFactory.loadWikiPage(wikiPageFactory);
-    extraOutput += componentFactory.loadVersionsController(arguments.getDaysTillVersionsExpire());
     extraOutput += componentFactory.loadResponders(context.responderFactory);
     extraOutput += componentFactory.loadSymbolTypes();
     extraOutput += componentFactory.loadContentFilter();

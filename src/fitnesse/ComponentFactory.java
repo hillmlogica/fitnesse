@@ -15,6 +15,7 @@ import fitnesse.responders.editing.ContentFilter;
 import fitnesse.responders.editing.SaveResponder;
 import fitnesse.slimTables.SlimTable;
 import fitnesse.slimTables.SlimTableFactory;
+import fitnesse.wiki.NullVersionsController;
 import fitnesse.wiki.VersionsController;
 import fitnesse.wiki.zip.ZipFileVersionsController;
 import fitnesse.wikitext.parser.SymbolProvider;
@@ -250,6 +251,7 @@ public class ComponentFactory {
     if (versionsController == null) {
       versionsController = new ZipFileVersionsController();
     }
+    versionsController.setHistoryDepth(historyDepth);
     StringBuilder buffer = new StringBuilder();
     return new StringBuilder()
             .append("\tVersion controller: ")
@@ -262,6 +264,6 @@ public class ComponentFactory {
   }
 
   public VersionsController getVersionsController() {
-    return versionsController;
+    return versionsController != null ? versionsController : new NullVersionsController();
   }
 }
