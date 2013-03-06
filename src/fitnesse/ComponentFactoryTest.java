@@ -7,13 +7,6 @@ import java.io.FileOutputStream;
 import java.util.Map;
 import java.util.Properties;
 
-import org.htmlparser.nodes.TextNode;
-import org.htmlparser.tags.TableColumn;
-import org.htmlparser.tags.TableRow;
-import org.htmlparser.tags.TableTag;
-import org.htmlparser.util.NodeList;
-
-import util.RegexTestCase;
 import fitnesse.authentication.Authenticator;
 import fitnesse.authentication.PromiscuousAuthenticator;
 import fitnesse.responders.ResponderFactory;
@@ -28,12 +21,7 @@ import fitnesse.slimTables.SlimTable;
 import fitnesse.slimTables.SlimTableFactory;
 import fitnesse.slimTables.Table;
 import fitnesse.testutil.SimpleAuthenticator;
-import fitnesse.wiki.FileSystemPage;
-import fitnesse.wiki.InMemoryPage;
-import fitnesse.wiki.NullVersionsController;
-import fitnesse.wiki.VersionsController;
-import fitnesse.wiki.WikiPage;
-import fitnesse.wiki.zip.ZipFileVersionsController;
+import fitnesse.wiki.FileSystemPageFactory;
 import fitnesse.wikitext.parser.ParseSpecification;
 import fitnesse.wikitext.parser.ScanString;
 import fitnesse.wikitext.parser.SymbolMatch;
@@ -41,6 +29,12 @@ import fitnesse.wikitext.parser.SymbolProvider;
 import fitnesse.wikitext.parser.SymbolStream;
 import fitnesse.wikitext.parser.SymbolType;
 import fitnesse.wikitext.parser.Today;
+import org.htmlparser.nodes.TextNode;
+import org.htmlparser.tags.TableColumn;
+import org.htmlparser.tags.TableRow;
+import org.htmlparser.tags.TableTag;
+import org.htmlparser.util.NodeList;
+import util.RegexTestCase;
 
 public class ComponentFactoryTest extends RegexTestCase {
   private Properties testProperties;
@@ -51,7 +45,7 @@ public class ComponentFactoryTest extends RegexTestCase {
   public void setUp() throws Exception {
     testProperties = new Properties();
     testProvider = new SymbolProvider(new SymbolType[] {});
-    factory = new ComponentFactory(testProperties, testProvider);
+    factory = new ComponentFactory(testProperties);
   }
 
   @Override
@@ -62,42 +56,18 @@ public class ComponentFactoryTest extends RegexTestCase {
     out.close();
   }
 
-  public void testRootPageCreation() throws Exception {
-    testProperties.setProperty(ComponentFactory.WIKI_PAGE_CLASS, InMemoryPage.class.getName());
-
-    WikiPageFactory wikiPageFactory = new WikiPageFactory();
-    factory.loadWikiPage(wikiPageFactory);
-    assertEquals(InMemoryPage.class, wikiPageFactory.getWikiPageClass());
-
-    WikiPage page = wikiPageFactory.makeRootPage(null, "", factory);
-    assertNotNull(page);
-    assertEquals(InMemoryPage.class, page.getClass());
-  }
-
-  public void testDefaultRootPage() throws Exception {
-    WikiPageFactory wikiPageFactory = new WikiPageFactory();
-    factory.loadWikiPage(wikiPageFactory);
-    assertEquals(FileSystemPage.class, wikiPageFactory.getWikiPageClass());
-
-    WikiPage page = wikiPageFactory.makeRootPage("testPath", "TestRoot", factory);
-    assertNotNull(page);
-    assertEquals(FileSystemPage.class, page.getClass());
-    assertEquals("TestRoot", page.getName());
-  }
-
   public void testAddPlugins() throws Exception {
     testProperties.setProperty(ComponentFactory.PLUGINS, DummyPlugin.class.getName());
 
-    WikiPageFactory wikiPageFactory = new WikiPageFactory();
+    FileSystemPageFactory wikiPageFactory = new FileSystemPageFactory();
     ResponderFactory responderFactory = new ResponderFactory(".");
 
     assertMatch("!today", false);
 
-    String output = factory.loadPlugins(responderFactory, wikiPageFactory);
+    String output = factory.loadPlugins(responderFactory, testProvider);
 
     assertSubString(DummyPlugin.class.getName(), output);
 
-    assertEquals(InMemoryPage.class, wikiPageFactory.getWikiPageClass());
     assertEquals(WikiPageResponder.class, responderFactory.getResponderClass("custom1"));
     assertEquals(EditResponder.class, responderFactory.getResponderClass("custom2"));
     assertMatch("!today", true);
@@ -126,7 +96,7 @@ public class ComponentFactoryTest extends RegexTestCase {
     String symbolValues = Today.class.getName();
     testProperties.setProperty(ComponentFactory.SYMBOL_TYPES, symbolValues);
 
-    String output = factory.loadSymbolTypes();
+    String output = factory.loadSymbolTypes(testProvider);
 
     assertSubString(Today.class.getName(), output);
 
@@ -194,19 +164,6 @@ public class ComponentFactoryTest extends RegexTestCase {
     return new HtmlTable(tableTag);
   }
 
-  public void testShouldUseZipFileRevisionControllerAsDefault() throws Exception {
-    factory.loadVersionsController(14);
-    VersionsController defaultRevisionController = factory.getVersionsController();
-    assertEquals(ZipFileVersionsController.class, defaultRevisionController.getClass());
-  }
-
-  public void testShouldUseSpecifiedRevisionController() throws Exception {
-    testProperties.setProperty(ComponentFactory.VERSIONS_CONTROLLER, NullVersionsController.class.getName());
-    factory.loadVersionsController(14);
-    VersionsController defaultRevisionController = factory.getVersionsController();
-    assertEquals(NullVersionsController.class, defaultRevisionController.getClass());
-  }
-
   public static class TestContentFilter implements ContentFilter {
     public TestContentFilter(Properties p) {
       p.propertyNames();
@@ -218,9 +175,6 @@ public class ComponentFactoryTest extends RegexTestCase {
   }
 
   static class DummyPlugin {
-    public static void registerWikiPage(WikiPageFactory factory) {
-      factory.setWikiPageClass(InMemoryPage.class);
-    }
 
     public static void registerResponders(ResponderFactory factory) {
       factory.addResponder("custom1", WikiPageResponder.class);
