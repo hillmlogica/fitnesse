@@ -7,24 +7,24 @@ import java.util.List;
 
 public abstract class WikiPageFinder implements TraversalListener<WikiPage>, PageFinder {
 
-  protected List<WikiPage> hits;
-  protected TraversalListener<? super WikiPage> observer;
+    protected List<WikiPage> hits;
+    protected TraversalListener<? super WikiPage> observer;
 
-  protected WikiPageFinder(TraversalListener<? super WikiPage> observer) {
-    this.observer = observer;
-  }
-
-  protected abstract boolean pageMatches(WikiPage page);
-
-  public void process(WikiPage page) {
-    if (pageMatches(page)) {
-      observer.process(page);
+    protected WikiPageFinder(TraversalListener<? super WikiPage> observer) {
+        this.observer = observer;
     }
-  }
 
-  public List<WikiPage> search(WikiPage page) {
-    hits = new ArrayList<WikiPage>();
-    page.getPageCrawler().traverse(page, this);
-    return hits;
-  }
+    protected abstract boolean pageMatches(WikiPage page);
+
+    public void process(WikiPage page) {
+        if (pageMatches(page)) {
+            observer.process(page);
+        }
+    }
+
+    public List<WikiPage> search(WikiPage page) {
+        hits = new ArrayList<WikiPage>();
+        page.getPageCrawler().traverse(page, this);
+        return hits;
+    }
 }

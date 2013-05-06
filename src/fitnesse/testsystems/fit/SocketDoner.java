@@ -5,7 +5,7 @@ package fitnesse.testsystems.fit;
 import java.net.Socket;
 
 public interface SocketDoner {
-  public Socket donateSocket();
+    public Socket donateSocket();
 
-  public void finishedWithSocket();
+    public void finishedWithSocket();
 }

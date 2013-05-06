@@ -5,43 +5,43 @@ package fitnesse.testsystems;
 import java.io.IOException;
 
 public class MockCommandRunner extends CommandRunner {
-  public MockCommandRunner() {
-    super("", "");
-  }
+    public MockCommandRunner() {
+        super("", "");
+    }
 
-  public MockCommandRunner(String command, int exitCode) {
-    super(command, "", exitCode);
-  }
+    public MockCommandRunner(String command, int exitCode) {
+        super(command, "", exitCode);
+    }
 
-  public void run() {
-  }
+    public void run() {
+    }
 
-  public void join() {
-  }
+    public void join() {
+    }
 
-  public void kill() {
-  }
+    public void kill() {
+    }
 
-  public void asynchronousStart() throws IOException {
-  }
+    public void asynchronousStart() throws IOException {
+    }
 
-  public void setOutput(String output) {
-    outputBuffer = new StringBuffer(output);
-  }
+    public void setOutput(String output) {
+        outputBuffer = new StringBuffer(output);
+    }
 
-  public void setError(String error) {
-    errorBuffer = new StringBuffer(error);
-  }
+    public void setError(String error) {
+        errorBuffer = new StringBuffer(error);
+    }
 
-  public void addException(Exception e) {
-    exceptions.add(e);
-  }
+    public void addException(Exception e) {
+        exceptions.add(e);
+    }
 
-  public void setExitCode(int i) {
-    exitCode = i;
-  }
+    public void setExitCode(int i) {
+        exitCode = i;
+    }
 
-  public long getExecutionTime() {
-    return -1;
-  }
+    public long getExecutionTime() {
+        return -1;
+    }
 }

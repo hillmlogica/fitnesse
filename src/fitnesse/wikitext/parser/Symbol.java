@@ -1,12 +1,8 @@
 package fitnesse.wikitext.parser;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
 import util.Maybe;
+
+import java.util.*;
 
 public class Symbol {
     private static final List<Symbol> NO_CHILDREN = Collections.emptyList();
@@ -17,10 +13,12 @@ public class Symbol {
     private SymbolType type;
     private String content = "";
     private List<Symbol> children;
-    private Map<String,String> variables;
-    private Map<String,String> properties;
+    private Map<String, String> variables;
+    private Map<String, String> properties;
 
-    public Symbol(SymbolType type) { this(type, 0); }
+    public Symbol(SymbolType type) {
+        this(type, 0);
+    }
 
     public Symbol(SymbolType type, String content) {
         this(type, 0);
@@ -33,26 +31,51 @@ public class Symbol {
             this.children = new ArrayList<Symbol>(childrenCapacity);
         } else {
             this.children = type.matchesFor(SymbolType.SymbolList)
-                            ? new ArrayList<Symbol>()
-                            : NO_CHILDREN;
+                    ? new ArrayList<Symbol>()
+                    : NO_CHILDREN;
         }
     }
 
-    public SymbolType getType() { return type; }
-    public boolean isType(SymbolType type) { return this.type.matchesFor(type); }
-    public boolean isStartCell() { return isType(Table.symbolType) || isType(SymbolType.EndCell); }
-    public boolean isStartLine() { return isType(HorizontalRule.symbolType) || isType(Nesting.symbolType); }
+    public SymbolType getType() {
+        return type;
+    }
+
+    public boolean isType(SymbolType type) {
+        return this.type.matchesFor(type);
+    }
+
+    public boolean isStartCell() {
+        return isType(Table.symbolType) || isType(SymbolType.EndCell);
+    }
+
+    public boolean isStartLine() {
+        return isType(HorizontalRule.symbolType) || isType(Nesting.symbolType);
+    }
 
     public boolean isLineType() {
         return isType(HeaderLine.symbolType) || isType(SymbolType.CenterLine) || isType(SymbolType.Meta) ||
                 isType(SymbolType.NoteLine);
     }
-    public String getContent() { return content; }
-    public void setContent(String content) { this.content = content; }
 
-    public Symbol childAt(int index) { return getChildren().get(index); }
-    public Symbol lastChild() { return childAt(getChildren().size() - 1); }
-    public List<Symbol> getChildren() { return children; }
+    public String getContent() {
+        return content;
+    }
+
+    public void setContent(String content) {
+        this.content = content;
+    }
+
+    public Symbol childAt(int index) {
+        return getChildren().get(index);
+    }
+
+    public Symbol lastChild() {
+        return childAt(getChildren().size() - 1);
+    }
+
+    public List<Symbol> getChildren() {
+        return children;
+    }
 
     private List<Symbol> children() {
         if (children == NO_CHILDREN) {
@@ -84,7 +107,7 @@ public class Symbol {
 
     public boolean walkPostOrder(SymbolTreeWalker walker) {
         if (walker.visitChildren(this)) {
-            for (Symbol child: children) {
+            for (Symbol child : children) {
                 if (!child.walkPostOrder(walker)) return false;
             }
         }
@@ -94,7 +117,7 @@ public class Symbol {
     public boolean walkPreOrder(SymbolTreeWalker walker) {
         if (!walker.visit(this)) return false;
         if (walker.visitChildren(this)) {
-            for (Symbol child: children) {
+            for (Symbol child : children) {
                 if (!child.walkPreOrder(walker)) return false;
             }
         }
@@ -102,8 +125,8 @@ public class Symbol {
     }
 
     public void evaluateVariables(String[] names, VariableSource source) {
-        if (variables == null) variables = new HashMap<String,String>(names.length);
-        for (String name: names) {
+        if (variables == null) variables = new HashMap<String, String>(names.length);
+        for (String name : names) {
             Maybe<String> value = source.findVariable(name);
             if (!value.isNothing()) variables.put(name, value.getValue());
         }
@@ -114,7 +137,7 @@ public class Symbol {
     }
 
     public Symbol putProperty(String key, String value) {
-        if (properties == null) properties = new HashMap<String,String>(1);
+        if (properties == null) properties = new HashMap<String, String>(1);
         properties.put(key, value);
         return this;
     }

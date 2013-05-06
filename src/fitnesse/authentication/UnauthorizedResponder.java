@@ -11,18 +11,18 @@ import fitnesse.http.SimpleResponse;
 import fitnesse.responders.templateUtilities.HtmlPage;
 
 public class UnauthorizedResponder implements Responder {
-  
-  public Response makeResponse(FitNesseContext context, Request request) {
-    SimpleResponse response = new SimpleResponse(401);
-    response.addHeader("WWW-Authenticate", "Basic realm=\"FitNesse\"");
 
-    HtmlPage page = context.pageFactory.newPage();
-    HtmlUtil.addTitles(page, "401 Unauthorized");
-    page.put("resource", request.getResource());
-    page.setMainTemplate("unauthorized.vm");
-    response.setContent(page.html());
+    public Response makeResponse(FitNesseContext context, Request request) {
+        SimpleResponse response = new SimpleResponse(401);
+        response.addHeader("WWW-Authenticate", "Basic realm=\"FitNesse\"");
 
-    return response;
-  }
+        HtmlPage page = context.pageFactory.newPage();
+        HtmlUtil.addTitles(page, "401 Unauthorized");
+        page.put("resource", request.getResource());
+        page.setMainTemplate("unauthorized.vm");
+        response.setContent(page.html());
+
+        return response;
+    }
 
 }

@@ -19,7 +19,7 @@ public class WikiWord extends SymbolType implements Translation {
 
     public String toTarget(Translator translator, Symbol symbol) {
         if ("true".equals(symbol.getProperty(WITH_EDIT))) {
-          return buildEditableLink(
+            return buildEditableLink(
                     symbol.getContent(),
                     formatWikiWord(symbol));
         }
@@ -29,19 +29,19 @@ public class WikiWord extends SymbolType implements Translation {
     }
 
     public SourcePage getSourcePage() {
-      return sourcePage;
+        return sourcePage;
     }
-    
+
     private String buildLink(String pagePath, String linkBody) {
-         return new WikiWordBuilder(sourcePage, pagePath, linkBody).buildLink( "", pagePath);
+        return new WikiWordBuilder(sourcePage, pagePath, linkBody).buildLink("", pagePath);
     }
 
     private String buildEditableLink(String pagePath, String linkBody) {
         return new WikiWordBuilder(sourcePage, pagePath, linkBody).makeEditabeLink(pagePath);
     }
-    
+
     private String formatWikiWord(Symbol symbol) {
-      return new HtmlText(formatWikiWord(symbol.getContent(), symbol)).html();
+        return new HtmlText(formatWikiWord(symbol.getContent(), symbol)).html();
     }
 
     private String formatWikiWord(String originalName, Symbol symbol) {

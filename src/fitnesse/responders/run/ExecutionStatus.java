@@ -3,29 +3,29 @@
 package fitnesse.responders.run;
 
 public class ExecutionStatus {
-  public static final ExecutionStatus OK = new ExecutionStatus("Tests Executed OK", "ok");
-  public static final ExecutionStatus OUTPUT = new ExecutionStatus("Output Captured", "output");
-  public static final ExecutionStatus ERROR = new ExecutionStatus("Errors Occurred", "error");
+    public static final ExecutionStatus OK = new ExecutionStatus("Tests Executed OK", "ok");
+    public static final ExecutionStatus OUTPUT = new ExecutionStatus("Output Captured", "output");
+    public static final ExecutionStatus ERROR = new ExecutionStatus("Errors Occurred", "error");
 
-  private String message;
-  private String style;
+    private String message;
+    private String style;
 
-  public ExecutionStatus(String message, String style) {
-    this.message = message;
-    this.style = style;
-  }
+    public ExecutionStatus(String message, String style) {
+        this.message = message;
+        this.style = style;
+    }
 
-  public String getMessage() {
-    return message;
-  }
+    public String getMessage() {
+        return message;
+    }
 
-  public String getStyle() {
-    return style;
-  }
+    public String getStyle() {
+        return style;
+    }
 
-  public String toString() {
-    return "Execution Report: " + message;
+    public String toString() {
+        return "Execution Report: " + message;
 
-  }
+    }
 
 }

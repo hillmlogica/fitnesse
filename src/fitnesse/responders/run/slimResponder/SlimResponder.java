@@ -2,8 +2,6 @@
 // Released under the terms of the CPL Common Public License version 1.0.
 package fitnesse.responders.run.slimResponder;
 
-import java.io.IOException;
-
 import fitnesse.FitNesseContext;
 import fitnesse.Responder;
 import fitnesse.authentication.SecureOperation;
@@ -20,135 +18,133 @@ import fitnesse.testsystems.slim.SlimTestSystem;
 import fitnesse.testsystems.slim.results.ExceptionResult;
 import fitnesse.testsystems.slim.results.TestResult;
 import fitnesse.testsystems.slim.tables.Assertion;
-import fitnesse.wiki.PageCrawler;
-import fitnesse.wiki.PageData;
-import fitnesse.wiki.PathParser;
-import fitnesse.wiki.WikiPage;
-import fitnesse.wiki.WikiPagePath;
+import fitnesse.wiki.*;
 import fitnesse.wikitext.Utils;
+
+import java.io.IOException;
 
 /*
 This responder is a test rig for SlimTestSystemTest, which makes sure that the SlimTestSystem works nicely with
 responders in general.
 */
 public abstract class SlimResponder implements Responder, TestSystemListener {
-  private boolean slimOpen = false;
-  private boolean fastTest = false;
-  SlimTestSystem testSystem;
-  private WikiPage page;
-  private PageData pageData;
-  private PageCrawler crawler;
-  private FitNesseContext context;
-  private Throwable slimException;
-  private StringBuilder output;
-  private TestSummary testSummary;
+    private boolean slimOpen = false;
+    private boolean fastTest = false;
+    SlimTestSystem testSystem;
+    private WikiPage page;
+    private PageData pageData;
+    private PageCrawler crawler;
+    private FitNesseContext context;
+    private Throwable slimException;
+    private StringBuilder output;
+    private TestSummary testSummary;
 
-  @Override
-  public Response makeResponse(FitNesseContext context, Request request) throws Exception {
-    this.context = context;
-    loadPage(request.getResource(), context);
+    @Override
+    public Response makeResponse(FitNesseContext context, Request request) throws Exception {
+        this.context = context;
+        loadPage(request.getResource(), context);
 
-    SimpleResponse response = new SimpleResponse();
-    HtmlPage html = context.pageFactory.newPage();
-    html.setMainTemplate("render.vm");
-    html.put("content", new SlimRenderer());
-    response.setContent(html.html());
-    return response;
-  }
-
-  protected void loadPage(String pageName, FitNesseContext context) {
-    WikiPagePath path = PathParser.parse(pageName);
-    crawler = context.root.getPageCrawler();
-    page = crawler.getPage(context.root, path);
-    if (page != null)
-      pageData = page.getData();
-  }
-
-  public FitNesseContext getContext() {
-    return context;
-  }
-
-  public WikiPage getPage() {
-    return page;
-  }
-
-  public class SlimRenderer {
-
-    public String render() {
-
-      TestSystem.Descriptor descriptor = getDescriptor();
-      try {
-        output = new StringBuilder(512);
-        testSystem = getTestSystem();
-        testSystem.start();
-        testSystem.setFastTest(fastTest);
-        testSystem.runTests(new TestPage(pageData));
-      } catch (IOException e) {
-        slimException = e;
-      } finally {
-        try {
-          if (testSystem != null) testSystem.bye();
-        } catch (IOException e) {
-          if (slimException == null) {
-            slimException = e;
-          }
-        }
-      }
-      String exceptionString = "";
-      if (slimException != null) {
-        exceptionString = String.format("<div class='error'>%s</div>", Utils.escapeHTML(slimException.getMessage()));
-      }
-      return exceptionString + output.toString();
+        SimpleResponse response = new SimpleResponse();
+        HtmlPage html = context.pageFactory.newPage();
+        html.setMainTemplate("render.vm");
+        html.put("content", new SlimRenderer());
+        response.setContent(html.html());
+        return response;
     }
-  }
 
-  protected TestSystem.Descriptor getDescriptor() {
-    return TestSystem.getDescriptor(page, context.pageFactory, false);
-  }
+    protected void loadPage(String pageName, FitNesseContext context) {
+        WikiPagePath path = PathParser.parse(pageName);
+        crawler = context.root.getPageCrawler();
+        page = crawler.getPage(context.root, path);
+        if (page != null)
+            pageData = page.getData();
+    }
 
-  protected abstract SlimTestSystem getTestSystem();
+    public FitNesseContext getContext() {
+        return context;
+    }
 
-  public SecureOperation getSecureOperation() {
-    return new SecureTestOperation();
-  }
+    public WikiPage getPage() {
+        return page;
+    }
 
-  boolean slimOpen() {
-    return slimOpen;
-  }
+    public class SlimRenderer {
 
-  public TestSummary getTestSummary() {
-    return testSummary;
-  }
+        public String render() {
 
-  protected void setFastTest(boolean fastTest) {
-    this.fastTest = fastTest;
-  }
+            TestSystem.Descriptor descriptor = getDescriptor();
+            try {
+                output = new StringBuilder(512);
+                testSystem = getTestSystem();
+                testSystem.start();
+                testSystem.setFastTest(fastTest);
+                testSystem.runTests(new TestPage(pageData));
+            } catch (IOException e) {
+                slimException = e;
+            } finally {
+                try {
+                    if (testSystem != null) testSystem.bye();
+                } catch (IOException e) {
+                    if (slimException == null) {
+                        slimException = e;
+                    }
+                }
+            }
+            String exceptionString = "";
+            if (slimException != null) {
+                exceptionString = String.format("<div class='error'>%s</div>", Utils.escapeHTML(slimException.getMessage()));
+            }
+            return exceptionString + output.toString();
+        }
+    }
 
-  @Override
-  public void testOutputChunk(String output) {
-    this.output.append(output);
-  }
+    protected TestSystem.Descriptor getDescriptor() {
+        return TestSystem.getDescriptor(page, context.pageFactory, false);
+    }
 
-  @Override
-  public void testComplete(TestSummary testSummary)  {
-    this.testSummary = testSummary;
-  }
+    protected abstract SlimTestSystem getTestSystem();
 
-  @Override
-  public void exceptionOccurred(Throwable e) {
-    slimException = e;
-  }
+    public SecureOperation getSecureOperation() {
+        return new SecureTestOperation();
+    }
 
-  @Override
-  public void testAssertionVerified(Assertion assertion, TestResult testResult) {
-  }
+    boolean slimOpen() {
+        return slimOpen;
+    }
 
-  @Override
-  public void testExceptionOccurred(Assertion assertion, ExceptionResult exceptionResult) {
-  }
+    public TestSummary getTestSummary() {
+        return testSummary;
+    }
 
-  public String getCommandLine() {
-    return testSystem.buildCommand();
-  }
+    protected void setFastTest(boolean fastTest) {
+        this.fastTest = fastTest;
+    }
+
+    @Override
+    public void testOutputChunk(String output) {
+        this.output.append(output);
+    }
+
+    @Override
+    public void testComplete(TestSummary testSummary) {
+        this.testSummary = testSummary;
+    }
+
+    @Override
+    public void exceptionOccurred(Throwable e) {
+        slimException = e;
+    }
+
+    @Override
+    public void testAssertionVerified(Assertion assertion, TestResult testResult) {
+    }
+
+    @Override
+    public void testExceptionOccurred(Assertion assertion, ExceptionResult exceptionResult) {
+    }
+
+    public String getCommandLine() {
+        return testSystem.buildCommand();
+    }
 }
 

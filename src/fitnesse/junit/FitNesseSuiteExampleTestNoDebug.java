@@ -1,12 +1,11 @@
 package fitnesse.junit;
 
-import org.junit.Test;
-import org.junit.runner.RunWith;
-
 import fitnesse.junit.FitNesseSuite.DebugMode;
 import fitnesse.junit.FitNesseSuite.FitnesseDir;
 import fitnesse.junit.FitNesseSuite.Name;
 import fitnesse.junit.FitNesseSuite.OutputDir;
+import org.junit.Test;
+import org.junit.runner.RunWith;
 
 
 @RunWith(FitNesseSuite.class)
@@ -16,8 +15,8 @@ import fitnesse.junit.FitNesseSuite.OutputDir;
 @DebugMode(false)
 public class FitNesseSuiteExampleTestNoDebug {
 
-  @Test
-  public void dummy(){
-    
-  }
+    @Test
+    public void dummy() {
+
+    }
 }

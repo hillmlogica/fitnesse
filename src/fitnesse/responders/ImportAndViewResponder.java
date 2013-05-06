@@ -14,52 +14,52 @@ import fitnesse.wiki.*;
 import java.net.MalformedURLException;
 
 public class ImportAndViewResponder implements SecureResponder, WikiImporterClient {
-  private WikiPage page;
+    private WikiPage page;
 
-  public Response makeResponse(FitNesseContext context, Request request) throws MalformedURLException {
-    String resource = request.getResource();
+    public Response makeResponse(FitNesseContext context, Request request) throws MalformedURLException {
+        String resource = request.getResource();
 
-    if ("".equals(resource))
-      resource = "FrontPage";
+        if ("".equals(resource))
+            resource = "FrontPage";
 
-    loadPage(resource, context);
-    if (page == null)
-      return new NotFoundResponder().makeResponse(context, request);
-    loadPageData();
+        loadPage(resource, context);
+        if (page == null)
+            return new NotFoundResponder().makeResponse(context, request);
+        loadPageData();
 
-    SimpleResponse response = new SimpleResponse();
-    response.redirect(resource);
+        SimpleResponse response = new SimpleResponse();
+        response.redirect(resource);
 
-    return response;
-  }
-
-  protected void loadPage(String resource, FitNesseContext context) {
-    WikiPagePath path = PathParser.parse(resource);
-    PageCrawler crawler = context.root.getPageCrawler();
-    page = crawler.getPage(context.root, path);
-  }
-
-  protected void loadPageData() throws MalformedURLException {
-    PageData pageData = page.getData();
-
-    WikiImportProperty importProperty = WikiImportProperty.createFrom(pageData.getProperties());
-
-    if (importProperty != null) {
-      WikiImporter importer = new WikiImporter();
-      importer.setWikiImporterClient(this);
-      importer.parseUrl(importProperty.getSourceUrl());
-      importer.importRemotePageContent(page);
+        return response;
     }
-  }
 
-  public void pageImported(WikiPage localPage) {
-  }
+    protected void loadPage(String resource, FitNesseContext context) {
+        WikiPagePath path = PathParser.parse(resource);
+        PageCrawler crawler = context.root.getPageCrawler();
+        page = crawler.getPage(context.root, path);
+    }
 
-  public void pageImportError(WikiPage localPage, Exception e) {
-    e.printStackTrace();
-  }
+    protected void loadPageData() throws MalformedURLException {
+        PageData pageData = page.getData();
 
-  public SecureOperation getSecureOperation() {
-    return new SecureReadOperation();
-  }
+        WikiImportProperty importProperty = WikiImportProperty.createFrom(pageData.getProperties());
+
+        if (importProperty != null) {
+            WikiImporter importer = new WikiImporter();
+            importer.setWikiImporterClient(this);
+            importer.parseUrl(importProperty.getSourceUrl());
+            importer.importRemotePageContent(page);
+        }
+    }
+
+    public void pageImported(WikiPage localPage) {
+    }
+
+    public void pageImportError(WikiPage localPage, Exception e) {
+        e.printStackTrace();
+    }
+
+    public SecureOperation getSecureOperation() {
+        return new SecureReadOperation();
+    }
 }

@@ -14,69 +14,69 @@ import fitnesse.wiki.WikiPagePath;
 
 public class MovePageResponder extends PageMovementResponder implements SecureResponder {
 
-  private String newParentName;
+    private String newParentName;
 
-  @Override
-  protected boolean getAndValidateNewParentPage(FitNesseContext context, Request request) {
-    PageCrawler crawler = context.root.getPageCrawler();
+    @Override
+    protected boolean getAndValidateNewParentPage(FitNesseContext context, Request request) {
+        PageCrawler crawler = context.root.getPageCrawler();
 
-    newParentName = getNameofNewParent(request);
-    if (newParentName == null)
-      return false;
+        newParentName = getNameofNewParent(request);
+        if (newParentName == null)
+            return false;
 
-    newParentPath = PathParser.parse(newParentName);
-    newParentPage = crawler.getPage(context.root, newParentPath);
+        newParentPath = PathParser.parse(newParentName);
+        newParentPage = crawler.getPage(context.root, newParentPath);
 
-    return (newParentPage != null);
-  }
-
-  private static String getNameofNewParent(Request request) {
-    String newParentName = (String) request.getInput("newLocation");
-    if (".".equals(newParentName)) {
-      return "";
+        return (newParentPage != null);
     }
-    return newParentName;
-  }
 
-  @Override
-  protected boolean getAndValidateRefactoringParameters(Request request) {
-    PageCrawler crawler = oldRefactoredPage.getPageCrawler();
+    private static String getNameofNewParent(Request request) {
+        String newParentName = (String) request.getInput("newLocation");
+        if (".".equals(newParentName)) {
+            return "";
+        }
+        return newParentName;
+    }
 
-    WikiPagePath pageToBeMovedPath = crawler.getFullPath(oldRefactoredPage);
-    WikiPagePath newParentPath = crawler.getFullPath(newParentPage);
+    @Override
+    protected boolean getAndValidateRefactoringParameters(Request request) {
+        PageCrawler crawler = oldRefactoredPage.getPageCrawler();
 
-    return !pageToBeMovedPath.equals(newParentPath) &&
-    !selfPage(pageToBeMovedPath, newParentPath) &&
-    !pageIsAncestorOfNewParent(pageToBeMovedPath, newParentPath);
-  }
+        WikiPagePath pageToBeMovedPath = crawler.getFullPath(oldRefactoredPage);
+        WikiPagePath newParentPath = crawler.getFullPath(newParentPage);
 
-  private boolean selfPage(WikiPagePath pageToBeMovedPath, WikiPagePath newParentPath) {
-    WikiPagePath originalParentPath = pageToBeMovedPath.parentPath();
-    return originalParentPath.equals(newParentPath);
-  }
+        return !pageToBeMovedPath.equals(newParentPath) &&
+                !selfPage(pageToBeMovedPath, newParentPath) &&
+                !pageIsAncestorOfNewParent(pageToBeMovedPath, newParentPath);
+    }
 
-  boolean pageIsAncestorOfNewParent(WikiPagePath pageToBeMovedPath, WikiPagePath newParentPath) {
-    return newParentPath.startsWith(pageToBeMovedPath);
-  }
+    private boolean selfPage(WikiPagePath pageToBeMovedPath, WikiPagePath newParentPath) {
+        WikiPagePath originalParentPath = pageToBeMovedPath.parentPath();
+        return originalParentPath.equals(newParentPath);
+    }
 
-  @Override
-  protected ReferenceRenamer getReferenceRenamer(FitNesseContext context) {
-    return new MovedPageReferenceRenamer(context.root, oldRefactoredPage, newParentName);
-  }
+    boolean pageIsAncestorOfNewParent(WikiPagePath pageToBeMovedPath, WikiPagePath newParentPath) {
+        return newParentPath.startsWith(pageToBeMovedPath);
+    }
 
-  @Override
-  protected void execute() throws RefactorException {
-    movePage(oldRefactoredPage, newParentPage, getNewPageName());
-  }
+    @Override
+    protected ReferenceRenamer getReferenceRenamer(FitNesseContext context) {
+        return new MovedPageReferenceRenamer(context.root, oldRefactoredPage, newParentName);
+    }
 
-  @Override
-  protected String getNewPageName() {
-    return oldRefactoredPage.getName();
-  }
+    @Override
+    protected void execute() throws RefactorException {
+        movePage(oldRefactoredPage, newParentPage, getNewPageName());
+    }
 
-  @Override
-  protected String getErrorMessageHeader() {
-    return "Cannot move " + makeLink(oldNameOfPageToBeMoved) + " below " + newParentName;
-  }
+    @Override
+    protected String getNewPageName() {
+        return oldRefactoredPage.getName();
+    }
+
+    @Override
+    protected String getErrorMessageHeader() {
+        return "Cannot move " + makeLink(oldNameOfPageToBeMoved) + " below " + newParentName;
+    }
 
 }

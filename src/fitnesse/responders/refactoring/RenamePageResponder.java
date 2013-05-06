@@ -11,40 +11,40 @@ import fitnesse.wiki.WikiPage;
 import fitnesse.wikitext.parser.WikiWordPath;
 
 public class RenamePageResponder extends PageMovementResponder {
-  private String newName;
+    private String newName;
 
-  @Override
-  protected boolean getAndValidateNewParentPage(FitNesseContext context, Request request) {
-    newParentPath = PathParser.parse(oldNameOfPageToBeMoved).parentPath();
-    newParentPage = oldRefactoredPage.getParent();
-    return (newParentPage != null);
-  }
+    @Override
+    protected boolean getAndValidateNewParentPage(FitNesseContext context, Request request) {
+        newParentPath = PathParser.parse(oldNameOfPageToBeMoved).parentPath();
+        newParentPage = oldRefactoredPage.getParent();
+        return (newParentPage != null);
+    }
 
-  @Override
-  protected boolean getAndValidateRefactoringParameters(Request request) {
-    newName = (String) request.getInput("newName");
-    return (newName != null && WikiWordPath.isSingleWikiWord(newName) && !"FrontPage".equals(oldNameOfPageToBeMoved));
-  }
+    @Override
+    protected boolean getAndValidateRefactoringParameters(Request request) {
+        newName = (String) request.getInput("newName");
+        return (newName != null && WikiWordPath.isSingleWikiWord(newName) && !"FrontPage".equals(oldNameOfPageToBeMoved));
+    }
 
-  @Override
-  protected ReferenceRenamer getReferenceRenamer(FitNesseContext context) {
-    return new PageReferenceRenamer(context.root, oldRefactoredPage, getNewPageName());
-  }
+    @Override
+    protected ReferenceRenamer getReferenceRenamer(FitNesseContext context) {
+        return new PageReferenceRenamer(context.root, oldRefactoredPage, getNewPageName());
+    }
 
-  @Override
-  protected void execute() throws RefactorException {
-    WikiPage parentOfPageToRename = oldRefactoredPage.getParent();
+    @Override
+    protected void execute() throws RefactorException {
+        WikiPage parentOfPageToRename = oldRefactoredPage.getParent();
 
-    movePage(oldRefactoredPage, parentOfPageToRename, newName);
-  }
+        movePage(oldRefactoredPage, parentOfPageToRename, newName);
+    }
 
-  @Override
-  protected String getNewPageName() {
-    return newName;
-  }
+    @Override
+    protected String getNewPageName() {
+        return newName;
+    }
 
-  @Override
-  protected String getErrorMessageHeader() {
-    return "Cannot rename " + makeLink(oldNameOfPageToBeMoved) + " to " + newName;
-  }
+    @Override
+    protected String getErrorMessageHeader() {
+        return "Cannot rename " + makeLink(oldNameOfPageToBeMoved) + " to " + newName;
+    }
 }

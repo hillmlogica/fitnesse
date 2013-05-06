@@ -1,16 +1,16 @@
 package fitnesse.slim.fixtureInteraction;
 
 public class Testee {
-  int i;
+    int i;
 
-  public Testee() {
-  }
+    public Testee() {
+    }
 
-  public int getI() {
-    return i;
-  }
+    public int getI() {
+        return i;
+    }
 
-  public void setI(int i) {
-    this.i = i;
-  }
+    public void setI(int i) {
+        this.i = i;
+    }
 }

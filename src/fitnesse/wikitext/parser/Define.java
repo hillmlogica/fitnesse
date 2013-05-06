@@ -10,7 +10,7 @@ public class Define extends SymbolType implements Rule, Translation {
         wikiRule(this);
         htmlTranslation(this);
     }
-    
+
     public Maybe<Symbol> parse(Symbol current, Parser parser) {
         if (!parser.isMoveNext(SymbolType.Whitespace)) return Symbol.nothing;
 

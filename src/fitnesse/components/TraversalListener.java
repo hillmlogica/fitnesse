@@ -4,6 +4,6 @@ package fitnesse.components;
 
 public interface TraversalListener<T> {
 
-  void process(T page);
+    void process(T page);
 
 }

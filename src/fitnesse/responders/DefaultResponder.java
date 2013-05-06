@@ -9,15 +9,15 @@ import fitnesse.http.Response;
 import fitnesse.responders.templateUtilities.HtmlPage;
 
 public class DefaultResponder extends BasicResponder {
-  public Response makeResponse(FitNesseContext context, Request request) {
-    String content = prepareResponseDocument(context).html();
-    return responseWith(content);
-  }
+    public Response makeResponse(FitNesseContext context, Request request) {
+        String content = prepareResponseDocument(context).html();
+        return responseWith(content);
+    }
 
-  private HtmlPage prepareResponseDocument(FitNesseContext context) {
-    HtmlPage responseDocument = context.pageFactory.newPage();
-    HtmlUtil.addTitles(responseDocument, "Default Responder");
-    responseDocument.setMainTemplate("defaultPage.vm");
-    return responseDocument;
-  }
+    private HtmlPage prepareResponseDocument(FitNesseContext context) {
+        HtmlPage responseDocument = context.pageFactory.newPage();
+        HtmlUtil.addTitles(responseDocument, "Default Responder");
+        responseDocument.setMainTemplate("defaultPage.vm");
+        return responseDocument;
+    }
 }

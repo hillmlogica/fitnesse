@@ -14,46 +14,48 @@ import fitnesse.responders.templateUtilities.HtmlPage;
 import fitnesse.responders.templateUtilities.PageTitle;
 import fitnesse.wiki.*;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 public class VersionSelectionResponder implements SecureResponder {
-  private WikiPage page;
-  private List<VersionInfo> versions;
-  private PageData pageData;
-  private String resource;
+    private WikiPage page;
+    private List<VersionInfo> versions;
+    private PageData pageData;
+    private String resource;
 
-  public Response makeResponse(FitNesseContext context, Request request) {
-    SimpleResponse response = new SimpleResponse();
-    resource = request.getResource();
-    WikiPagePath path = PathParser.parse(resource);
-    page = context.root.getPageCrawler().getPage(context.root, path);
-    if (page == null)
-      return new NotFoundResponder().makeResponse(context, request);
+    public Response makeResponse(FitNesseContext context, Request request) {
+        SimpleResponse response = new SimpleResponse();
+        resource = request.getResource();
+        WikiPagePath path = PathParser.parse(resource);
+        page = context.root.getPageCrawler().getPage(context.root, path);
+        if (page == null)
+            return new NotFoundResponder().makeResponse(context, request);
 
-    pageData = page.getData();
-    versions = getVersionsList(pageData);
+        pageData = page.getData();
+        versions = getVersionsList(pageData);
 
-    HtmlPage html = context.pageFactory.newPage();
-    html.setTitle("Version Selection: " + resource);
-    html.setPageTitle(new PageTitle("Version Selection", PathParser.parse(resource),pageData.getAttribute(PageData.PropertySUITES)));
-    html.put("versions", versions);
-    html.setNavTemplate("viewNav");
-    html.put("viewLocation", request.getResource());
-    html.setMainTemplate("versionSelection");
+        HtmlPage html = context.pageFactory.newPage();
+        html.setTitle("Version Selection: " + resource);
+        html.setPageTitle(new PageTitle("Version Selection", PathParser.parse(resource), pageData.getAttribute(PageData.PropertySUITES)));
+        html.put("versions", versions);
+        html.setNavTemplate("viewNav");
+        html.put("viewLocation", request.getResource());
+        html.setMainTemplate("versionSelection");
 
-    response.setContent(html.html());
+        response.setContent(html.html());
 
-    return response;
-  }
+        return response;
+    }
 
-  public static List<VersionInfo> getVersionsList(PageData data) {
-    List<VersionInfo> list = new ArrayList<VersionInfo>(data.getVersions());
-    Collections.sort(list);
-    Collections.reverse(list);
-    return list;
-  }
+    public static List<VersionInfo> getVersionsList(PageData data) {
+        List<VersionInfo> list = new ArrayList<VersionInfo>(data.getVersions());
+        Collections.sort(list);
+        Collections.reverse(list);
+        return list;
+    }
 
-  public SecureOperation getSecureOperation() {
-    return new SecureReadOperation();
-  }
+    public SecureOperation getSecureOperation() {
+        return new SecureReadOperation();
+    }
 }

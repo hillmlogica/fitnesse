@@ -14,50 +14,50 @@ import fitnesse.wiki.PageCrawler;
 import fitnesse.wiki.PathParser;
 
 public abstract class ResultResponder extends ChunkingResponder implements
-  SecureResponder, Traverser<Object> {
+        SecureResponder, Traverser<Object> {
 
-  protected PageCrawler getPageCrawler() {
-    return root.getPageCrawler();
-  }
+    protected PageCrawler getPageCrawler() {
+        return root.getPageCrawler();
+    }
 
-  protected void doSending() {
-    HtmlPage htmlPage = context.pageFactory.newPage();
-    htmlPage.setTitle(getTitle());
-    htmlPage.setPageTitle(new PageTitle(getTitle()) {
-      public String getTitle() {
-        return "search";
-      }
+    protected void doSending() {
+        HtmlPage htmlPage = context.pageFactory.newPage();
+        htmlPage.setTitle(getTitle());
+        htmlPage.setPageTitle(new PageTitle(getTitle()) {
+            public String getTitle() {
+                return "search";
+            }
 
-      public String getLink() {
-        return null;
-      }
-    });
-    htmlPage.setMainTemplate("searchResults");
+            public String getLink() {
+                return null;
+            }
+        });
+        htmlPage.setMainTemplate("searchResults");
 
-    if (page == null)
-      page = context.root.getPageCrawler().getPage(context.root, PathParser.parse("FrontPage"));
-    if (request.getQueryString() == null || request.getQueryString().equals(""))
-      htmlPage.put("request", request.getBody());
-    else
-      htmlPage.put("request", request.getQueryString());
-    htmlPage.put("page", page);
-    htmlPage.put("viewLocation", request.getResource());
-    htmlPage.setNavTemplate("viewNav");
-    htmlPage.put("resultResponder", this);
-    
-    htmlPage.render(response.getWriter());
-    
-    response.closeAll();
-  }
+        if (page == null)
+            page = context.root.getPageCrawler().getPage(context.root, PathParser.parse("FrontPage"));
+        if (request.getQueryString() == null || request.getQueryString().equals(""))
+            htmlPage.put("request", request.getBody());
+        else
+            htmlPage.put("request", request.getQueryString());
+        htmlPage.put("page", page);
+        htmlPage.put("viewLocation", request.getResource());
+        htmlPage.setNavTemplate("viewNav");
+        htmlPage.put("resultResponder", this);
 
-  protected abstract String getTitle() ;
+        htmlPage.render(response.getWriter());
 
-  public abstract void traverse(TraversalListener<Object> observer);
+        response.closeAll();
+    }
 
-  public SecureOperation getSecureOperation() {
-    return new SecureReadOperation();
-  }
-  
+    protected abstract String getTitle();
+
+    public abstract void traverse(TraversalListener<Object> observer);
+
+    public SecureOperation getSecureOperation() {
+        return new SecureReadOperation();
+    }
+
 }
 
 

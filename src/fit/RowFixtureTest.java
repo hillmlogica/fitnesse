@@ -15,23 +15,23 @@ import java.util.List;
 
 public class RowFixtureTest extends TestCase {
 
-  class BusinessObject {
-    private String[] strs;
+    class BusinessObject {
+        private String[] strs;
 
-    public BusinessObject(String[] strs) {
-      this.strs = Arrays.copyOf(strs, strs.length);
+        public BusinessObject(String[] strs) {
+            this.strs = Arrays.copyOf(strs, strs.length);
+        }
+
+        public String[] getStrings() {
+            return strs;
+        }
     }
 
-    public String[] getStrings() {
-      return strs;
+    public RowFixtureTest(String name) {
+        super(name);
     }
-  }
 
-  public RowFixtureTest(String name) {
-    super(name);
-  }
-
-  public void testMatch() throws Exception {
+    public void testMatch() throws Exception {
 
     /*
     Now back to the bug I found: The problem stems from the fact
@@ -44,63 +44,65 @@ public class RowFixtureTest extends TestCase {
     -- Jacques Morel
     */
 
-    RowFixture fixture = new TestRowFixture();
-    TypeAdapter arrayAdapter = TypeAdapter.on(fixture,
-      BusinessObject.class.getMethod("getStrings", new Class[0]));
-    Binding binding = new Binding.QueryBinding();
-    binding.adapter = arrayAdapter;
-    fixture.columnBindings = new Binding[]{binding};
+        RowFixture fixture = new TestRowFixture();
+        TypeAdapter arrayAdapter = TypeAdapter.on(fixture,
+                BusinessObject.class.getMethod("getStrings", new Class[0]));
+        Binding binding = new Binding.QueryBinding();
+        binding.adapter = arrayAdapter;
+        fixture.columnBindings = new Binding[]{binding};
 
-    List<BusinessObject> computed = new LinkedList<BusinessObject>();
-    computed.add(new BusinessObject(new String[]{"1"}));
-    LinkedList<Parse> expected = new LinkedList<Parse>();
-    expected.add(new Parse("tr", "", new Parse("td", "1", null, null), null));
-    fixture.match(expected, computed, 0);
-    assertEquals("right", 1, fixture.counts.right);
-    assertEquals("exceptions", 0, fixture.counts.exceptions);
-    assertEquals("missing", 0, fixture.missing.size());
-    assertEquals("surplus", 0, fixture.surplus.size());
-  }
-
-  public void testBindColumnToField() throws Exception {
-    RowFixture fixture = new SimpleRowFixture();
-    Parse table = new Parse("<table><tr><td>field</td></tr></table>");
-    Parse tableHead = table.parts.parts;
-    fixture.bind(tableHead);
-    assertNotNull(fixture.columnBindings[0]);
-    Field field = fixture.columnBindings[0].adapter.field;
-    assertNotNull(field);
-    assertEquals("field", field.getName());
-    assertEquals(int.class, field.getType());
-  }
-
-  private class SimpleRowFixture extends RowFixture {
-    public Class<?> getTargetClass()             // get expected type of row
-    {
-      return SimpleBusinessObject.class;
+        List<BusinessObject> computed = new LinkedList<BusinessObject>();
+        computed.add(new BusinessObject(new String[]{"1"}));
+        LinkedList<Parse> expected = new LinkedList<Parse>();
+        expected.add(new Parse("tr", "", new Parse("td", "1", null, null), null));
+        fixture.match(expected, computed, 0);
+        assertEquals("right", 1, fixture.counts.right);
+        assertEquals("exceptions", 0, fixture.counts.exceptions);
+        assertEquals("missing", 0, fixture.missing.size());
+        assertEquals("surplus", 0, fixture.surplus.size());
     }
 
-    public Object[] query() throws Exception  // get rows to be compared
-    {
-      return new Object[0];
-    }
-  }
-
-  private class SimpleBusinessObject {
-    /** referenced via reflection */
-    @SuppressWarnings("unused")
-    public int field;
-  }
-
-  private class TestRowFixture extends RowFixture {
-    public Object[] query() throws Exception  // get rows to be compared
-    {
-      return new Object[0];
+    public void testBindColumnToField() throws Exception {
+        RowFixture fixture = new SimpleRowFixture();
+        Parse table = new Parse("<table><tr><td>field</td></tr></table>");
+        Parse tableHead = table.parts.parts;
+        fixture.bind(tableHead);
+        assertNotNull(fixture.columnBindings[0]);
+        Field field = fixture.columnBindings[0].adapter.field;
+        assertNotNull(field);
+        assertEquals("field", field.getName());
+        assertEquals(int.class, field.getType());
     }
 
-    public Class<?> getTargetClass()             // get expected type of row
-    {
-      return BusinessObject.class;
+    private class SimpleRowFixture extends RowFixture {
+        public Class<?> getTargetClass()             // get expected type of row
+        {
+            return SimpleBusinessObject.class;
+        }
+
+        public Object[] query() throws Exception  // get rows to be compared
+        {
+            return new Object[0];
+        }
     }
-  }
+
+    private class SimpleBusinessObject {
+        /**
+         * referenced via reflection
+         */
+        @SuppressWarnings("unused")
+        public int field;
+    }
+
+    private class TestRowFixture extends RowFixture {
+        public Object[] query() throws Exception  // get rows to be compared
+        {
+            return new Object[0];
+        }
+
+        public Class<?> getTargetClass()             // get expected type of row
+        {
+            return BusinessObject.class;
+        }
+    }
 }

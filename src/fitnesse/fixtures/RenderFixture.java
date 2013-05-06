@@ -5,12 +5,12 @@ package fitnesse.fixtures;
 import fit.ColumnFixture;
 
 public class RenderFixture extends ColumnFixture {
-  public String text;
+    public String text;
 
-  public String rendered() throws Exception {
-    //ParentWidget root = new WidgetRoot(text, FitnesseFixtureContext.root);
-    //return root.render();
-      return "not used?";
-  }
+    public String rendered() throws Exception {
+        //ParentWidget root = new WidgetRoot(text, FitnesseFixtureContext.root);
+        //return root.render();
+        return "not used?";
+    }
 
 }

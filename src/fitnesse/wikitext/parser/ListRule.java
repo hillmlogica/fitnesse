@@ -16,8 +16,7 @@ public class ListRule implements Rule {
                 Maybe<Symbol> subList = populateList(parser, nextSymbol);
                 if (subList.isNothing()) return Symbol.nothing;
                 list.lastChild().add(subList.getValue());
-            }
-            else {
+            } else {
                 Symbol body = makeListBody(parser);
                 if (parser.atEnd()) return Symbol.nothing;
                 list.add(body);
@@ -32,7 +31,7 @@ public class ListRule implements Rule {
     }
 
     private Symbol makeListBody(Parser parser) {
-        while (parser.peek(new SymbolType[] {SymbolType.Whitespace}).size() > 0) {
+        while (parser.peek(new SymbolType[]{SymbolType.Whitespace}).size() > 0) {
             parser.moveNext(1);
         }
         return parser.parseTo(SymbolType.Newline, 1);

@@ -9,25 +9,25 @@ import fitnesse.testsystems.slim.tables.ScenarioTable;
 import java.util.Collection;
 
 public interface SlimTestContext {
-  String getSymbol(String symbolName);
+    String getSymbol(String symbolName);
 
-  void setSymbol(String symbolName, String value);
+    void setSymbol(String symbolName, String value);
 
-  void addScenario(String scenarioName, ScenarioTable scenarioTable);
+    void addScenario(String scenarioName, ScenarioTable scenarioTable);
 
-  ScenarioTable getScenario(String scenarioName);
+    ScenarioTable getScenario(String scenarioName);
 
-  Collection<ScenarioTable> getScenarios();
+    Collection<ScenarioTable> getScenarios();
 
-  void incrementPassedTestsCount();
+    void incrementPassedTestsCount();
 
-  void incrementFailedTestsCount();
+    void incrementFailedTestsCount();
 
-  void incrementErroredTestsCount();
+    void incrementErroredTestsCount();
 
-  void incrementIgnoredTestsCount();
+    void incrementIgnoredTestsCount();
 
-  void increment(ExecutionResult testSummary);
+    void increment(ExecutionResult testSummary);
 
-  void increment(TestSummary testSummary);
+    void increment(TestSummary testSummary);
 }

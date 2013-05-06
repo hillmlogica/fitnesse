@@ -7,34 +7,35 @@ import java.io.Serializable;
 import java.util.List;
 
 public interface WikiPage extends Serializable, Comparable<Object> {
-  WikiPage getParent();
+    WikiPage getParent();
 
-  WikiPage addChildPage(String name);
+    WikiPage addChildPage(String name);
 
-  boolean hasChildPage(String name);
+    boolean hasChildPage(String name);
 
-  WikiPage getChildPage(String name);
+    WikiPage getChildPage(String name);
 
-  void removeChildPage(String name);
+    void removeChildPage(String name);
 
-  List<WikiPage> getChildren();
+    List<WikiPage> getChildren();
 
-  String getName();
+    String getName();
 
-  PageData getData();
-  ReadOnlyPageData readOnlyData();
+    PageData getData();
 
-  PageData getDataVersion(String versionName);
+    ReadOnlyPageData readOnlyData();
 
-  VersionInfo commit(PageData data);
+    PageData getDataVersion(String versionName);
 
-  PageCrawler getPageCrawler();
+    VersionInfo commit(PageData data);
 
-  WikiPage getHeaderPage();
+    PageCrawler getPageCrawler();
 
-  WikiPage getFooterPage();
+    WikiPage getHeaderPage();
 
-  boolean isOpenInNewWindow();
+    WikiPage getFooterPage();
+
+    boolean isOpenInNewWindow();
 }
 
 

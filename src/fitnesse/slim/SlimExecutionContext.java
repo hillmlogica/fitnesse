@@ -1,10 +1,10 @@
 package fitnesse.slim;
 
+import fitnesse.slim.fixtureInteraction.FixtureInteraction;
+
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.util.*;
-
-import fitnesse.slim.fixtureInteraction.FixtureInteraction;
 
 public class SlimExecutionContext {
     private Map<String, Object> instances = new HashMap<String, Object>();
@@ -143,7 +143,7 @@ public class SlimExecutionContext {
     }
 
     private Constructor<?> getConstructor(Constructor<?>[] constructors,
-            Object[] args) {
+                                          Object[] args) {
         for (Constructor<?> constructor : constructors) {
             Class<?> arguments[] = constructor.getParameterTypes();
             if (arguments.length == args.length) {

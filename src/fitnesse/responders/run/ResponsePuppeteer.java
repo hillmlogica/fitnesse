@@ -5,5 +5,5 @@ package fitnesse.responders.run;
 import fitnesse.http.ResponseSender;
 
 public interface ResponsePuppeteer {
-  void readyToSend(ResponseSender sender);
+    void readyToSend(ResponseSender sender);
 }

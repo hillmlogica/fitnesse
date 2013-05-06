@@ -6,11 +6,11 @@ import java.net.Socket;
 
 
 public class SimpleSocketSeeker implements SocketSeeker {
-  public SocketDoner doner;
-  public Socket socket;
+    public SocketDoner doner;
+    public Socket socket;
 
-  public void acceptSocketFrom(SocketDoner doner) throws Exception {
-    this.doner = doner;
-    this.socket = doner.donateSocket();
-  }
+    public void acceptSocketFrom(SocketDoner doner) throws Exception {
+        this.doner = doner;
+        this.socket = doner.donateSocket();
+    }
 }

@@ -18,13 +18,14 @@ public class Link extends SymbolType implements Rule, Translation {
         wikiRule(this);
         htmlTranslation(this);
     }
-    
+
     public Maybe<Symbol> parse(Symbol current, Parser parser) {
         Symbol targetList = parser.parseToEnds(-1,
                 SymbolProvider.linkTargetProvider,
-                new SymbolType[] {SymbolType.Newline, SymbolType.Whitespace});
+                new SymbolType[]{SymbolType.Newline, SymbolType.Whitespace});
         return new Maybe<Symbol>(current.add(targetList));
     }
+
     public String toTarget(Translator translator, Symbol symbol) {
         String target = symbol.getContent() + translator.translate(symbol.childAt(0));
         return buildLink(translator, target, symbol);
@@ -43,8 +44,7 @@ public class Link extends SymbolType implements Rule, Translation {
             if (width.length() > 0) tag.addAttribute("width", width);
             String style = link.getProperty(Link.StyleProperty);
             if (style.length() > 0) tag.addAttribute("style", style);
-        }
-        else {
+        } else {
             tag = new HtmlTag("a", body);
             tag.addAttribute("href", reference.makeUrl(prefix));
         }
@@ -54,7 +54,9 @@ public class Link extends SymbolType implements Rule, Translation {
     private class Reference {
         private String reference;
 
-        public Reference(String reference) { this.reference = reference; }
+        public Reference(String reference) {
+            this.reference = reference;
+        }
 
         public boolean isImage() {
             return reference.toLowerCase().endsWith(".jpg") || reference.toLowerCase().endsWith(".gif");

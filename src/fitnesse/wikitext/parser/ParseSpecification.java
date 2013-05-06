@@ -1,6 +1,7 @@
 package fitnesse.wikitext.parser;
 
 import util.Maybe;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 
@@ -83,8 +84,8 @@ public class ParseSpecification {
 
     public Symbol parse(Parser parser, Scanner scanner) {
         Symbol result = (scanner.getOffset() == 0)
-                        ? new Symbol(SymbolType.SymbolList, 100)
-                        : new Symbol(SymbolType.SymbolList);
+                ? new Symbol(SymbolType.SymbolList, 100)
+                : new Symbol(SymbolType.SymbolList);
         while (true) {
             Scanner backup = new Scanner(scanner);
             scanner.moveNextIgnoreFirst(this);
@@ -100,8 +101,7 @@ public class ParseSpecification {
             if (parsedSymbol.isNothing()) {
                 ignoreFirst(currentToken.getType());
                 scanner.copy(backup);
-            }
-            else {
+            } else {
                 result.add(parsedSymbol.getValue());
                 clearIgnoresFirst();
             }
@@ -114,7 +114,7 @@ public class ParseSpecification {
     }
 
     private boolean contains(Iterable<SymbolType> terminators, Matchable currentType) {
-        for (SymbolType terminator: terminators)
+        for (SymbolType terminator : terminators)
             if (currentType.matchesFor(terminator)) return true;
         return false;
     }

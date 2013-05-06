@@ -1,11 +1,11 @@
 package fitnesse.components;
 
-import java.util.List;
-
 import fitnesse.wiki.WikiPage;
+
+import java.util.List;
 
 public interface PageFinder {
 
-  public abstract List<WikiPage> search(WikiPage page);
+    public abstract List<WikiPage> search(WikiPage page);
 
 }

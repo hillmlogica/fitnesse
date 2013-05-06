@@ -2,12 +2,12 @@
 // Released under the terms of the CPL Common Public License version 1.0.
 package fitnesse.runner;
 
-import java.io.IOException;
-
 import fitnesse.testsystems.TestSummary;
 
-public interface ResultHandler {
-  void acceptResult(PageResult result) throws IOException;
+import java.io.IOException;
 
-  void acceptFinalCount(TestSummary testSummary) throws IOException;
+public interface ResultHandler {
+    void acceptResult(PageResult result) throws IOException;
+
+    void acceptFinalCount(TestSummary testSummary) throws IOException;
 }

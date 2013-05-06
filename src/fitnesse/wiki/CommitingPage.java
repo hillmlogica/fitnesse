@@ -3,20 +3,20 @@
 package fitnesse.wiki;
 
 public abstract class CommitingPage extends BaseWikiPage {
-  private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 1L;
 
-  protected CommitingPage(String name, WikiPage parent) {
-    super(name, parent);
-  }
+    protected CommitingPage(String name, WikiPage parent) {
+        super(name, parent);
+    }
 
-  protected abstract VersionInfo makeVersion();
+    protected abstract VersionInfo makeVersion();
 
-  protected abstract void doCommit(PageData data);
+    protected abstract void doCommit(PageData data);
 
-  public VersionInfo commit(PageData data) {
-    VersionInfo previousVersion = makeVersion();
-    doCommit(data);
-    return previousVersion;
-  }
+    public VersionInfo commit(PageData data) {
+        VersionInfo previousVersion = makeVersion();
+        doCommit(data);
+        return previousVersion;
+    }
 
 }

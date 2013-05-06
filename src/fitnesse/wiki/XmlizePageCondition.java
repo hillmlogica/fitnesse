@@ -3,5 +3,5 @@
 package fitnesse.wiki;
 
 public interface XmlizePageCondition {
-  boolean canBeXmlized(WikiPage page);
+    boolean canBeXmlized(WikiPage page);
 }

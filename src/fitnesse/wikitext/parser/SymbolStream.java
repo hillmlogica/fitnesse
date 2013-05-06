@@ -15,12 +15,14 @@ public class SymbolStream {
         return symbols.size() <= position ? Symbol.emptySymbol : symbols.get(position);
     }
 
-    public void add(Symbol value)  {
+    public void add(Symbol value) {
         symbols.addFirst(value);
         if (symbols.size() > streamCapacity) symbols.removeLast();
     }
 
-    public boolean isEnd() { return symbols.isEmpty() || symbols.getFirst() == Symbol.emptySymbol; }
+    public boolean isEnd() {
+        return symbols.isEmpty() || symbols.getFirst() == Symbol.emptySymbol;
+    }
 
     private static final int streamCapacity = 3;
 

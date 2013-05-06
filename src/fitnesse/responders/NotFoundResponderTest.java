@@ -2,7 +2,6 @@
 // Released under the terms of the CPL Common Public License version 1.0.
 package fitnesse.responders;
 
-import util.RegexTestCase;
 import fitnesse.FitNesseContext;
 import fitnesse.Responder;
 import fitnesse.http.MockRequest;
@@ -10,41 +9,42 @@ import fitnesse.http.SimpleResponse;
 import fitnesse.testutil.FitNesseUtil;
 import fitnesse.wiki.InMemoryPage;
 import fitnesse.wiki.WikiPage;
+import util.RegexTestCase;
 
 public class NotFoundResponderTest extends RegexTestCase {
-  
-  private FitNesseContext context;
 
-  public void setUp() {
-    context = FitNesseUtil.makeTestContext();
-  }
-  
-  public void testResponse() throws Exception {
-    MockRequest request = new MockRequest();
-    request.setResource("some page");
+    private FitNesseContext context;
 
-    Responder responder = new NotFoundResponder();
-    SimpleResponse response = (SimpleResponse) responder.makeResponse(context, request);
+    public void setUp() {
+        context = FitNesseUtil.makeTestContext();
+    }
 
-    assertEquals(404, response.getStatus());
+    public void testResponse() throws Exception {
+        MockRequest request = new MockRequest();
+        request.setResource("some page");
 
-    String body = response.getContent();
+        Responder responder = new NotFoundResponder();
+        SimpleResponse response = (SimpleResponse) responder.makeResponse(context, request);
 
-    assertHasRegexp("<html>", body);
-    assertHasRegexp("<body", body);
-    assertHasRegexp("some page", body);
-    assertHasRegexp("Not Found", body);
-  }
+        assertEquals(404, response.getStatus());
 
-  public void testHasEditLinkForWikiWords() throws Exception {
-    MockRequest request = new MockRequest();
-    request.setResource("PageOne.PageTwo");
-    WikiPage root = InMemoryPage.makeRoot("RooT");
+        String body = response.getContent();
 
-    Responder responder = new NotFoundResponder();
-    SimpleResponse response = (SimpleResponse) responder.makeResponse(FitNesseUtil.makeTestContext(root), request);
+        assertHasRegexp("<html>", body);
+        assertHasRegexp("<body", body);
+        assertHasRegexp("some page", body);
+        assertHasRegexp("Not Found", body);
+    }
 
-    assertHasRegexp("\"PageOne[.]PageTwo[?]edit\"", response.getContent());
-  }
+    public void testHasEditLinkForWikiWords() throws Exception {
+        MockRequest request = new MockRequest();
+        request.setResource("PageOne.PageTwo");
+        WikiPage root = InMemoryPage.makeRoot("RooT");
+
+        Responder responder = new NotFoundResponder();
+        SimpleResponse response = (SimpleResponse) responder.makeResponse(FitNesseUtil.makeTestContext(root), request);
+
+        assertHasRegexp("\"PageOne[.]PageTwo[?]edit\"", response.getContent());
+    }
 
 }

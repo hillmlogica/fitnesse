@@ -7,117 +7,117 @@ import java.io.Writer;
 import java.nio.ByteBuffer;
 
 public class ChunkedResponse extends Response {
-  private ResponseSender sender;
-  private int bytesSent = 0;
-  private boolean dontChunk = false;
-  private ChunkedDataProvider chunckedDataProvider;
+    private ResponseSender sender;
+    private int bytesSent = 0;
+    private boolean dontChunk = false;
+    private ChunkedDataProvider chunckedDataProvider;
 
-  public ChunkedResponse(String format, ChunkedDataProvider chunckedDataProvider) {
-    super(format);
-    this.chunckedDataProvider = chunckedDataProvider;
-    if (isTextFormat())
-      dontChunk = true;
-  }
-
-  public void sendTo(ResponseSender sender) {
-    this.sender = sender;
-    sender.send(makeHttpHeaders().getBytes());
-    chunckedDataProvider.startSending();
-  }
-
-  @Override
-  protected void addStandardHeaders() {
-    super.addStandardHeaders();
-    if (!dontChunk)
-      addHeader("Transfer-Encoding", "chunked");
-  }
-
-  public static String asHex(int value) {
-    return Integer.toHexString(value);
-  }
-
-  public void add(String text) {
-    if (text != null)
-      add(getEncodedBytes(text));
-  }
-
-  public void add(byte[] bytes) {
-    if (bytes == null || bytes.length == 0)
-      return;
-    if (dontChunk) {
-      sender.send(bytes);
-    } else {
-      String sizeLine = asHex(bytes.length) + CRLF;
-      ByteBuffer chunk = ByteBuffer.allocate(sizeLine.length() + bytes.length + 2);
-      chunk.put(sizeLine.getBytes()).put(bytes).put(CRLF.getBytes());
-      sender.send(chunk.array());
+    public ChunkedResponse(String format, ChunkedDataProvider chunckedDataProvider) {
+        super(format);
+        this.chunckedDataProvider = chunckedDataProvider;
+        if (isTextFormat())
+            dontChunk = true;
     }
-    bytesSent += bytes.length;
-  }
 
-  public void addTrailingHeader(String key, String value) {
-    if (!dontChunk) {
-      String header = key + ": " + value + CRLF;
-      sender.send(header.getBytes());
+    public void sendTo(ResponseSender sender) {
+        this.sender = sender;
+        sender.send(makeHttpHeaders().getBytes());
+        chunckedDataProvider.startSending();
     }
-  }
 
-  public void closeChunks() {
-    if (!dontChunk) {
-      sender.send(("0" + CRLF).getBytes());
+    @Override
+    protected void addStandardHeaders() {
+        super.addStandardHeaders();
+        if (!dontChunk)
+            addHeader("Transfer-Encoding", "chunked");
     }
-  }
 
-  public void closeTrailer() {
-    if (!dontChunk) {
-      sender.send(CRLF.getBytes());
+    public static String asHex(int value) {
+        return Integer.toHexString(value);
     }
-  }
 
-  public void close() {
-    sender.close();
-  }
+    public void add(String text) {
+        if (text != null)
+            add(getEncodedBytes(text));
+    }
 
-  public void closeAll() {
-    closeChunks();
-    closeTrailer();
-    close();
-  }
+    public void add(byte[] bytes) {
+        if (bytes == null || bytes.length == 0)
+            return;
+        if (dontChunk) {
+            sender.send(bytes);
+        } else {
+            String sizeLine = asHex(bytes.length) + CRLF;
+            ByteBuffer chunk = ByteBuffer.allocate(sizeLine.length() + bytes.length + 2);
+            chunk.put(sizeLine.getBytes()).put(bytes).put(CRLF.getBytes());
+            sender.send(chunk.array());
+        }
+        bytesSent += bytes.length;
+    }
 
-  public int getContentSize() {
-    return bytesSent;
-  }
+    public void addTrailingHeader(String key, String value) {
+        if (!dontChunk) {
+            String header = key + ": " + value + CRLF;
+            sender.send(header.getBytes());
+        }
+    }
 
-  public void turnOffChunking() {
-    dontChunk = true;
-  }
+    public void closeChunks() {
+        if (!dontChunk) {
+            sender.send(("0" + CRLF).getBytes());
+        }
+    }
 
-  public boolean isChunkingTurnedOff() {
-    return dontChunk;
-  }
+    public void closeTrailer() {
+        if (!dontChunk) {
+            sender.send(CRLF.getBytes());
+        }
+    }
 
-  public Writer getWriter() {
-    return new  Writer() {
-  
-      @Override
-      public void close() throws IOException {
-        //sender.close();
-      }
-  
-      @Override
-      public void flush() throws IOException {
-        // sender.flush(); -- flush is done on write
-      }
-  
-      @Override
-      public void write(String str) throws IOException {
-        add(str);
-      }
-      
-      @Override
-      public void write(char[] cbuf, int off, int len) throws IOException {
-        write(new String(cbuf, off, len));
-      }
-    };
-  }
+    public void close() {
+        sender.close();
+    }
+
+    public void closeAll() {
+        closeChunks();
+        closeTrailer();
+        close();
+    }
+
+    public int getContentSize() {
+        return bytesSent;
+    }
+
+    public void turnOffChunking() {
+        dontChunk = true;
+    }
+
+    public boolean isChunkingTurnedOff() {
+        return dontChunk;
+    }
+
+    public Writer getWriter() {
+        return new Writer() {
+
+            @Override
+            public void close() throws IOException {
+                //sender.close();
+            }
+
+            @Override
+            public void flush() throws IOException {
+                // sender.flush(); -- flush is done on write
+            }
+
+            @Override
+            public void write(String str) throws IOException {
+                add(str);
+            }
+
+            @Override
+            public void write(char[] cbuf, int off, int len) throws IOException {
+                write(new String(cbuf, off, len));
+            }
+        };
+    }
 }

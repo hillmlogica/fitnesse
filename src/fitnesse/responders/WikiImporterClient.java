@@ -5,7 +5,7 @@ package fitnesse.responders;
 import fitnesse.wiki.WikiPage;
 
 public interface WikiImporterClient {
-  void pageImported(WikiPage localPage);
+    void pageImported(WikiPage localPage);
 
-  void pageImportError(WikiPage localPage, Exception e);
+    void pageImportError(WikiPage localPage, Exception e);
 }

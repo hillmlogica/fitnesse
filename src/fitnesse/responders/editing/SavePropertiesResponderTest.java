@@ -10,59 +10,59 @@ import fitnesse.wiki.*;
 import util.RegexTestCase;
 
 public class SavePropertiesResponderTest extends RegexTestCase {
-  private WikiPage root;
+    private WikiPage root;
 
-  private MockRequest request;
+    private MockRequest request;
 
-  private WikiPage page;
+    private WikiPage page;
 
-  private PageCrawler crawler;
+    private PageCrawler crawler;
 
-  private WikiPage linker;
+    private WikiPage linker;
 
-  public void setUp() throws Exception {
-    root = InMemoryPage.makeRoot("RooT");
-    crawler = root.getPageCrawler();
-  }
+    public void setUp() throws Exception {
+        root = InMemoryPage.makeRoot("RooT");
+        crawler = root.getPageCrawler();
+    }
 
-  private void createRequest() throws Exception {
-    page = crawler.addPage(root, PathParser.parse("PageOne"));
+    private void createRequest() throws Exception {
+        page = crawler.addPage(root, PathParser.parse("PageOne"));
 
-    request = new MockRequest();
-    request.addInput("PageType", "Test");
-    request.addInput("Properties", "on");
-    request.addInput("Search", "on");
-    request.addInput("RecentChanges", "on");
-    request.addInput(PageData.PropertyPRUNE,"on");
-    request.addInput(PageData.PropertySECURE_READ, "on");
-    request.addInput("Suites", "Suite A, Suite B");
-    request.addInput("HelpText", "Help text literal");
-    request.setResource("PageOne");
-  }
+        request = new MockRequest();
+        request.addInput("PageType", "Test");
+        request.addInput("Properties", "on");
+        request.addInput("Search", "on");
+        request.addInput("RecentChanges", "on");
+        request.addInput(PageData.PropertyPRUNE, "on");
+        request.addInput(PageData.PropertySECURE_READ, "on");
+        request.addInput("Suites", "Suite A, Suite B");
+        request.addInput("HelpText", "Help text literal");
+        request.setResource("PageOne");
+    }
 
-  public void tearDown() throws Exception {
-  }
+    public void tearDown() throws Exception {
+    }
 
-  public void testResponse() throws Exception {
-    createRequest();
+    public void testResponse() throws Exception {
+        createRequest();
 
-    Responder responder = new SavePropertiesResponder();
-    Response response = responder.makeResponse(FitNesseUtil.makeTestContext(root), request);
+        Responder responder = new SavePropertiesResponder();
+        Response response = responder.makeResponse(FitNesseUtil.makeTestContext(root), request);
 
-    PageData data = page.getData();
-    assertTrue(data.hasAttribute("Test"));
-    assertTrue(data.hasAttribute("Properties"));
-    assertTrue(data.hasAttribute("Search"));
-    assertFalse(data.hasAttribute("Edit"));
-    assertTrue(data.hasAttribute("RecentChanges"));
-    assertTrue(data.hasAttribute(PageData.PropertySECURE_READ));
-    assertFalse(data.hasAttribute(PageData.PropertySECURE_WRITE));
-    assertTrue(data.hasAttribute(PageData.PropertyPRUNE));
-    assertEquals("Suite A, Suite B", data.getAttribute(PageData.PropertySUITES));
-    assertEquals("Help text literal", data.getAttribute(PageData.PropertyHELP));
+        PageData data = page.getData();
+        assertTrue(data.hasAttribute("Test"));
+        assertTrue(data.hasAttribute("Properties"));
+        assertTrue(data.hasAttribute("Search"));
+        assertFalse(data.hasAttribute("Edit"));
+        assertTrue(data.hasAttribute("RecentChanges"));
+        assertTrue(data.hasAttribute(PageData.PropertySECURE_READ));
+        assertFalse(data.hasAttribute(PageData.PropertySECURE_WRITE));
+        assertTrue(data.hasAttribute(PageData.PropertyPRUNE));
+        assertEquals("Suite A, Suite B", data.getAttribute(PageData.PropertySUITES));
+        assertEquals("Help text literal", data.getAttribute(PageData.PropertyHELP));
 
-    assertEquals(303, response.getStatus());
-    assertEquals("PageOne", response.getHeader("Location"));
-  }
+        assertEquals(303, response.getStatus());
+        assertEquals("PageOne", response.getHeader("Location"));
+    }
 
 }

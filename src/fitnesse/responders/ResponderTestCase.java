@@ -2,7 +2,6 @@
 // Released under the terms of the CPL Common Public License version 1.0.
 package fitnesse.responders;
 
-import util.RegexTestCase;
 import fitnesse.FitNesseContext;
 import fitnesse.Responder;
 import fitnesse.http.MockRequest;
@@ -10,22 +9,23 @@ import fitnesse.testutil.FitNesseUtil;
 import fitnesse.wiki.InMemoryPage;
 import fitnesse.wiki.PageCrawler;
 import fitnesse.wiki.WikiPage;
+import util.RegexTestCase;
 
 public abstract class ResponderTestCase extends RegexTestCase {
-  protected WikiPage root;
-  protected MockRequest request;
-  protected Responder responder;
-  protected PageCrawler crawler;
-  protected FitNesseContext context;
+    protected WikiPage root;
+    protected MockRequest request;
+    protected Responder responder;
+    protected PageCrawler crawler;
+    protected FitNesseContext context;
 
-  public void setUp() throws Exception {
-    root = InMemoryPage.makeRoot("RooT");
-    crawler = root.getPageCrawler();
-    request = new MockRequest();
-    responder = responderInstance();
-    context = FitNesseUtil.makeTestContext(root);
-  }
+    public void setUp() throws Exception {
+        root = InMemoryPage.makeRoot("RooT");
+        crawler = root.getPageCrawler();
+        request = new MockRequest();
+        responder = responderInstance();
+        context = FitNesseUtil.makeTestContext(root);
+    }
 
-  // Return an instance of the Responder being tested.
-  protected abstract Responder responderInstance();
+    // Return an instance of the Responder being tested.
+    protected abstract Responder responderInstance();
 }

@@ -9,7 +9,7 @@ public class PlainTextTable extends SymbolType implements Rule {
         wikiRule(this);
         htmlTranslation(new Table());
     }
-    
+
     public Maybe<Symbol> parse(Symbol current, Parser parser) {
         Symbol table = parser.getCurrent();
         table.putProperty("class", "plain_text_table");
@@ -24,21 +24,20 @@ public class PlainTextTable extends SymbolType implements Rule {
             SymbolType plainTextCellSeparator = new SymbolType("PlainTextCellSeparator");
             plainTextCellSeparator.wikiMatcher(new Matcher().string(cellSeparator.getContent().substring(0, 1)));
             plainTextTableTypes = new SymbolProvider(new SymbolType[]
-                {SymbolType.Newline, SymbolType.ClosePlainTextTable, Evaluator.symbolType, Literal.symbolType, Variable.symbolType, plainTextCellSeparator});
-            terminators = new SymbolType[] {plainTextCellSeparator, SymbolType.Newline, SymbolType.ClosePlainTextTable};
+                    {SymbolType.Newline, SymbolType.ClosePlainTextTable, Evaluator.symbolType, Literal.symbolType, Variable.symbolType, plainTextCellSeparator});
+            terminators = new SymbolType[]{plainTextCellSeparator, SymbolType.Newline, SymbolType.ClosePlainTextTable};
             parser.moveNext(1);
             if (parser.atEnd()) return Symbol.nothing;
-        }
-        else {
+        } else {
             plainTextTableTypes = new SymbolProvider(new SymbolType[]
-                {SymbolType.Newline, SymbolType.ClosePlainTextTable, Evaluator.symbolType, Literal.symbolType, Variable.symbolType});
-            terminators = new SymbolType[] {SymbolType.Newline, SymbolType.ClosePlainTextTable};
+                    {SymbolType.Newline, SymbolType.ClosePlainTextTable, Evaluator.symbolType, Literal.symbolType, Variable.symbolType});
+            terminators = new SymbolType[]{SymbolType.Newline, SymbolType.ClosePlainTextTable};
         }
 
         if (parser.getCurrent().isType(SymbolType.Whitespace)) {
             table.putProperty("hideFirst", "");
         }
-        
+
         Symbol row = null;
         while (true) {
             Symbol line = parser.parseToWithSymbols(terminators, plainTextTableTypes, 0);

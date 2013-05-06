@@ -11,39 +11,39 @@ import fitnesse.http.SimpleResponse;
 import fitnesse.responders.templateUtilities.HtmlPage;
 
 public class ErrorResponder implements Responder {
-  Exception exception;
-  private String message;
+    Exception exception;
+    private String message;
 
-  public ErrorResponder(Exception e) {
-    exception = e;
-  }
+    public ErrorResponder(Exception e) {
+        exception = e;
+    }
 
-  public ErrorResponder(String message) {
-    this.message = message;
-  }
+    public ErrorResponder(String message) {
+        this.message = message;
+    }
 
-  public Response makeResponse(FitNesseContext context, Request request) {
-    SimpleResponse response = new SimpleResponse(400);
-    HtmlPage html = context.pageFactory.newPage();
-    HtmlUtil.addTitles(html, "Error Occured");
-    html.setMainTemplate("error");
-    html.put("exception", exception);
-    if (exception != null)
-      html.put("exception", exception);
-    if (message != null)
-      html.put("message", message);
-    response.setContent(html.html());
+    public Response makeResponse(FitNesseContext context, Request request) {
+        SimpleResponse response = new SimpleResponse(400);
+        HtmlPage html = context.pageFactory.newPage();
+        HtmlUtil.addTitles(html, "Error Occured");
+        html.setMainTemplate("error");
+        html.put("exception", exception);
+        if (exception != null)
+            html.put("exception", exception);
+        if (message != null)
+            html.put("message", message);
+        response.setContent(html.html());
 
-    return response;
-  }
+        return response;
+    }
 
-  public static String makeExceptionString(Throwable e) {
-    StringBuffer buffer = new StringBuffer();
-    buffer.append(e.toString()).append("\n");
-    StackTraceElement[] stackTreace = e.getStackTrace();
-    for (int i = 0; i < stackTreace.length; i++)
-      buffer.append("\t" + stackTreace[i]).append("\n");
+    public static String makeExceptionString(Throwable e) {
+        StringBuffer buffer = new StringBuffer();
+        buffer.append(e.toString()).append("\n");
+        StackTraceElement[] stackTreace = e.getStackTrace();
+        for (int i = 0; i < stackTreace.length; i++)
+            buffer.append("\t" + stackTreace[i]).append("\n");
 
-    return buffer.toString();
-  }
+        return buffer.toString();
+    }
 }

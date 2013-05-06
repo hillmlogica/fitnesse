@@ -12,7 +12,7 @@ public class Parser {
     public static Parser make(WikiPage page, String input) {
         return make(new ParsingPage(new WikiSourcePage(page)), input);
     }
-    
+
     public static Parser make(ParsingPage currentPage, String input) {
         return make(currentPage, input, SymbolProvider.wikiParsingProvider);
     }
@@ -40,13 +40,33 @@ public class Parser {
         this.specification = specification;
     }
 
-    public ParsingPage getPage() { return currentPage; }
-    public VariableSource getVariableSource() { return variableSource; }
-    public Symbol getCurrent() { return scanner.getCurrent(); }
-    public int getOffset() { return scanner.getOffset(); }
-    public boolean atEnd() { return scanner.isEnd(); }
-    public boolean isMoveNext(SymbolType type) { return moveNext(1).isType(type); }
-    public boolean endsOn(SymbolType type) { return specification.endsOn(type); }
+    public ParsingPage getPage() {
+        return currentPage;
+    }
+
+    public VariableSource getVariableSource() {
+        return variableSource;
+    }
+
+    public Symbol getCurrent() {
+        return scanner.getCurrent();
+    }
+
+    public int getOffset() {
+        return scanner.getOffset();
+    }
+
+    public boolean atEnd() {
+        return scanner.isEnd();
+    }
+
+    public boolean isMoveNext(SymbolType type) {
+        return moveNext(1).isType(type);
+    }
+
+    public boolean endsOn(SymbolType type) {
+        return specification.endsOn(type);
+    }
 
     public Symbol moveNext(int count) {
         for (int i = 0; i < count; i++) scanner.moveNextIgnoreFirst(specification);
@@ -55,7 +75,7 @@ public class Parser {
 
     public List<Symbol> moveNext(SymbolType[] symbolTypes) {
         ArrayList<Symbol> tokens = new ArrayList<Symbol>();
-        for (SymbolType type: symbolTypes) {
+        for (SymbolType type : symbolTypes) {
             Symbol current = moveNext(1);
             if (!current.isType(type)) return new ArrayList<Symbol>();
             tokens.add(current);
@@ -101,12 +121,12 @@ public class Parser {
     }
 
     public Symbol parseToIgnoreFirst(SymbolType type) {
-        return parseToIgnoreFirst(new SymbolType[] {type});
+        return parseToIgnoreFirst(new SymbolType[]{type});
     }
 
     public Symbol parseToIgnoreFirst(SymbolType[] types) {
         ParseSpecification newSpecification = new ParseSpecification().provider(specification);
-        for (SymbolType symbolType: types) {
+        for (SymbolType symbolType : types) {
             newSpecification.terminator(symbolType);
             newSpecification.ignoreFirst(symbolType);
         }
@@ -116,23 +136,23 @@ public class Parser {
     public Symbol parseToIgnoreFirstWithSymbols(SymbolType ignore, SymbolProvider provider) {
         return parse(new ParseSpecification().ignoreFirst(ignore).terminator(ignore).provider(provider));
     }
-    
+
     public Symbol parseTo(SymbolType terminator) {
         return parseTo(terminator, ParseSpecification.normalPriority);
     }
 
     public Symbol parseTo(SymbolType terminator, int priority) {
-        return parse(new ParseSpecification() /*.provider(specification)*/ .terminator(terminator).priority(priority));
+        return parse(new ParseSpecification() /*.provider(specification)*/.terminator(terminator).priority(priority));
     }
 
     public Symbol parseToWithSymbols(SymbolType terminator, SymbolProvider provider, int priority) {
-        SymbolType[] terminators = new SymbolType[] {terminator};
+        SymbolType[] terminators = new SymbolType[]{terminator};
         return parseToWithSymbols(terminators, provider, priority);
     }
 
     public Symbol parseToWithSymbols(SymbolType[] terminators, SymbolProvider provider, int priority) {
         ParseSpecification newSpecification = new ParseSpecification().provider(provider).priority(priority);
-        for (SymbolType terminator: terminators) newSpecification.terminator(terminator);
+        for (SymbolType terminator : terminators) newSpecification.terminator(terminator);
         return parse(newSpecification);
     }
 
@@ -142,7 +162,7 @@ public class Parser {
 
     public Symbol parseToEnds(int priority, SymbolProvider provider, SymbolType[] moreEnds) {
         ParseSpecification newSpecification = specification.makeSpecification(provider, moreEnds).priority(priority);
-        for (SymbolType end: moreEnds) newSpecification.end(end);
+        for (SymbolType end : moreEnds) newSpecification.end(end);
         return parse(newSpecification);
     }
 

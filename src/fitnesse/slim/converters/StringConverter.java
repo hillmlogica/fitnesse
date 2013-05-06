@@ -5,11 +5,11 @@ package fitnesse.slim.converters;
 import fitnesse.slim.Converter;
 
 public class StringConverter implements Converter<String> {
-  public String toString(String o) {
-    return ((String) o);
-  }
+    public String toString(String o) {
+        return ((String) o);
+    }
 
-  public String fromString(String arg) {
-    return arg;
-  }
+    public String fromString(String arg) {
+        return arg;
+    }
 }

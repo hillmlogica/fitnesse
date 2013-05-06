@@ -3,11 +3,11 @@ package fitnesse.wikitext.parser;
 public class WikiWordPath {
 
     public static boolean isSingleWikiWord(String s) {
-      return new WikiWordPath().wikiWordLength(s) == s.length();
+        return new WikiWordPath().wikiWordLength(s) == s.length();
     }
 
     public static boolean isWikiWord(String word) {
-      return new WikiWordPath().findLength(word) == word.length();
+        return new WikiWordPath().findLength(word) == word.length();
     }
 
     public static String makeWikiWord(String input) {
@@ -43,28 +43,27 @@ public class WikiWordPath {
             if (isCharacter(candidate, '_', i)) return 0;
             if (isUpperCaseLetter(candidate, i)) {
                 if (i == lastUpperCaseLetter + 1) return 0;
-                lastUpperCaseLetter =  i;
-            }
-            else if (!isDigit(candidate, i) && !isLetter(candidate, i) /*&& !isCharacter(candidate, '.', i)*/) break;
+                lastUpperCaseLetter = i;
+            } else if (!isDigit(candidate, i) && !isLetter(candidate, i) /*&& !isCharacter(candidate, '.', i)*/) break;
         }
         if (lastUpperCaseLetter > 0 && i > 2) return i;
         return 0;
     }
 
     private boolean isUpperCaseLetter(String candidate, int offset) {
-      return candidate.charAt(offset) >= 'A' && candidate.charAt(offset) <= 'Z';
+        return candidate.charAt(offset) >= 'A' && candidate.charAt(offset) <= 'Z';
     }
 
     private boolean isLowerCaseLetter(String candidate, int offset) {
-      return candidate.charAt(offset) >= 'a' && candidate.charAt(offset) <= 'z';
+        return candidate.charAt(offset) >= 'a' && candidate.charAt(offset) <= 'z';
     }
 
     private boolean isDigit(String candidate, int offset) {
-      return candidate.charAt(offset) >= '0' && candidate.charAt(offset) <= '9';
+        return candidate.charAt(offset) >= '0' && candidate.charAt(offset) <= '9';
     }
 
     private boolean isLetter(String candidate, int offset) {
-      return isUpperCaseLetter(candidate, offset) || isLowerCaseLetter(candidate, offset);
+        return isUpperCaseLetter(candidate, offset) || isLowerCaseLetter(candidate, offset);
     }
 
     private boolean isCharacter(String candidate, char character, int offset) {

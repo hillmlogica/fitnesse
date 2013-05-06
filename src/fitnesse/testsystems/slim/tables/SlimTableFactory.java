@@ -1,118 +1,118 @@
 package fitnesse.testsystems.slim.tables;
 
-import java.lang.reflect.Constructor;
-import java.util.HashMap;
-import java.util.Map;
-
 import fitnesse.testsystems.slim.SlimTestContext;
 import fitnesse.testsystems.slim.Table;
 import fitnesse.testsystems.slim.tables.SlimTable.Disgracer;
 
+import java.lang.reflect.Constructor;
+import java.util.HashMap;
+import java.util.Map;
+
 public class SlimTableFactory {
 
-  private static final Map<String, Class<? extends SlimTable>> tableTypes;
+    private static final Map<String, Class<? extends SlimTable>> tableTypes;
 
-  static {
-    tableTypes = new HashMap<String, Class<? extends SlimTable>>(16);
-    addTableType("dt:", DecisionTable.class);
-    addTableType("decision:", DecisionTable.class);
-    addTableType("ordered query:", OrderedQueryTable.class);
-    addTableType("subset query:", SubsetQueryTable.class);
-    addTableType("query:", QueryTable.class);
-    addTableType("table:", TableTable.class);
-    addTableType("script", ScriptTable.class);
-    addTableType("scenario", ScenarioTable.class);
-    addTableType("import", ImportTable.class);
-    addTableType("library", LibraryTable.class);
-  }
-
-  private Map<String, String> tableTypeArrays = new HashMap<String, String>();
-
-  public static void addTableType(String nameOrPrefix, Class<? extends SlimTable> tableClass) {
-    if (tableTypes.get(nameOrPrefix) != null) {
-      throw new IllegalStateException("A table type named '" + nameOrPrefix + "' already exists");
-    }
-    tableTypes.put(nameOrPrefix.toLowerCase(), tableClass);
-  }
-
-  public SlimTable makeSlimTable(Table table, String tableId, SlimTestContext slimTestContext) {
-    String tableType = getFullTableName(table.getCellContents(0, 0));
-
-    // First the "exceptions to the rule"
-    if (tableType.equalsIgnoreCase("define table type")) {
-      parseDefineTableTypeTable(table);
-      return null;
-    } else if (tableType.equalsIgnoreCase("comment")) {
-      return null;
+    static {
+        tableTypes = new HashMap<String, Class<? extends SlimTable>>(16);
+        addTableType("dt:", DecisionTable.class);
+        addTableType("decision:", DecisionTable.class);
+        addTableType("ordered query:", OrderedQueryTable.class);
+        addTableType("subset query:", SubsetQueryTable.class);
+        addTableType("query:", QueryTable.class);
+        addTableType("table:", TableTable.class);
+        addTableType("script", ScriptTable.class);
+        addTableType("scenario", ScenarioTable.class);
+        addTableType("import", ImportTable.class);
+        addTableType("library", LibraryTable.class);
     }
 
-    Class<? extends SlimTable> tableClass = getTableType(tableType);
+    private Map<String, String> tableTypeArrays = new HashMap<String, String>();
 
-    if (tableClass != null) {
-      return newTableForType(tableClass, table, tableId, slimTestContext);
-    } else if (!hasColon(tableType)) {
-      return new DecisionTable(table, tableId, slimTestContext);
+    public static void addTableType(String nameOrPrefix, Class<? extends SlimTable> tableClass) {
+        if (tableTypes.get(nameOrPrefix) != null) {
+            throw new IllegalStateException("A table type named '" + nameOrPrefix + "' already exists");
+        }
+        tableTypes.put(nameOrPrefix.toLowerCase(), tableClass);
     }
 
-    return new SlimErrorTable(table, tableId, slimTestContext);
-  }
+    public SlimTable makeSlimTable(Table table, String tableId, SlimTestContext slimTestContext) {
+        String tableType = getFullTableName(table.getCellContents(0, 0));
 
-  private boolean hasColon(String tableType) {
-    return tableType.contains(":");
-  }
+        // First the "exceptions to the rule"
+        if (tableType.equalsIgnoreCase("define table type")) {
+            parseDefineTableTypeTable(table);
+            return null;
+        } else if (tableType.equalsIgnoreCase("comment")) {
+            return null;
+        }
 
-  private Class<? extends SlimTable> getTableType(String tableType) {
-    if (hasColon(tableType)) {
-      tableType = tableType.substring(0, tableType.indexOf(':') + 1);
-    }
-    return tableTypes.get(tableType.toLowerCase());
-  }
+        Class<? extends SlimTable> tableClass = getTableType(tableType);
 
-  private SlimTable newTableForType(Class<? extends SlimTable> tableClass,
-                                    Table table, String tableId, SlimTestContext slimTestContext) {
-    try {
-      Constructor<? extends SlimTable> constructor = tableClass.getConstructor(Table.class, String.class, SlimTestContext.class);
-      return constructor.newInstance(table, tableId, slimTestContext);
-    } catch (Exception e) {
-      e.printStackTrace();
-      return new SlimErrorTable(table, tableId, slimTestContext);
-    }
-  }
+        if (tableClass != null) {
+            return newTableForType(tableClass, table, tableId, slimTestContext);
+        } else if (!hasColon(tableType)) {
+            return new DecisionTable(table, tableId, slimTestContext);
+        }
 
-  private String getFullTableName(String tableName) {
-    if (hasColon(tableName)) {
-      return tableName;
+        return new SlimErrorTable(table, tableId, slimTestContext);
     }
 
-    //check for a table type defined in a table type definition
-    String disgracedName = Disgracer.disgraceClassName(tableName);
-    if (tableTypeArrays.containsKey(disgracedName)) {
-      return tableTypeArrays.get(disgracedName) + ":" + tableName;
+    private boolean hasColon(String tableType) {
+        return tableType.contains(":");
     }
-    return tableName;
-  }
 
-  private SlimTable parseDefineTableTypeTable(Table table) {
-    for (int rowIndex = 1; rowIndex < table.getRowCount(); rowIndex++)
-      parseDefineTableTypeRow(table, rowIndex);
-    return null;
-  }
-
-  private void parseDefineTableTypeRow(Table table, int rowIndex) {
-    if (table.getColumnCountInRow(rowIndex) >= 2) {
-      String fixtureName = table.getCellContents(0, rowIndex);
-      String fixture = Disgracer.disgraceClassName(fixtureName);
-      String tableSpecifier = table.getCellContents(1, rowIndex).toLowerCase();
-      tableTypeArrays.put(fixture, makeTableType(tableSpecifier));
+    private Class<? extends SlimTable> getTableType(String tableType) {
+        if (hasColon(tableType)) {
+            tableType = tableType.substring(0, tableType.indexOf(':') + 1);
+        }
+        return tableTypes.get(tableType.toLowerCase());
     }
-  }
 
-  private String makeTableType(String tableSpecifier) {
-    String tableType = tableSpecifier.replace(':', ' ');
-    if (tableType.startsWith("as"))
-      tableType = tableType.substring(2);
+    private SlimTable newTableForType(Class<? extends SlimTable> tableClass,
+                                      Table table, String tableId, SlimTestContext slimTestContext) {
+        try {
+            Constructor<? extends SlimTable> constructor = tableClass.getConstructor(Table.class, String.class, SlimTestContext.class);
+            return constructor.newInstance(table, tableId, slimTestContext);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new SlimErrorTable(table, tableId, slimTestContext);
+        }
+    }
 
-    return tableType.trim();
-  }
+    private String getFullTableName(String tableName) {
+        if (hasColon(tableName)) {
+            return tableName;
+        }
+
+        //check for a table type defined in a table type definition
+        String disgracedName = Disgracer.disgraceClassName(tableName);
+        if (tableTypeArrays.containsKey(disgracedName)) {
+            return tableTypeArrays.get(disgracedName) + ":" + tableName;
+        }
+        return tableName;
+    }
+
+    private SlimTable parseDefineTableTypeTable(Table table) {
+        for (int rowIndex = 1; rowIndex < table.getRowCount(); rowIndex++)
+            parseDefineTableTypeRow(table, rowIndex);
+        return null;
+    }
+
+    private void parseDefineTableTypeRow(Table table, int rowIndex) {
+        if (table.getColumnCountInRow(rowIndex) >= 2) {
+            String fixtureName = table.getCellContents(0, rowIndex);
+            String fixture = Disgracer.disgraceClassName(fixtureName);
+            String tableSpecifier = table.getCellContents(1, rowIndex).toLowerCase();
+            tableTypeArrays.put(fixture, makeTableType(tableSpecifier));
+        }
+    }
+
+    private String makeTableType(String tableSpecifier) {
+        String tableType = tableSpecifier.replace(':', ' ');
+        if (tableType.startsWith("as"))
+            tableType = tableType.substring(2);
+
+        return tableType.trim();
+    }
 
 }

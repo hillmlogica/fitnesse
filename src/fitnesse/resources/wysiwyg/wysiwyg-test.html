@@ -20,32 +20,32 @@
     </style>
 </head>
 <body>
-    <!-- The required (boilerplate) HTML to make the tests work at least -->
-    <form method="post">
-        <fieldset id="editor">
-            <textarea class="wikitext no_wrap" id="pageContent" name="pageContent" wrap="off"></textarea>
-        </fieldset>
-    </form>
+<!-- The required (boilerplate) HTML to make the tests work at least -->
+<form method="post">
+    <fieldset id="editor">
+        <textarea class="wikitext no_wrap" id="pageContent" name="pageContent" wrap="off"></textarea>
+    </fieldset>
+</form>
 
-    <script type="text/javascript">
-        $(function() {
-            var jasmineEnv = jasmine.getEnv();
-            jasmineEnv.updateInterval = 1000;
+<script type="text/javascript">
+    $(function() {
+    var jasmineEnv = jasmine.getEnv();
+    jasmineEnv.updateInterval = 1000;
 
-            var htmlReporter = new jasmine.HtmlReporter();
+    var htmlReporter = new jasmine.HtmlReporter();
 
-            jasmineEnv.addReporter(htmlReporter);
+    jasmineEnv.addReporter(htmlReporter);
 
-            jasmineEnv.specFilter = function(spec) {
-                return htmlReporter.specFilter(spec);
-            };
+    jasmineEnv.specFilter = function(spec) {
+    return htmlReporter.specFilter(spec);
+    };
 
-            jasmineEnv.execute();
-        });
-    </script>
+    jasmineEnv.execute();
+    });
+</script>
 
-    <!-- include spec files here... -->
-    <script type="text/javascript" src="./pasting-spec.js"></script>
+<!-- include spec files here... -->
+<script type="text/javascript" src="./pasting-spec.js"></script>
 
 </body>
 </html>

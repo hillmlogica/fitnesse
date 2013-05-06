@@ -11,12 +11,12 @@ import fitnesse.testutil.FitNesseUtil;
 import fitnesse.wiki.WikiPage;
 
 public class FitnesseFixtureContext {
-  public static WikiPage root;
-  public static WikiPage page;
-  public static Response response;
-  public static MockResponseSender sender;
-  public static String baseDir = FitNesseUtil.base;
-  public static Authenticator authenticator;
-  public static FitNesseContext context;
-  public static FitNesse fitnesse;
+    public static WikiPage root;
+    public static WikiPage page;
+    public static Response response;
+    public static MockResponseSender sender;
+    public static String baseDir = FitNesseUtil.base;
+    public static Authenticator authenticator;
+    public static FitNesseContext context;
+    public static FitNesse fitnesse;
 }

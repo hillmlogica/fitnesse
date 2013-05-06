@@ -1,22 +1,21 @@
 package fitnesse.wikitext;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import fitnesse.slim.protocol.SlimDeserializer;
-
 import fitnesse.slim.protocol.SlimSerializer;
-
 import fitnesse.wiki.WikiPage;
 import fitnesse.wikitext.parser.*;
 import fitnesse.wikitext.test.TestRoot;
 import org.junit.Test;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import static org.junit.Assert.assertEquals;
 
 public class PerformanceTest {
     private String tablePageContent = "";
     private String definePageContent = "";
+
     public PerformanceTest() {
         StringBuilder table = new StringBuilder();
         StringBuilder define = new StringBuilder();
@@ -45,26 +44,29 @@ public class PerformanceTest {
         Symbol list = Parser.make(new ParsingPage(new WikiSourcePage(page)), input).parse();
         System.out.println(System.currentTimeMillis() - start);
         start = System.currentTimeMillis();
-        /*String result =*/ new HtmlTranslator(new WikiSourcePage(page), new ParsingPage(new WikiSourcePage(page))).translateTree(list);
+        /*String result =*/
+        new HtmlTranslator(new WikiSourcePage(page), new ParsingPage(new WikiSourcePage(page))).translateTree(list);
         System.out.println(System.currentTimeMillis() - start);
         //System.out.println(result);
         assertEquals("done", "done");
     }
 
-    /** For dramatic effect, run in debug mode */
+    /**
+     * For dramatic effect, run in debug mode
+     */
     @Test
     public void listDeserializationTest() {
-      List<Object> objects = new ArrayList<Object>();
-      for (int i = 0; i < 10000; i++) {
-        objects.add(new String("This is string " + i));
-      }
-      final String serializedList = SlimSerializer.serialize(objects);
+        List<Object> objects = new ArrayList<Object>();
+        for (int i = 0; i < 10000; i++) {
+            objects.add(new String("This is string " + i));
+        }
+        final String serializedList = SlimSerializer.serialize(objects);
 
-      long start = System.currentTimeMillis();
-      List<Object> result = SlimDeserializer.deserialize(serializedList);
-      System.out.println(System.currentTimeMillis() - start);
+        long start = System.currentTimeMillis();
+        List<Object> result = SlimDeserializer.deserialize(serializedList);
+        System.out.println(System.currentTimeMillis() - start);
 
-      assertEquals(objects, result);
+        assertEquals(objects, result);
     }
 
 }

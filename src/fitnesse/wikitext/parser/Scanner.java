@@ -14,14 +14,14 @@ public class Scanner {
 
     public Scanner(SourcePage sourcePage, String input) {
         this(
-            new TextMaker(
-                new VariableSource() {
-                        public Maybe<String> findVariable(String name) {
-                            return Maybe.noString;
-                        }
-                },
-                sourcePage),
-            input);
+                new TextMaker(
+                        new VariableSource() {
+                            public Maybe<String> findVariable(String name) {
+                                return Maybe.noString;
+                            }
+                        },
+                        sourcePage),
+                input);
     }
 
     public Scanner(TextMaker textMaker, String input) {
@@ -35,16 +35,27 @@ public class Scanner {
         copy(other);
     }
 
-    public int getOffset() { return next; }
-    public void markStart() { input.markStart(next); }
-    public boolean isEnd() { return symbols.isEnd(); }
-    public Symbol getCurrent() { return symbols.get(0); }
+    public int getOffset() {
+        return next;
+    }
+
+    public void markStart() {
+        input.markStart(next);
+    }
+
+    public boolean isEnd() {
+        return symbols.isEnd();
+    }
+
+    public Symbol getCurrent() {
+        return symbols.get(0);
+    }
 
     public Maybe<String> stringFromStart(int start) {
         int end = getOffset() - getCurrent().getContent().length();
         return start <= end
-            ? new Maybe<String>(input.rawSubstring(start, end))
-            : Maybe.noString;
+                ? new Maybe<String>(input.rawSubstring(start, end))
+                : Maybe.noString;
     }
 
     public void copy(Scanner other) {
@@ -120,6 +131,7 @@ public class Scanner {
     private class Step {
         public Symbol token;
         public int nextPosition;
+
         public Step(Symbol token, int nextPosition) {
             this.token = token;
             this.nextPosition = nextPosition;

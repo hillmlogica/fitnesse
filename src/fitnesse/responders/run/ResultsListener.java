@@ -15,23 +15,23 @@ import java.io.IOException;
 
 public interface ResultsListener {
 
-  public void allTestingComplete(TimeMeasurement totalTimeMeasurement) throws IOException;
-  
-  public void setExecutionLogAndTrackingId(String stopResponderId, CompositeExecutionLog log);
+    public void allTestingComplete(TimeMeasurement totalTimeMeasurement) throws IOException;
 
-  public void announceNumberTestsToRun(int testsToRun);
+    public void setExecutionLogAndTrackingId(String stopResponderId, CompositeExecutionLog log);
 
-  public void testSystemStarted(TestSystem testSystem, String testSystemName, String testRunner);
+    public void announceNumberTestsToRun(int testsToRun);
 
-  public void newTestStarted(TestPage test, TimeMeasurement timeMeasurement) throws IOException;
+    public void testSystemStarted(TestSystem testSystem, String testSystemName, String testRunner);
 
-  public void testOutputChunk(String output) throws IOException;
+    public void newTestStarted(TestPage test, TimeMeasurement timeMeasurement) throws IOException;
 
-  public void testAssertionVerified(Assertion assertion, TestResult testResult);
+    public void testOutputChunk(String output) throws IOException;
 
-  public void testExceptionOccurred(Assertion assertion, ExceptionResult exceptionResult);
+    public void testAssertionVerified(Assertion assertion, TestResult testResult);
 
-  public void testComplete(TestPage test, TestSummary testSummary, TimeMeasurement timeMeasurement) throws IOException;
-  
-  public void errorOccured();
+    public void testExceptionOccurred(Assertion assertion, ExceptionResult exceptionResult);
+
+    public void testComplete(TestPage test, TestSummary testSummary, TimeMeasurement timeMeasurement) throws IOException;
+
+    public void errorOccured();
 }

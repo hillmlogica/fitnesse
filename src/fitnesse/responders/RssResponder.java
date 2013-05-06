@@ -27,222 +27,222 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class RssResponder implements SecureResponder {
-  private RssFeed feed;
+    private RssFeed feed;
 
-  public Response makeResponse(FitNesseContext context, Request request) throws Exception {
-    WikiPage contextPage = getContextPage(context, request.getResource());
-    WikiPage recentChangesPage = context.root.getChildPage("RecentChanges");
+    public Response makeResponse(FitNesseContext context, Request request) throws Exception {
+        WikiPage contextPage = getContextPage(context, request.getResource());
+        WikiPage recentChangesPage = context.root.getChildPage("RecentChanges");
 
-    feed = new RssFeed(getConfiguredRssLinkPrefixFrom(contextPage));
+        feed = new RssFeed(getConfiguredRssLinkPrefixFrom(contextPage));
 
-    buildItemReportIfRecentChangesExists(recentChangesPage, request.getResource());
+        buildItemReportIfRecentChangesExists(recentChangesPage, request.getResource());
 
-    return feed.asResponse();
-  }
-
-  private WikiPage getContextPage(FitNesseContext context, String resource) throws Exception {
-    PageCrawler pageCrawler = context.root.getPageCrawler();
-    WikiPagePath resourcePath = PathParser.parse(resource);
-    return pageCrawler.getPage(context.root, resourcePath);
-  }
-
-  protected void buildItemReportIfRecentChangesExists(WikiPage recentChangesPage, String resource)
-      throws Exception {
-    if (recentChangesPage != null)
-      buildItemReport(resource, new RecentChangesPage(recentChangesPage));
-  }
-
-  private void buildItemReport(String resource, RecentChangesPage recentChangesPage)
-      throws Exception {
-    for (RecentChangesPageEntry line : recentChangesPage.getLinesApplicableTo(resource)) {
-      feed.addItem(line);
-    }
-  }
-
-  private String getConfiguredRssLinkPrefixFrom(WikiPage contextPage) throws Exception {
-    if (contextPage == null) {
-      return null;
-    }
-    PageData data = contextPage.getData();
-    return data.getVariable("RSS_PREFIX");
-  }
-
-  protected static boolean isNeitherNullNorBlank(String string) {
-    return string != null && string.length() > 0;
-  }
-
-  public SecureOperation getSecureOperation() {
-    return new SecureReadOperation();
-  }
-
-  static class RssFeed {
-    private Element channelElement;
-    private final Document document;
-    private final LinkPrefixBuilder linkPrefixBuilder;
-
-    public RssFeed(String configuredLinkPrefix) throws Exception {
-      document = buildDocumentWithRssHeader();
-      linkPrefixBuilder = new LinkPrefixBuilder(configuredLinkPrefix);
+        return feed.asResponse();
     }
 
-    public void addItem(RecentChangesPageEntry line) throws Exception {
-      Map<String, String> itemProperties = line.getItemProperties();
-      Element itemElement = document.createElement("item");
-      makeNodes(document, itemElement, itemProperties);
-      linkPrefixBuilder.buildLink(document, itemElement, itemProperties.get("path"));
-
-      String description = makeDescription(itemProperties);
-      XmlUtil.addTextNode(document, itemElement, "description", description);
-      channelElement.appendChild(itemElement);
+    private WikiPage getContextPage(FitNesseContext context, String resource) throws Exception {
+        PageCrawler pageCrawler = context.root.getPageCrawler();
+        WikiPagePath resourcePath = PathParser.parse(resource);
+        return pageCrawler.getPage(context.root, resourcePath);
     }
 
-    public SimpleResponse asResponse() throws Exception {
-      byte[] bytes = toByteArray(document);
-      SimpleResponse response = new SimpleResponse();
-      response.setContent(bytes);
-      response.setContentType("text/xml");
-      return response;
+    protected void buildItemReportIfRecentChangesExists(WikiPage recentChangesPage, String resource)
+            throws Exception {
+        if (recentChangesPage != null)
+            buildItemReport(resource, new RecentChangesPage(recentChangesPage));
     }
 
-    private static String makeDescription(Map<String, String> itemProperties) {
-      String description;
-      String authoredBy = "";
-      if (isNeitherNullNorBlank(itemProperties.get("author")))
-        authoredBy = itemProperties.get("author") + ":";
-      description = authoredBy + itemProperties.get("pubDate");
-      return description;
+    private void buildItemReport(String resource, RecentChangesPage recentChangesPage)
+            throws Exception {
+        for (RecentChangesPageEntry line : recentChangesPage.getLinesApplicableTo(resource)) {
+            feed.addItem(line);
+        }
     }
 
-    private static void makeNodes(Document rssDocument, Element itemElement,
-        Map<String, String> itemProperties) {
-      XmlUtil.addTextNode(rssDocument, itemElement, "title", itemProperties.get("path"));
-      XmlUtil.addTextNode(rssDocument, itemElement, "author", itemProperties.get("author"));
-      XmlUtil.addTextNode(rssDocument, itemElement, "pubDate", itemProperties.get("pubDate"));
+    private String getConfiguredRssLinkPrefixFrom(WikiPage contextPage) throws Exception {
+        if (contextPage == null) {
+            return null;
+        }
+        PageData data = contextPage.getData();
+        return data.getVariable("RSS_PREFIX");
     }
 
-    private Document buildDocumentWithRssHeader() throws Exception {
-      Document rssDocument = XmlUtil.newDocument();
-      Element rssDocumentElement = rssDocument.createElement("rss");
-      rssDocument.appendChild(rssDocumentElement);
-      channelElement = rssDocument.createElement("channel");
-      rssDocumentElement.setAttribute("version", "2.0");
-      rssDocumentElement.appendChild(channelElement);
-      XmlUtil.addTextNode(rssDocument, channelElement, "title", "FitNesse:");
-
-      return rssDocument;
+    protected static boolean isNeitherNullNorBlank(String string) {
+        return string != null && string.length() > 0;
     }
 
-    private static byte[] toByteArray(Document rssDocument) throws Exception {
-      ByteArrayOutputStream os = new ByteArrayOutputStream();
-      XmlWriter writer = new XmlWriter(os);
-      writer.write(rssDocument);
-      writer.close();
-      return os.toByteArray();
+    public SecureOperation getSecureOperation() {
+        return new SecureReadOperation();
     }
 
-    private Document buildRssHeader() {
-      Document rssDocument = XmlUtil.newDocument();
-      Element rssDocumentElement = rssDocument.createElement("rss");
-      rssDocument.appendChild(rssDocumentElement);
-      channelElement = rssDocument.createElement("channel");
-      rssDocumentElement.setAttribute("version", "2.0");
-      rssDocumentElement.appendChild(channelElement);
-      return rssDocument;
-    }
-  }
+    static class RssFeed {
+        private Element channelElement;
+        private final Document document;
+        private final LinkPrefixBuilder linkPrefixBuilder;
 
-  static class RecentChangesPage {
-    private WikiPage page;
+        public RssFeed(String configuredLinkPrefix) throws Exception {
+            document = buildDocumentWithRssHeader();
+            linkPrefixBuilder = new LinkPrefixBuilder(configuredLinkPrefix);
+        }
 
-    RecentChangesPage(WikiPage page) {
-      this.page = page;
-    }
+        public void addItem(RecentChangesPageEntry line) throws Exception {
+            Map<String, String> itemProperties = line.getItemProperties();
+            Element itemElement = document.createElement("item");
+            makeNodes(document, itemElement, itemProperties);
+            linkPrefixBuilder.buildLink(document, itemElement, itemProperties.get("path"));
 
-    public List<RecentChangesPageEntry> getLinesApplicableTo(String resource) throws Exception {
-      List<RecentChangesPageEntry> filteredLines = new ArrayList<RecentChangesPageEntry>();
-      for (RecentChangesPageEntry line : getLines()) {
-        if (line.relatesTo(resource))
-          filteredLines.add(line);
-      }
-      return filteredLines;
-    }
+            String description = makeDescription(itemProperties);
+            XmlUtil.addTextNode(document, itemElement, "description", description);
+            channelElement.appendChild(itemElement);
+        }
 
-    private List<RecentChangesPageEntry> getLines() throws Exception {
-      List<RecentChangesPageEntry> lines = new ArrayList<RecentChangesPageEntry>();
-      for (String lineString : getPageContentLines()) {
-        lines.add(new RecentChangesPageEntry(lineString));
-      }
-      return lines;
-    }
+        public SimpleResponse asResponse() throws Exception {
+            byte[] bytes = toByteArray(document);
+            SimpleResponse response = new SimpleResponse();
+            response.setContent(bytes);
+            response.setContentType("text/xml");
+            return response;
+        }
 
-    private String[] getPageContentLines() throws Exception {
-      PageData data = page.getData();
-      String content = data.getContent();
-      return content.split("\n");
-    }
-  }
+        private static String makeDescription(Map<String, String> itemProperties) {
+            String description;
+            String authoredBy = "";
+            if (isNeitherNullNorBlank(itemProperties.get("author")))
+                authoredBy = itemProperties.get("author") + ":";
+            description = authoredBy + itemProperties.get("pubDate");
+            return description;
+        }
 
-  static class RecentChangesPageEntry {
-    private String line;
+        private static void makeNodes(Document rssDocument, Element itemElement,
+                                      Map<String, String> itemProperties) {
+            XmlUtil.addTextNode(rssDocument, itemElement, "title", itemProperties.get("path"));
+            XmlUtil.addTextNode(rssDocument, itemElement, "author", itemProperties.get("author"));
+            XmlUtil.addTextNode(rssDocument, itemElement, "pubDate", itemProperties.get("pubDate"));
+        }
 
-    RecentChangesPageEntry(String line) {
-      this.line = line;
-    }
+        private Document buildDocumentWithRssHeader() throws Exception {
+            Document rssDocument = XmlUtil.newDocument();
+            Element rssDocumentElement = rssDocument.createElement("rss");
+            rssDocument.appendChild(rssDocumentElement);
+            channelElement = rssDocument.createElement("channel");
+            rssDocumentElement.setAttribute("version", "2.0");
+            rssDocumentElement.appendChild(channelElement);
+            XmlUtil.addTextNode(rssDocument, channelElement, "title", "FitNesse:");
 
-    public Map<String, String> getItemProperties() {
-      String[] fields = convertTableLineToStrings();
-      Map<String, String> itemProperties = new HashMap<String, String>();
-      itemProperties.put("path", fields[1]);
-      itemProperties.put("author", fields[2]);
-      itemProperties.put("pubDate", convertDateFormat(fields[3]));
-      return itemProperties;
-    }
+            return rssDocument;
+        }
 
-    protected boolean relatesTo(String resource) {
-      String path = getItemProperties().get("path");
-      boolean blank = isNeitherNullNorBlank(resource);
-      return !blank || path.startsWith(resource);
-    }
+        private static byte[] toByteArray(Document rssDocument) throws Exception {
+            ByteArrayOutputStream os = new ByteArrayOutputStream();
+            XmlWriter writer = new XmlWriter(os);
+            writer.write(rssDocument);
+            writer.close();
+            return os.toByteArray();
+        }
 
-    private String[] convertTableLineToStrings() {
-      return line.split("\\|");
-    }
-
-    static String convertDateFormat(String dateIn) {
-      // format matched kk:mm:ss EEE, MMM dd, yyyy
-      Pattern timePattern = Pattern.compile("\\d*:\\d*:\\d* \\w*, \\w* \\d*, \\d*");
-      Matcher m = timePattern.matcher(dateIn);
-      if (m.matches())
-        return (new SimpleDateFormat(FitNesseContext.rfcCompliantDateFormat))
-            .format((new SimpleDateFormat(FitNesseContext.recentChangesDateFormat)).parse(dateIn,
-                new ParsePosition(0)));
-      else
-        return dateIn;
-    }
-  }
-
-  static class LinkPrefixBuilder {
-    private String preconfiguredPrefix;
-
-    LinkPrefixBuilder(String preconfiguredPrefix) {
-      this.preconfiguredPrefix = preconfiguredPrefix;
+        private Document buildRssHeader() {
+            Document rssDocument = XmlUtil.newDocument();
+            Element rssDocumentElement = rssDocument.createElement("rss");
+            rssDocument.appendChild(rssDocumentElement);
+            channelElement = rssDocument.createElement("channel");
+            rssDocumentElement.setAttribute("version", "2.0");
+            rssDocumentElement.appendChild(channelElement);
+            return rssDocument;
+        }
     }
 
-    public void buildLink(Document rssDocument, Element itemElement, String pageName)
-        throws Exception {
-      String prefix = getRssLinkPrefix();
-      String link = prefix + pageName;
+    static class RecentChangesPage {
+        private WikiPage page;
 
-      XmlUtil.addTextNode(rssDocument, itemElement, "link", link);
+        RecentChangesPage(WikiPage page) {
+            this.page = page;
+        }
+
+        public List<RecentChangesPageEntry> getLinesApplicableTo(String resource) throws Exception {
+            List<RecentChangesPageEntry> filteredLines = new ArrayList<RecentChangesPageEntry>();
+            for (RecentChangesPageEntry line : getLines()) {
+                if (line.relatesTo(resource))
+                    filteredLines.add(line);
+            }
+            return filteredLines;
+        }
+
+        private List<RecentChangesPageEntry> getLines() throws Exception {
+            List<RecentChangesPageEntry> lines = new ArrayList<RecentChangesPageEntry>();
+            for (String lineString : getPageContentLines()) {
+                lines.add(new RecentChangesPageEntry(lineString));
+            }
+            return lines;
+        }
+
+        private String[] getPageContentLines() throws Exception {
+            PageData data = page.getData();
+            String content = data.getContent();
+            return content.split("\n");
+        }
     }
 
-    private static String hostnameRssLinkPrefix() throws UnknownHostException {
-      String hostName = java.net.InetAddress.getLocalHost().getHostName();
-      return "http://" + hostName + "/";
+    static class RecentChangesPageEntry {
+        private String line;
+
+        RecentChangesPageEntry(String line) {
+            this.line = line;
+        }
+
+        public Map<String, String> getItemProperties() {
+            String[] fields = convertTableLineToStrings();
+            Map<String, String> itemProperties = new HashMap<String, String>();
+            itemProperties.put("path", fields[1]);
+            itemProperties.put("author", fields[2]);
+            itemProperties.put("pubDate", convertDateFormat(fields[3]));
+            return itemProperties;
+        }
+
+        protected boolean relatesTo(String resource) {
+            String path = getItemProperties().get("path");
+            boolean blank = isNeitherNullNorBlank(resource);
+            return !blank || path.startsWith(resource);
+        }
+
+        private String[] convertTableLineToStrings() {
+            return line.split("\\|");
+        }
+
+        static String convertDateFormat(String dateIn) {
+            // format matched kk:mm:ss EEE, MMM dd, yyyy
+            Pattern timePattern = Pattern.compile("\\d*:\\d*:\\d* \\w*, \\w* \\d*, \\d*");
+            Matcher m = timePattern.matcher(dateIn);
+            if (m.matches())
+                return (new SimpleDateFormat(FitNesseContext.rfcCompliantDateFormat))
+                        .format((new SimpleDateFormat(FitNesseContext.recentChangesDateFormat)).parse(dateIn,
+                                new ParsePosition(0)));
+            else
+                return dateIn;
+        }
     }
 
-    private String getRssLinkPrefix() throws Exception {
-      return preconfiguredPrefix == null ? hostnameRssLinkPrefix() : preconfiguredPrefix;
+    static class LinkPrefixBuilder {
+        private String preconfiguredPrefix;
+
+        LinkPrefixBuilder(String preconfiguredPrefix) {
+            this.preconfiguredPrefix = preconfiguredPrefix;
+        }
+
+        public void buildLink(Document rssDocument, Element itemElement, String pageName)
+                throws Exception {
+            String prefix = getRssLinkPrefix();
+            String link = prefix + pageName;
+
+            XmlUtil.addTextNode(rssDocument, itemElement, "link", link);
+        }
+
+        private static String hostnameRssLinkPrefix() throws UnknownHostException {
+            String hostName = java.net.InetAddress.getLocalHost().getHostName();
+            return "http://" + hostName + "/";
+        }
+
+        private String getRssLinkPrefix() throws Exception {
+            return preconfiguredPrefix == null ? hostnameRssLinkPrefix() : preconfiguredPrefix;
+        }
     }
-  }
 }

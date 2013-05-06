@@ -7,13 +7,13 @@ import fitnesse.components.WhereUsedPageFinder;
 
 public class WhereUsedResponder extends ResultResponder {
 
-  @Override
-  public void traverse(TraversalListener<Object> observer) {
-    new WhereUsedPageFinder(page, observer).search(root);
-  }
+    @Override
+    public void traverse(TraversalListener<Object> observer) {
+        new WhereUsedPageFinder(page, observer).search(root);
+    }
 
-  protected String getTitle() {
-    return "Where Used Results";
-  }
+    protected String getTitle() {
+        return "Where Used Results";
+    }
 
 }

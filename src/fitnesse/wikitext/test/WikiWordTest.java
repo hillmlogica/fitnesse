@@ -37,11 +37,11 @@ public class WikiWordTest {
         ParserTestHelper.assertTranslatesTo(pageOne, ">PageOne2", wikiLink("PageOne.PageOne2", "&gt;PageOne2"));
         ParserTestHelper.assertTranslatesTo(pageOneTwoThree, "<PageOne", wikiLink("PageOne", "&lt;PageOne"));
     }
-    
+
     @Test
     public void translatesMissingWikiWords() throws Exception {
         ParserTestHelper.assertTranslatesTo(pageOne, "PageNine",
-          "PageNine<a title=\"create page\" href=\"PageNine?edit&amp;nonExistent=true\">[?]</a>");
+                "PageNine<a title=\"create page\" href=\"PageNine?edit&amp;nonExistent=true\">[?]</a>");
     }
 
     @Test
@@ -52,38 +52,38 @@ public class WikiWordTest {
 
     @Test
     public void testIsSingleWikiWord() throws Exception {
-      assertTrue(WikiWordPath.isSingleWikiWord("WikiWord"));
-      assertFalse(WikiWordPath.isSingleWikiWord("notWikiWord"));
-      assertFalse(WikiWordPath.isSingleWikiWord("NotSingle.WikiWord"));
-      assertFalse(WikiWordPath.isSingleWikiWord("WikiW\u00F0rd"));
+        assertTrue(WikiWordPath.isSingleWikiWord("WikiWord"));
+        assertFalse(WikiWordPath.isSingleWikiWord("notWikiWord"));
+        assertFalse(WikiWordPath.isSingleWikiWord("NotSingle.WikiWord"));
+        assertFalse(WikiWordPath.isSingleWikiWord("WikiW\u00F0rd"));
     }
 
     @Test
     public void testIsWikiWord() throws Exception {
-       assertEquals(true, WikiWordPath.isWikiWord("HelloThere"));
-       assertEquals(false, WikiWordPath.isWikiWord("not.a.wiki.word"));
+        assertEquals(true, WikiWordPath.isWikiWord("HelloThere"));
+        assertEquals(false, WikiWordPath.isWikiWord("not.a.wiki.word"));
     }
 
     @Test
     public void testBackwardSearchWidget() throws Exception {
-      //todo: use TestRoot
-      WikiPage top = addPage(root2, "TopPage");
-      WikiPage target = addPage(top, "TargetPage");
-      WikiPage referer = addPage(target, "ReferingPage");
-      @SuppressWarnings("unused")
-      WikiPage subTarget = addPage(target, "SubTarget");
+        //todo: use TestRoot
+        WikiPage top = addPage(root2, "TopPage");
+        WikiPage target = addPage(top, "TargetPage");
+        WikiPage referer = addPage(target, "ReferingPage");
+        @SuppressWarnings("unused")
+        WikiPage subTarget = addPage(target, "SubTarget");
 
-      String actual = WikiWordBuilder.expandPrefix(referer, "<TargetPage.SubTarget");
-      assertEquals(".TopPage.TargetPage.SubTarget", actual);
+        String actual = WikiWordBuilder.expandPrefix(referer, "<TargetPage.SubTarget");
+        assertEquals(".TopPage.TargetPage.SubTarget", actual);
 
-      actual = WikiWordBuilder.expandPrefix(referer, "<NoSuchPage");
-      assertEquals(".NoSuchPage", actual);
+        actual = WikiWordBuilder.expandPrefix(referer, "<NoSuchPage");
+        assertEquals(".NoSuchPage", actual);
 
-      PageData data = referer.getData();
-      data.setContent("<TargetPage.SubTarget");
-      referer.commit(data);
-      String renderedLink = referer.getData().getHtml();
-      assertEquals("<a href=\"TopPage.TargetPage.SubTarget\">&lt;TargetPage.SubTarget</a>", renderedLink);
+        PageData data = referer.getData();
+        data.setContent("<TargetPage.SubTarget");
+        referer.commit(data);
+        String renderedLink = referer.getData().getHtml();
+        assertEquals("<a href=\"TopPage.TargetPage.SubTarget\">&lt;TargetPage.SubTarget</a>", renderedLink);
     }
 
     private WikiPage addPage(WikiPage parent, String childName) throws Exception {

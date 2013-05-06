@@ -2,44 +2,44 @@
 // Released under the terms of the CPL Common Public License version 1.0.
 package fitnesse.runner;
 
-import java.io.InputStream;
-
-import util.RegexTestCase;
-import util.StreamReader;
 import fitnesse.FitNesseContext;
 import fitnesse.testsystems.TestSummary;
 import fitnesse.testutil.FitNesseUtil;
+import util.RegexTestCase;
+import util.StreamReader;
+
+import java.io.InputStream;
 
 public class HtmlResultFormatterTest extends RegexTestCase {
-  private HtmlResultFormatter formatter;
+    private HtmlResultFormatter formatter;
 
-  public void setUp() throws Exception {
-    FitNesseContext context = FitNesseUtil.makeTestContext(null);
-    formatter = new HtmlResultFormatter(context, "somehost.com:8080", "FitNesse");
-  }
+    public void setUp() throws Exception {
+        FitNesseContext context = FitNesseUtil.makeTestContext(null);
+        formatter = new HtmlResultFormatter(context, "somehost.com:8080", "FitNesse");
+    }
 
-  public void testUsage() throws Exception {
-    formatter.acceptResult(new PageResult("PageOne", new TestSummary(1, 0, 0, 0), "page one"));
-    formatter.acceptResult(new PageResult("PageTwo", new TestSummary(0, 1, 0, 0), "page two"));
-    formatter.acceptFinalCount(new TestSummary(1, 1, 0, 0));
+    public void testUsage() throws Exception {
+        formatter.acceptResult(new PageResult("PageOne", new TestSummary(1, 0, 0, 0), "page one"));
+        formatter.acceptResult(new PageResult("PageTwo", new TestSummary(0, 1, 0, 0), "page two"));
+        formatter.acceptFinalCount(new TestSummary(1, 1, 0, 0));
 
-    String html = getHtml();
+        String html = getHtml();
 
-    assertSubString("PageOne", html);
-    assertSubString("page one", html);
-    assertSubString("pass", html);
+        assertSubString("PageOne", html);
+        assertSubString("page one", html);
+        assertSubString("pass", html);
 
-    assertSubString("PageTwo", html);
-    assertSubString("page two", html);
-    assertSubString("fail", html);
-  }
+        assertSubString("PageTwo", html);
+        assertSubString("page two", html);
+        assertSubString("fail", html);
+    }
 
-  private String getHtml() throws Exception {
-    InputStream input = formatter.getResultStream();
-    assertNotNull(input);
+    private String getHtml() throws Exception {
+        InputStream input = formatter.getResultStream();
+        assertNotNull(input);
 
-    int bytes = formatter.getByteCount();
-    String html = new StreamReader(input).read(bytes);
-    return html;
-  }
+        int bytes = formatter.getByteCount();
+        String html = new StreamReader(input).read(bytes);
+        return html;
+    }
 }

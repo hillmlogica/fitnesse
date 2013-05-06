@@ -2,60 +2,60 @@
 // Released under the terms of the CPL Common Public License version 1.0.
 package fitnesse.http;
 
+import fitnesse.util.MockSocket;
+
 import java.io.IOException;
 import java.io.OutputStream;
 import java.io.PipedInputStream;
 import java.net.Socket;
 
-import fitnesse.util.MockSocket;
-
 public class MockResponseSender implements ResponseSender {
-  public MockSocket socket;
-  protected boolean closed;
+    public MockSocket socket;
+    protected boolean closed;
 
-  public MockResponseSender() {
-    socket = new MockSocket("Mock");
-  }
-
-  public void send(byte[] bytes) {
-    try {
-      socket.getOutputStream().write(bytes);
-    } catch (IOException e) {
-      throw new RuntimeException(e);
+    public MockResponseSender() {
+        socket = new MockSocket("Mock");
     }
-  }
 
-  @Override
-  public void close() {
-    closed = true;
-  }
+    public void send(byte[] bytes) {
+        try {
+            socket.getOutputStream().write(bytes);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
 
-  @Override
-  public Socket getSocket() {
-    return socket;
-  }
+    @Override
+    public void close() {
+        closed = true;
+    }
 
-  public String sentData() {
-    return socket.getOutput();
-  }
+    @Override
+    public Socket getSocket() {
+        return socket;
+    }
 
-  public void doSending(Response response) throws IOException {
-    response.sendTo(this);
-    assert closed == true;
-  }
-
-  public boolean isClosed() {
-    return closed;
-  }
-
-  public static class OutputStreamSender extends MockResponseSender {
-    public OutputStreamSender(OutputStream out) {
-      socket = new MockSocket(new PipedInputStream(), out);
+    public String sentData() {
+        return socket.getOutput();
     }
 
     public void doSending(Response response) throws IOException {
-      response.sendTo(this);
-      assert closed == true;
+        response.sendTo(this);
+        assert closed == true;
     }
-  }
+
+    public boolean isClosed() {
+        return closed;
+    }
+
+    public static class OutputStreamSender extends MockResponseSender {
+        public OutputStreamSender(OutputStream out) {
+            socket = new MockSocket(new PipedInputStream(), out);
+        }
+
+        public void doSending(Response response) throws IOException {
+            response.sendTo(this);
+            assert closed == true;
+        }
+    }
 }

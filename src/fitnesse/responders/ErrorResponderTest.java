@@ -2,39 +2,39 @@
 // Released under the terms of the CPL Common Public License version 1.0.
 package fitnesse.responders;
 
-import util.RegexTestCase;
 import fitnesse.FitNesseContext;
 import fitnesse.Responder;
 import fitnesse.http.MockRequest;
 import fitnesse.http.SimpleResponse;
 import fitnesse.testutil.FitNesseUtil;
+import util.RegexTestCase;
 
 public class ErrorResponderTest extends RegexTestCase {
 
-  private FitNesseContext context;
+    private FitNesseContext context;
 
-  public void setUp() {
-    context = FitNesseUtil.makeTestContext();
-  }
+    public void setUp() {
+        context = FitNesseUtil.makeTestContext();
+    }
 
-  public void testResponse() throws Exception {
-    Responder responder = new ErrorResponder(new Exception("some error message"));
-    SimpleResponse response = (SimpleResponse) responder.makeResponse(context, new MockRequest());
+    public void testResponse() throws Exception {
+        Responder responder = new ErrorResponder(new Exception("some error message"));
+        SimpleResponse response = (SimpleResponse) responder.makeResponse(context, new MockRequest());
 
-    assertEquals(400, response.getStatus());
+        assertEquals(400, response.getStatus());
 
-    String body = response.getContent();
+        String body = response.getContent();
 
-    assertHasRegexp("<html>", body);
-    assertHasRegexp("<body", body);
-    assertHasRegexp("java.lang.Exception: some error message", body);
-  }
+        assertHasRegexp("<html>", body);
+        assertHasRegexp("<body", body);
+        assertHasRegexp("java.lang.Exception: some error message", body);
+    }
 
-  public void testWithMessage() throws Exception {
-    Responder responder = new ErrorResponder("error Message");
-    SimpleResponse response = (SimpleResponse) responder.makeResponse(context, new MockRequest());
-    String body = response.getContent();
+    public void testWithMessage() throws Exception {
+        Responder responder = new ErrorResponder("error Message");
+        SimpleResponse response = (SimpleResponse) responder.makeResponse(context, new MockRequest());
+        String body = response.getContent();
 
-    assertSubString("error Message", body);
-  }
+        assertSubString("error Message", body);
+    }
 }

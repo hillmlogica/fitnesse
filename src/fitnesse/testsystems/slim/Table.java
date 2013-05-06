@@ -2,39 +2,39 @@
 // Released under the terms of the CPL Common Public License version 1.0.
 package fitnesse.testsystems.slim;
 
-import java.util.List;
-
 import fitnesse.testsystems.slim.results.ExceptionResult;
 import fitnesse.testsystems.slim.results.TestResult;
 import fitnesse.testsystems.slim.tables.SyntaxError;
 
+import java.util.List;
+
 public interface Table {
-  String getCellContents(int col, int row);
+    String getCellContents(int col, int row);
 
-  int getRowCount();
+    int getRowCount();
 
-  int getColumnCountInRow(int row);
+    int getColumnCountInRow(int row);
 
-  void substitute(int col, int row, String content);
+    void substitute(int col, int row, String content);
 
-  int addRow(List<String> list);
+    int addRow(List<String> list);
 
-  void addColumnToRow(int row, String content);
+    void addColumnToRow(int row, String content);
 
-  void appendChildTable(int row, Table table);
+    void appendChildTable(int row, Table table);
 
-  void updateContent(int row, TestResult testResult);
+    void updateContent(int row, TestResult testResult);
 
-  void updateContent(int col, int row, TestResult testResult);
+    void updateContent(int col, int row, TestResult testResult);
 
-  void updateContent(int col, int row, ExceptionResult exceptionResult);
+    void updateContent(int col, int row, ExceptionResult exceptionResult);
 
-  Table asTemplate(CellContentSubstitution substitution) throws SyntaxError;
+    Table asTemplate(CellContentSubstitution substitution) throws SyntaxError;
 
-  // Mainly for IDE navigation
-  String toString();
+    // Mainly for IDE navigation
+    String toString();
 
-  interface CellContentSubstitution {
-    String substitute(int col, int row, String content) throws SyntaxError;
-  }
+    interface CellContentSubstitution {
+        String substitute(int col, int row, String content) throws SyntaxError;
+    }
 }

@@ -6,7 +6,7 @@ import java.io.IOException;
 import java.io.InputStream;
 
 public interface ResultFormatter extends ResultHandler {
-  int getByteCount() throws IOException;
+    int getByteCount() throws IOException;
 
-  InputStream getResultStream() throws IOException;
+    InputStream getResultStream() throws IOException;
 }

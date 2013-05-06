@@ -12,20 +12,20 @@ import java.io.IOException;
 import java.io.Writer;
 
 public class EscapeDirective extends Directive {
-  @Override
-  public String getName() {
-    return "escape";
-  }
+    @Override
+    public String getName() {
+        return "escape";
+    }
 
-  @Override
-  public int getType() {
-    return LINE;
-  }
+    @Override
+    public int getType() {
+        return LINE;
+    }
 
-  @Override
-  public boolean render(InternalContextAdapter context, Writer writer, Node node) throws IOException, ResourceNotFoundException, ParseErrorException, MethodInvocationException {
-    String text = Utils.escapeHTML(String.valueOf(node.jjtGetChild(0).value(context)));
-    writer.write(text);
-    return true;
-  }
+    @Override
+    public boolean render(InternalContextAdapter context, Writer writer, Node node) throws IOException, ResourceNotFoundException, ParseErrorException, MethodInvocationException {
+        String text = Utils.escapeHTML(String.valueOf(node.jjtGetChild(0).value(context)));
+        writer.write(text);
+        return true;
+    }
 }

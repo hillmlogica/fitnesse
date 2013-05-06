@@ -1,21 +1,23 @@
 package fitnesse.wikitext.parser;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
 
 public class SymbolProvider {
-    public static final SymbolProvider refactoringProvider = new SymbolProvider( new SymbolType[] {
+    public static final SymbolProvider refactoringProvider = new SymbolProvider(new SymbolType[]{
             Alias.symbolType, SymbolType.OpenBracket, SymbolType.CloseBracket, Comment.symbolType, Image.symbolType,
             Literal.symbolType, Preformat.symbolType, Link.symbolType, Path.symbolType, WikiWord.symbolType,
             SymbolType.Newline, SymbolType.Whitespace
     });
 
-    public static final SymbolProvider wikiParsingProvider = new SymbolProvider( new SymbolType[] {
+    public static final SymbolProvider wikiParsingProvider = new SymbolProvider(new SymbolType[]{
             Link.symbolType, new Table(),
-            new HashTable(),  new HeaderLine(), Literal.symbolType, Nesting.symbolType, new Collapsible(),
+            new HashTable(), new HeaderLine(), Literal.symbolType, Nesting.symbolType, new Collapsible(),
             new AnchorName(), new Contents(), SymbolType.CenterLine, new Define(), new Help(),
             new Include(), SymbolType.Meta, SymbolType.NoteLine, Path.symbolType, new PlainTextTable(),
             See.symbolType, SymbolType.Style, new LastModified(), Image.symbolType,
-            new Today(), SymbolType.Delta, 
+            new Today(), SymbolType.Delta,
             new HorizontalRule(), SymbolType.CloseLiteral, SymbolType.Strike,
             Alias.symbolType, SymbolType.UnorderedList, SymbolType.OrderedList, Comment.symbolType, SymbolType.Whitespace, SymbolType.CloseCollapsible,
             SymbolType.Newline, SymbolType.Colon, SymbolType.Comma,
@@ -27,18 +29,18 @@ public class SymbolProvider {
     });
 
     public static final SymbolProvider tableParsingProvider = new SymbolProvider(wikiParsingProvider).add(SymbolType.EndCell);
-    
+
     public static final SymbolProvider aliasLinkProvider = new SymbolProvider(
-            new SymbolType[] {SymbolType.CloseBracket, Evaluator.symbolType, Literal.symbolType, Variable.symbolType});
+            new SymbolType[]{SymbolType.CloseBracket, Evaluator.symbolType, Literal.symbolType, Variable.symbolType});
 
     public static final SymbolProvider linkTargetProvider = new SymbolProvider(
-            new SymbolType[] {Literal.symbolType, Variable.symbolType});
+            new SymbolType[]{Literal.symbolType, Variable.symbolType});
 
-    public static final SymbolProvider pathRuleProvider = new SymbolProvider(new SymbolType[] {
-          Evaluator.symbolType, Literal.symbolType, Variable.symbolType});
+    public static final SymbolProvider pathRuleProvider = new SymbolProvider(new SymbolType[]{
+            Evaluator.symbolType, Literal.symbolType, Variable.symbolType});
 
     public static final SymbolProvider literalTableProvider = new SymbolProvider(
-            new SymbolType[] {SymbolType.EndCell, SymbolType.Newline, Evaluator.symbolType, Literal.symbolType, Variable.symbolType});
+            new SymbolType[]{SymbolType.EndCell, SymbolType.Newline, Evaluator.symbolType, Literal.symbolType, Variable.symbolType});
 
     private static final char defaultMatch = '\0';
 
@@ -56,26 +58,26 @@ public class SymbolProvider {
         addTypes(types);
     }
 
-    public SymbolProvider(SymbolProvider parent)  {
-        this(new SymbolType[] {});
+    public SymbolProvider(SymbolProvider parent) {
+        this(new SymbolType[]{});
         this.parent = parent;
     }
 
-    public SymbolProvider(SymbolType[] types)  {
+    public SymbolProvider(SymbolType[] types) {
         this(Arrays.asList(types));
     }
 
     public void addTypes(Iterable<SymbolType> types) {
-        for (SymbolType symbolType: types) {
+        for (SymbolType symbolType : types) {
             add(symbolType);
         }
     }
-    
+
     public SymbolProvider add(SymbolType symbolType) {
         if (matchesFor(symbolType)) return this;
         symbolTypes.add(symbolType);
-        for (Matcher matcher: symbolType.getWikiMatchers()) {
-            for (char first: matcher.getFirsts()) {
+        for (Matcher matcher : symbolType.getWikiMatchers()) {
+            for (char first : matcher.getFirsts()) {
                 if (!currentDispatch.containsKey(first)) currentDispatch.put(first, new ArrayList<Matchable>());
                 currentDispatch.get(first).add(symbolType);
             }
@@ -95,9 +97,9 @@ public class SymbolProvider {
     public SymbolMatch findMatch(Character startCharacter, SymbolMatcher matcher) {
         if (parent != null) {
             SymbolMatch parentMatch = parent.findMatch(startCharacter, matcher);
-            if (parentMatch.isMatch())  return parentMatch;
+            if (parentMatch.isMatch()) return parentMatch;
         }
-        for (Matchable candidate: getMatchTypes(startCharacter)) {
+        for (Matchable candidate : getMatchTypes(startCharacter)) {
             SymbolMatch match = matcher.makeMatch(candidate);
             if (match.isMatch()) return match;
         }

@@ -5,9 +5,9 @@ package fitnesse.http;
 import java.net.Socket;
 
 public interface ResponseSender {
-  public void send(byte[] bytes);
+    public void send(byte[] bytes);
 
-  public void close();
+    public void close();
 
-  public Socket getSocket(); //TODO-MdM maybe get rid of this method.
+    public Socket getSocket(); //TODO-MdM maybe get rid of this method.
 }

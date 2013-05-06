@@ -83,7 +83,7 @@ public class SymbolType implements Matchable {
             .wikiRule(new EqualPairRule())
             .htmlTranslation(new HtmlBuilder("strike").body(0).inline());
     public static final SymbolType Style = new SymbolType("Style")
-            .wikiMatcher(new Matcher().string("!style_").endsWith(new char[] {'(', '{', '['}))
+            .wikiMatcher(new Matcher().string("!style_").endsWith(new char[]{'(', '{', '['}))
             .wikiRule(new StyleRule())
             .htmlTranslation(new HtmlBuilder("span").body(0).attribute("class", -1).inline());
     public static final SymbolType SymbolList = new SymbolType("SymbolList");
@@ -97,15 +97,25 @@ public class SymbolType implements Matchable {
             .wikiMatcher(new Matcher().whitespace());
 
     private String name;
-    private ArrayList<Matcher> wikiMatchers =  new ArrayList<Matcher>(1);
+    private ArrayList<Matcher> wikiMatchers = new ArrayList<Matcher>(1);
     private Rule wikiRule = defaultRule;
     private Translation htmlTranslation = null;
 
-    public SymbolType(String name) { this.name = name; }
+    public SymbolType(String name) {
+        this.name = name;
+    }
 
-    public List<Matcher> getWikiMatchers() { return wikiMatchers; }
-    public Rule getWikiRule() { return wikiRule; }
-    public Translation getHtmlTranslation() { return htmlTranslation; }
+    public List<Matcher> getWikiMatchers() {
+        return wikiMatchers;
+    }
+
+    public Rule getWikiRule() {
+        return wikiRule;
+    }
+
+    public Translation getHtmlTranslation() {
+        return htmlTranslation;
+    }
 
     public SymbolType wikiMatcher(Matcher value) {
         wikiMatchers.add(value);
@@ -122,14 +132,17 @@ public class SymbolType implements Matchable {
         return this;
     }
 
-    @Override public String toString() { return name; }
+    @Override
+    public String toString() {
+        return name;
+    }
 
     public boolean matchesFor(SymbolType symbolType) {
         return this.name.equals(symbolType.name);
     }
 
     public SymbolMatch makeMatch(ScanString input, SymbolStream symbols) {
-        for (Matcher matcher: getWikiMatchers()) {
+        for (Matcher matcher : getWikiMatchers()) {
             Maybe<Integer> matchLength = matcher.makeMatch(input, symbols);
             if (!matchLength.isNothing()) return new SymbolMatch(this, input, matchLength.getValue());
         }

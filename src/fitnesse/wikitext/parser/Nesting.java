@@ -2,7 +2,7 @@ package fitnesse.wikitext.parser;
 
 import util.Maybe;
 
-public class Nesting extends SymbolType implements Rule, Translation{
+public class Nesting extends SymbolType implements Rule, Translation {
     public static final Nesting symbolType = new Nesting();
 
     public Nesting() {
@@ -20,6 +20,6 @@ public class Nesting extends SymbolType implements Rule, Translation{
     }
 
     public String toTarget(Translator translator, Symbol symbol) {
-        return translator.translateTree(symbol) ;
+        return translator.translateTree(symbol);
     }
 }

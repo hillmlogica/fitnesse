@@ -2,49 +2,51 @@
 // Released under the terms of the CPL Common Public License version 1.0.
 package fitnesse.updates;
 
-import static junit.framework.Assert.assertFalse;
-import static junit.framework.Assert.assertTrue;
-import static org.junit.Assert.assertEquals;
 import org.junit.Test;
 
 import java.io.File;
 
+import static junit.framework.Assert.assertFalse;
+import static junit.framework.Assert.assertTrue;
+import static org.junit.Assert.assertEquals;
+
 public class FileUpdateTest extends UpdateTestCase {
-  public final File testFile = new File("classes/testFile");
+    public final File testFile = new File("classes/testFile");
 
-  protected Update makeUpdate() throws Exception {
-    return new FileUpdate(context.getRootPagePath(), "testFile", "files"+File.separator+"images");
-  }
+    protected Update makeUpdate() throws Exception {
+        return new FileUpdate(context.getRootPagePath(), "testFile", "files" + File.separator + "images");
+    }
 
-  public void setUp() throws Exception {
-    super.setUp();
-    testFile.createNewFile();
-  }
+    public void setUp() throws Exception {
+        super.setUp();
+        testFile.createNewFile();
+    }
 
-  public void tearDown() throws Exception {
-    super.tearDown();
-    testFile.delete();
-  }
+    public void tearDown() throws Exception {
+        super.tearDown();
+        testFile.delete();
+    }
 
-  @Test
-  public void testSimpleFunctions() throws Exception {
-    assertTrue("doesn't want to apply", update.shouldBeApplied());
-    assertTrue("wrong message", update.getMessage().equals("."));
-    assertEquals("FileUpdate(testFile)", update.getName());
-  }
-  @Test
-  public void testUpdateWithMissingDirectories() throws Exception {
-    update.doUpdate();
+    @Test
+    public void testSimpleFunctions() throws Exception {
+        assertTrue("doesn't want to apply", update.shouldBeApplied());
+        assertTrue("wrong message", update.getMessage().equals("."));
+        assertEquals("FileUpdate(testFile)", update.getName());
+    }
 
-    File file = new File(context.getRootPagePath() + File.separator + "files" + File.separator + "images" + File.separator + "testFile");
-    assertTrue(file.exists());
+    @Test
+    public void testUpdateWithMissingDirectories() throws Exception {
+        update.doUpdate();
 
-    assertFalse(update.shouldBeApplied());
-  }
+        File file = new File(context.getRootPagePath() + File.separator + "files" + File.separator + "images" + File.separator + "testFile");
+        assertTrue(file.exists());
 
-  @Test(expected = Exception.class)
-  public void testFileMissing() throws Exception {
-    update = new FileUpdate(updater.context.getRootPagePath(), "images/missingFile", "files/images");
-      update.doUpdate();
-  }
+        assertFalse(update.shouldBeApplied());
+    }
+
+    @Test(expected = Exception.class)
+    public void testFileMissing() throws Exception {
+        update = new FileUpdate(updater.context.getRootPagePath(), "images/missingFile", "files/images");
+        update.doUpdate();
+    }
 }

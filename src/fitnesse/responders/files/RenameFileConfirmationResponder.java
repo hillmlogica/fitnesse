@@ -13,24 +13,24 @@ import fitnesse.responders.templateUtilities.HtmlPage;
 import fitnesse.responders.templateUtilities.PageTitle;
 
 public class RenameFileConfirmationResponder implements SecureResponder {
-  private String resource;
+    private String resource;
 
-  public Response makeResponse(FitNesseContext context, Request request) {
-    resource = request.getResource();
-    String filename = (String) request.getInput("filename");
-    
-    HtmlPage page = context.pageFactory.newPage();
-    page.setTitle("Rename " + filename);
-    page.setPageTitle(new PageTitle("Rename File", resource + filename, "/"));
-    page.setMainTemplate("renameFileConfirmation.vm");
-    page.put("filename", filename);
+    public Response makeResponse(FitNesseContext context, Request request) {
+        resource = request.getResource();
+        String filename = (String) request.getInput("filename");
 
-    SimpleResponse response = new SimpleResponse();
-    response.setContent(page.html());
-    return response;
-  }
+        HtmlPage page = context.pageFactory.newPage();
+        page.setTitle("Rename " + filename);
+        page.setPageTitle(new PageTitle("Rename File", resource + filename, "/"));
+        page.setMainTemplate("renameFileConfirmation.vm");
+        page.put("filename", filename);
 
-  public SecureOperation getSecureOperation() {
-    return new AlwaysSecureOperation();
-  }
+        SimpleResponse response = new SimpleResponse();
+        response.setContent(page.html());
+        return response;
+    }
+
+    public SecureOperation getSecureOperation() {
+        return new AlwaysSecureOperation();
+    }
 }

@@ -8,10 +8,10 @@ import util.Maybe;
 import java.util.HashMap;
 
 public class ParsingPage {
-    private static final SymbolProvider variableDefinitionSymbolProvider = new SymbolProvider(new SymbolType[] {
-        Literal.symbolType, new Define(), new Include(), SymbolType.CloseLiteral, Comment.symbolType, SymbolType.Whitespace,
-        SymbolType.Newline, Variable.symbolType, Preformat.symbolType,
-        SymbolType.ClosePreformat, SymbolType.Text
+    private static final SymbolProvider variableDefinitionSymbolProvider = new SymbolProvider(new SymbolType[]{
+            Literal.symbolType, new Define(), new Include(), SymbolType.CloseLiteral, Comment.symbolType, SymbolType.Whitespace,
+            SymbolType.Newline, Variable.symbolType, Preformat.symbolType,
+            SymbolType.ClosePreformat, SymbolType.Text
     });
 
     private SourcePage page;
@@ -22,13 +22,13 @@ public class ParsingPage {
         this(page, page, new HashMap<String, HashMap<String, Maybe<String>>>());
     }
 
-  public ParsingPage copy() {
-      return new ParsingPage(page, page, this.cache);
-  }
+    public ParsingPage copy() {
+        return new ParsingPage(page, page, this.cache);
+    }
 
-  public ParsingPage copyForPage(SourcePage page) {
-      return new ParsingPage(page, page, this.cache);
-  }
+    public ParsingPage copyForPage(SourcePage page) {
+        return new ParsingPage(page, page, this.cache);
+    }
 
     public ParsingPage copyForNamedPage(SourcePage namedPage) {
         return new ParsingPage(this.page, namedPage, this.cache);
@@ -40,13 +40,18 @@ public class ParsingPage {
         this.cache = cache;
     }
 
-    public SourcePage getPage() { return page; }
-    public SourcePage getNamedPage() { return namedPage; }
+    public SourcePage getPage() {
+        return page;
+    }
+
+    public SourcePage getNamedPage() {
+        return namedPage;
+    }
 
     public Maybe<String> getSpecialVariableValue(String key) {
-      // Make this fail safe for unit tests
-      final FitNesse fitnesse = FitNesse.FITNESSE_INSTANCE;
-      final FitNesseContext context = fitnesse != null ? fitnesse.getContext() : null;
+        // Make this fail safe for unit tests
+        final FitNesse fitnesse = FitNesse.FITNESSE_INSTANCE;
+        final FitNesseContext context = fitnesse != null ? fitnesse.getContext() : null;
         String value;
         if (key.equals("RUNNING_PAGE_NAME"))
             value = page.getName();
@@ -57,11 +62,11 @@ public class ParsingPage {
         else if (key.equals("PAGE_PATH"))
             value = namedPage.getPath();
         else if (key.equals("FITNESSE_PORT"))
-          value = Integer.toString(context != null ? context.port : -1);
+            value = Integer.toString(context != null ? context.port : -1);
         else if (key.equals("FITNESSE_ROOTPATH"))
-          value = context != null ? context.rootPath : "";
+            value = context != null ? context.rootPath : "";
         else if (key.equals("FITNESSE_VERSION"))
-          value = new FitNesseVersion().toString();
+            value = new FitNesseVersion().toString();
         else
             return Maybe.noString;
         return new Maybe<String>(value);

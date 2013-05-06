@@ -14,32 +14,31 @@ import fitnesse.responders.templateUtilities.HtmlPage;
 import fitnesse.responders.templateUtilities.PageTitle;
 
 public class ShutdownResponder implements SecureResponder {
-  public Response makeResponse(FitNesseContext context, Request request) {
-    SimpleResponse response = new SimpleResponse();
+    public Response makeResponse(FitNesseContext context, Request request) {
+        SimpleResponse response = new SimpleResponse();
 
-    HtmlPage html = context.pageFactory.newPage();
-    html.setTitle("Shutdown");
-    html.setPageTitle(new PageTitle("Shutdown"));
+        HtmlPage html = context.pageFactory.newPage();
+        html.setTitle("Shutdown");
+        html.setPageTitle(new PageTitle("Shutdown"));
 
-    html.setMainTemplate("shutdownPage.vm");
-    response.setContent(html.html());
+        html.setMainTemplate("shutdownPage.vm");
+        response.setContent(html.html());
 
-    Thread shutdownThread = new Thread() {
-      public void run() {
-        try {
-          FitNesse.FITNESSE_INSTANCE.stop();
-        }
-        catch (Exception e) {
-          e.printStackTrace();
-        }
-      }
-    };
-    shutdownThread.start();
+        Thread shutdownThread = new Thread() {
+            public void run() {
+                try {
+                    FitNesse.FITNESSE_INSTANCE.stop();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        };
+        shutdownThread.start();
 
-    return response;
-  }
+        return response;
+    }
 
-  public SecureOperation getSecureOperation() {
-    return new AlwaysSecureOperation();
-  }
+    public SecureOperation getSecureOperation() {
+        return new AlwaysSecureOperation();
+    }
 }

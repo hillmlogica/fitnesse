@@ -2,34 +2,34 @@
 // Released under the terms of the CPL Common Public License version 1.0.
 package fitnesse.runner;
 
+import fitnesse.testsystems.TestSummary;
+
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 import java.util.LinkedList;
 import java.util.List;
 
-import fitnesse.testsystems.TestSummary;
-
 public class MockResultFormatter implements ResultFormatter {
-  public List<PageResult> results = new LinkedList<PageResult>();
-  public TestSummary finalSummary;
-  public StringBuffer output = new StringBuffer("Mock Results:\n");
+    public List<PageResult> results = new LinkedList<PageResult>();
+    public TestSummary finalSummary;
+    public StringBuffer output = new StringBuffer("Mock Results:\n");
 
-  public void acceptResult(PageResult result) {
-    results.add(result);
-    output.append(result.toString());
-  }
+    public void acceptResult(PageResult result) {
+        results.add(result);
+        output.append(result.toString());
+    }
 
-  public void acceptFinalCount(TestSummary testSummary) {
-    finalSummary = testSummary;
-    output.append("Finals Counts: " + testSummary.toString());
-  }
+    public void acceptFinalCount(TestSummary testSummary) {
+        finalSummary = testSummary;
+        output.append("Finals Counts: " + testSummary.toString());
+    }
 
-  public int getByteCount() {
-    return output.toString().getBytes().length;
-  }
+    public int getByteCount() {
+        return output.toString().getBytes().length;
+    }
 
-  public InputStream getResultStream() {
-    return new ByteArrayInputStream(output.toString().getBytes());
-  }
+    public InputStream getResultStream() {
+        return new ByteArrayInputStream(output.toString().getBytes());
+    }
 
 }

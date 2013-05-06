@@ -3,5 +3,5 @@
 package fitnesse.testsystems.fit;
 
 public interface SocketSeeker {
-  public void acceptSocketFrom(SocketDoner doner) throws Exception;
+    public void acceptSocketFrom(SocketDoner doner) throws Exception;
 }

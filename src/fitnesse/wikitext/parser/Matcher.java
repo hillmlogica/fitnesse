@@ -1,6 +1,7 @@
 package fitnesse.wikitext.parser;
 
 import util.Maybe;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -46,7 +47,7 @@ public class Matcher {
         matches.add(new ScanMatch() {
             public Maybe<Integer> match(ScanString input, SymbolStream symbols, int offset) {
                 return isStartLine(input, symbols, offset) || isStartCell(symbols)
-                 ? new Maybe<Integer>(0) : Maybe.noInteger;
+                        ? new Maybe<Integer>(0) : Maybe.noInteger;
             }
         });
         return this;
@@ -86,7 +87,7 @@ public class Matcher {
 
     private boolean isDigitInput(char firstDigit, ScanString input, int offset) {
         for (char i = firstDigit; i <= '9'; i++) {
-           if (input.matches(new String(new char[] {i}), offset)) return true;
+            if (input.matches(new String(new char[]{i}), offset)) return true;
         }
         return false;
     }
@@ -147,16 +148,16 @@ public class Matcher {
             }
 
             private boolean contains(char[] terminators, char candidate) {
-                for (char terminator: terminators) if (candidate == terminator) return true;
+                for (char terminator : terminators) if (candidate == terminator) return true;
                 return false;
             }
         });
         return this;
     }
 
-    public Maybe<Integer> makeMatch(ScanString input, SymbolStream symbols)  {
+    public Maybe<Integer> makeMatch(ScanString input, SymbolStream symbols) {
         int totalLength = 0;
-        for (ScanMatch match: matches) {
+        for (ScanMatch match : matches) {
             Maybe<Integer> matchLength = match.match(input, symbols, totalLength);
             if (matchLength.isNothing()) return Maybe.noInteger;
             totalLength += matchLength.getValue();
