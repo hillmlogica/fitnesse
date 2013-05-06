@@ -14,7 +14,6 @@ dist/*
 classes/*
 antlib/*
 javadoc/*
-lib/*
 .svn
 .classpath
 .project
@@ -36,3 +35,5 @@ crap_build.xml
 com_ibm_contest/*
 FitNesseRoot/files/javascript/jsunit/*
 junk/*
+out/*
+fitserverSentinel*
