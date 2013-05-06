@@ -1,0 +1,16 @@
+<component name="libraryTable">
+  <library name="lib3">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/crap4j/lib/com.agitar.eclipse.api_4.2.0.401405/lib/commons-logging.jar!/" />
+      <root url="jar://$PROJECT_DIR$/crap4j/lib/com.agitar.eclipse.api_4.2.0.401405/lib/ant-launcher.jar!/" />
+      <root url="jar://$PROJECT_DIR$/crap4j/lib/com.agitar.eclipse.api_4.2.0.401405/lib/ant.jar!/" />
+      <root url="jar://$PROJECT_DIR$/crap4j/lib/com.agitar.eclipse.api_4.2.0.401405/lib/ant-junit.jar!/" />
+      <root url="jar://$PROJECT_DIR$/crap4j/lib/com.agitar.eclipse.api_4.2.0.401405/lib/commons-httpclient-3.0.1.jar!/" />
+      <root url="jar://$PROJECT_DIR$/crap4j/lib/com.agitar.eclipse.api_4.2.0.401405/lib/commons-codec-1.3.jar!/" />
+      <root url="jar://$PROJECT_DIR$/crap4j/lib/com.agitar.eclipse.api_4.2.0.401405/lib/junit.jar!/" />
+      <root url="jar://$PROJECT_DIR$/crap4j/lib/com.agitar.eclipse.api_4.2.0.401405/lib/xalan.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

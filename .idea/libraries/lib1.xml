@@ -1,0 +1,20 @@
+<component name="libraryTable">
+  <library name="lib1">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/crap4j/lib/com.agitar.eclipse.coverage_4.2.0.401405/lib/wdortl20.jar!/" />
+      <root url="jar://$PROJECT_DIR$/crap4j/lib/com.agitar.eclipse.coverage_4.2.0.401405/lib/asm-tree.jar!/" />
+      <root url="jar://$PROJECT_DIR$/crap4j/lib/com.agitar.eclipse.coverage_4.2.0.401405/lib/ezlicgen30.jar!/" />
+      <root url="jar://$PROJECT_DIR$/crap4j/lib/com.agitar.eclipse.coverage_4.2.0.401405/lib/ilsadmin10.jar!/" />
+      <root url="jar://$PROJECT_DIR$/crap4j/lib/com.agitar.eclipse.coverage_4.2.0.401405/lib/ilsdb10.jar!/" />
+      <root url="jar://$PROJECT_DIR$/crap4j/lib/com.agitar.eclipse.coverage_4.2.0.401405/lib/ilscrypt10.jar!/" />
+      <root url="jar://$PROJECT_DIR$/crap4j/lib/com.agitar.eclipse.coverage_4.2.0.401405/lib/hsqldb.jar!/" />
+      <root url="jar://$PROJECT_DIR$/crap4j/lib/com.agitar.eclipse.coverage_4.2.0.401405/lib/ilsclient10.jar!/" />
+      <root url="jar://$PROJECT_DIR$/crap4j/lib/com.agitar.eclipse.coverage_4.2.0.401405/lib/jvmdetector.jar!/" />
+      <root url="jar://$PROJECT_DIR$/crap4j/lib/com.agitar.eclipse.coverage_4.2.0.401405/lib/ils10.jar!/" />
+      <root url="jar://$PROJECT_DIR$/crap4j/lib/com.agitar.eclipse.coverage_4.2.0.401405/lib/asm.jar!/" />
+      <root url="jar://$PROJECT_DIR$/crap4j/lib/com.agitar.eclipse.coverage_4.2.0.401405/lib/ezlicrun30.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

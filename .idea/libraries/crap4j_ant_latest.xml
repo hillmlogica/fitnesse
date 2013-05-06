@@ -1,0 +1,9 @@
+<component name="libraryTable">
+  <library name="crap4j_ant_latest">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/crap4j/crap4j_ant_latest.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

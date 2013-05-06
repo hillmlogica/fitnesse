@@ -1,0 +1,11 @@
+<component name="libraryTable">
+  <library name="antlib">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/antlib/bcprov.jar!/" />
+      <root url="jar://$PROJECT_DIR$/antlib/ivy.jar!/" />
+      <root url="jar://$PROJECT_DIR$/antlib/bcpg.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

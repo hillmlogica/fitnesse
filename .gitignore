@@ -27,7 +27,6 @@ target/*
 *.iml
 *.ipr
 *.iws
-.idea
 desktop.ini
 inst.log
 velocity.log*

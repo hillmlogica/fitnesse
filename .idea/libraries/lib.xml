@@ -1,0 +1,21 @@
+<component name="libraryTable">
+  <library name="lib">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/lib/velocity.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/htmlparser.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/rhino.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/hamcrest-all.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/htmllexer.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/json.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/commons-collections.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/commons-lang.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/mockito-all.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/ant.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/hamcrest-core.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/junit.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/diffutils.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>
