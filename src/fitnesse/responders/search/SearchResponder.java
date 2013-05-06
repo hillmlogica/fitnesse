@@ -26,10 +26,6 @@ public class SearchResponder extends ResultResponder {
             return "Content";
     }
 
-    protected String getPageFooterInfo(int hits) {
-        return "Found " + hits + " results for your search.";
-    }
-
     protected String getTitle() {
         return getSearchType() + " Search Results for '" + getSearchString() + "'";
     }
