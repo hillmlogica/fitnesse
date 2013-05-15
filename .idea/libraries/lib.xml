@@ -12,7 +12,7 @@
       <root url="jar://$PROJECT_DIR$/lib/mockito-all.jar!/" />
       <root url="jar://$PROJECT_DIR$/lib/ant.jar!/" />
       <root url="jar://$PROJECT_DIR$/lib/hamcrest-core.jar!/" />
-      <root url="jar://$PROJECT_DIR$/lib/junit.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/junit-4.11.jar!/" />
       <root url="jar://$PROJECT_DIR$/lib/diffutils.jar!/" />
     </CLASSES>
     <JAVADOC />
