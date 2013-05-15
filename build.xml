@@ -150,7 +150,7 @@
     <target name="stamp-version" depends="set-version-if-not-manualy-set">
         <echo message="Stamping fitnesse with version ${version}"/>
         <mkdir dir="${classes.dir}/META-INF"/>
-        <echo message="v${version}" file="${classes.dir}/META-INF/FitNesseVersion.txt"/>
+        <copy file="${src.dir}/META-INF/FitNesseVersion.txt" todir="${classes.dir}/META-INF"/>
     </target>
 
     <target name="clean" description="delete everything in the classes directory">
