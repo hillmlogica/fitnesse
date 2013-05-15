@@ -172,11 +172,6 @@
             <batchtest todir="${results.dir}">
                 <fileset dir="${src.dir}">
                     <include name="**/*Test.java"/>
-                    <exclude name="**/ShutdownResponderTest.java"/>
-                    <exclude name="**/QueryTableBaseTest.java"/>
-                    <exclude name="**/Test.java"/>
-                    <exclude name="**/SystemUnderTest.java"/>
-                    <exclude name="**/MySystemUnderTest.java"/>
                 </fileset>
             </batchtest>
         </junit>

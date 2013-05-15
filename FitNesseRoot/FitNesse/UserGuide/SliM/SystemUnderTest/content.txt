@@ -6,7 +6,7 @@
 
 !4 Example
 {{{
-import fitnesse.slim.SystemUnderTest;
+import fitnesse.slim.SystemUnderTestInterface;
 
 /**
  * The slim fixture.

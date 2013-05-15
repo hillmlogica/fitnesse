@@ -11,7 +11,7 @@ import fitnesse.http.ResponseParser;
 import fitnesse.testutil.FitNesseUtil;
 import junit.framework.TestCase;
 
-public class ShutdownResponderTest extends TestCase {
+public class ShutdownResponderTest_NotRunAsAUnit extends TestCase {
     private FitNesseContext context;
     private FitNesse fitnesse;
     private boolean doneShuttingDown;

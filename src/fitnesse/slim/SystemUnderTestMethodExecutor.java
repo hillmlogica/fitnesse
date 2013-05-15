@@ -37,6 +37,6 @@ public class SystemUnderTestMethodExecutor extends MethodExecutor {
 
     private boolean isSystemUnderTest(Field field) {
         return "systemUnderTest".equals(field.getName())
-                || field.getAnnotation(SystemUnderTest.class) != null;
+                || field.getAnnotation(SystemUnderTestInterface.class) != null;
     }
 }

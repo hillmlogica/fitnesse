@@ -27,7 +27,7 @@ public class StatementExecutorTest extends StatementExecutorTestBase {
 
     public static class MyAnnotatedSystemUnderTestFixtureJava extends
             MyAnnotatedSystemUnderTestFixture {
-        @SystemUnderTest
+        @SystemUnderTestInterface
         public MySystemUnderTestBase sut = new MySystemUnderTestJava();
         private boolean echoCalled = false;
 

@@ -23,7 +23,7 @@ import java.util.Map;
 import static junit.framework.Assert.assertEquals;
 import static util.ListUtility.list;
 
-public abstract class QueryTableBaseTest {
+public abstract class AbstractQueryTableBaseTestBase {
     private WikiPage root;
     private List<Assertion> assertions;
     private String queryTableHeader;

@@ -1,11 +1,11 @@
 package fitnesse.slim.test;
 
-import fitnesse.slim.SystemUnderTest;
+import fitnesse.slim.SystemUnderTestInterface;
 
 public class MySystemUnderTestDriver {
 
-    @SystemUnderTest
-    public MySystemUnderTest systemUnderTest = new MySystemUnderTest();
+    @SystemUnderTestInterface
+    public MySystemUnderTest_NotRunAsUnit systemUnderTest = new MySystemUnderTest_NotRunAsUnit();
 
     private boolean called;
 
