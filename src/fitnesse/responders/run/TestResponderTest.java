@@ -36,8 +36,6 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.*;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
 import static util.RegexTestCase.*;
 import static util.XmlUtil.getElementByTagName;
 
@@ -151,7 +149,7 @@ public class TestResponderTest {
     @Test
     public void testFitSocketGetsClosed() throws Exception {
         doSimpleRun(passFixtureTable());
-        assertTrue(receiver.socket.isClosed());
+        org.junit.Assert.assertTrue(receiver.socket.isClosed());
     }
 
     @Test
@@ -317,7 +315,7 @@ public class TestResponderTest {
     }
 
     private Document getXmlFromFileAndDeleteFile() throws Exception {
-        assertTrue(xmlResultsFile.getAbsolutePath(), xmlResultsFile.exists());
+        org.junit.Assert.assertTrue(xmlResultsFile.getAbsolutePath(), xmlResultsFile.exists());
         FileInputStream xmlResultsStream = new FileInputStream(xmlResultsFile);
         Document xmlDoc = XmlUtil.newDocument(xmlResultsStream);
         xmlResultsStream.close();
@@ -338,9 +336,9 @@ public class TestResponderTest {
         request.addInput("format", "text");
         doSimpleRun(passFixtureTable());
         assertEquals("text/text", response.getContentType());
-        assertTrue(results.contains("\n. "));
-        assertTrue(results.contains("R:1    W:0    I:0    E:0    TestPage\t(TestPage)"));
-        assertTrue(results.contains("1 Tests,\t0 Failures"));
+        org.junit.Assert.assertTrue(results.contains("\n. "));
+        org.junit.Assert.assertTrue(results.contains("R:1    W:0    I:0    E:0    TestPage\t(TestPage)"));
+        org.junit.Assert.assertTrue(results.contains("1 Tests,\t0 Failures"));
     }
 
     @Test
@@ -348,9 +346,9 @@ public class TestResponderTest {
         request.addInput("format", "text");
         doSimpleRun(failFixtureTable());
         assertEquals("text/text", response.getContentType());
-        assertTrue(results.contains("\nF "));
-        assertTrue(results.contains("R:0    W:1    I:0    E:0    TestPage\t(TestPage)"));
-        assertTrue(results.contains("1 Tests,\t1 Failures"));
+        org.junit.Assert.assertTrue(results.contains("\nF "));
+        org.junit.Assert.assertTrue(results.contains("R:0    W:1    I:0    E:0    TestPage\t(TestPage)"));
+        org.junit.Assert.assertTrue(results.contains("1 Tests,\t1 Failures"));
     }
 
     @Test
@@ -358,16 +356,16 @@ public class TestResponderTest {
         request.addInput("format", "text");
         doSimpleRun(errorFixtureTable());
         assertEquals("text/text", response.getContentType());
-        assertTrue(results.contains("\nX "));
-        assertTrue(results.contains("R:0    W:0    I:0    E:1    TestPage\t(TestPage)"));
-        assertTrue(results.contains("1 Tests,\t1 Failures"));
+        org.junit.Assert.assertTrue(results.contains("\nX "));
+        org.junit.Assert.assertTrue(results.contains("R:0    W:0    I:0    E:1    TestPage\t(TestPage)"));
+        org.junit.Assert.assertTrue(results.contains("1 Tests,\t1 Failures"));
     }
 
     @Test
     public void testExecutionStatusOk() throws Exception {
         doSimpleRun(passFixtureTable());
-        assertTrue(results.contains(">Tests Executed OK<"));
-        assertTrue(results.contains("\\\"ok\\\""));
+        org.junit.Assert.assertTrue(results.contains(">Tests Executed OK<"));
+        org.junit.Assert.assertTrue(results.contains("\\\"ok\\\""));
     }
 
     @Test
@@ -375,32 +373,32 @@ public class TestResponderTest {
         responder.setFastTest(false);
         request.addInput("debug", "");
         doSimpleRun(passFixtureTable());
-        assertTrue(results.contains(">Tests Executed OK<"));
-        assertTrue(results.contains("\\\"ok\\\""));
-        assertTrue("should be fast test", responder.isFastTest());
+        org.junit.Assert.assertTrue(results.contains(">Tests Executed OK<"));
+        org.junit.Assert.assertTrue(results.contains("\\\"ok\\\""));
+        org.junit.Assert.assertTrue("should be fast test", responder.isFastTest());
     }
 
     @Test
     public void testExecutionStatusOutputCaptured() throws Exception {
         responder.setFastTest(false);
         doSimpleRun(outputWritingTable("blah"));
-        assertTrue(results.contains(">Output Captured<"));
-        assertTrue(results.contains("\\\"output\\\""));
+        org.junit.Assert.assertTrue(results.contains(">Output Captured<"));
+        org.junit.Assert.assertTrue(results.contains("\\\"output\\\""));
     }
 
     @Test
     public void testExecutionStatusError() throws Exception {
         responder.setFastTest(false);
         doSimpleRun(crashFixtureTable());
-        assertTrue(results.contains(">Errors Occurred<"));
-        assertTrue(results.contains("\\\"error\\\""));
+        org.junit.Assert.assertTrue(results.contains(">Errors Occurred<"));
+        org.junit.Assert.assertTrue(results.contains("\\\"error\\\""));
     }
 
     @Test
     public void testExecutionStatusErrorHasPriority() throws Exception {
         responder.setFastTest(false);
         doSimpleRun(errorWritingTable("blah") + crashFixtureTable());
-        assertTrue(results.contains(">Errors Occurred<"));
+        org.junit.Assert.assertTrue(results.contains(">Errors Occurred<"));
     }
 
     @Test
@@ -475,7 +473,7 @@ public class TestResponderTest {
 
     @Test
     public void testAuthentication_RequiresTestPermission() throws Exception {
-        assertTrue(responder instanceof SecureResponder);
+        org.junit.Assert.assertTrue(responder instanceof SecureResponder);
         SecureOperation operation = responder.getSecureOperation();
         assertEquals(SecureTestOperation.class, operation.getClass());
     }
@@ -516,7 +514,7 @@ public class TestResponderTest {
         sender.doSending(response);
         results = sender.sentData();
 
-        assertTrue(results.contains(">Output Captured<"));
+        org.junit.Assert.assertTrue(results.contains(">Output Captured<"));
         assertHasRegexp("ErrorLog", results);
         assertSubString("Test Page tags", results);
 
@@ -603,7 +601,7 @@ public class TestResponderTest {
         match.find();
         boolean found = match.find();
         if (found)
-            fail("The regexp <" + regexp + "> was more than once in: " + output + ".");
+        	org.junit.Assert.fail("The regexp <" + regexp + "> was more than once in: " + output + ".");
     }
 
     private void assertMessagesOccurInOrder(String errorLogContent, String... messages) {
@@ -611,7 +609,7 @@ public class TestResponderTest {
         String previousMsg = "";
         for (String msg : messages) {
             currentIndex = errorLogContent.indexOf(msg);
-            assertTrue(String.format("\"%s\" should occur not before \"%s\", but did in \"%s\"", msg, previousMsg, errorLogContent), currentIndex > previousIndex);
+            org.junit.Assert.assertTrue(String.format("\"%s\" should occur not before \"%s\", but did in \"%s\"", msg, previousMsg, errorLogContent), currentIndex > previousIndex);
             previousIndex = currentIndex;
             previousMsg = msg;
         }
@@ -856,12 +854,12 @@ public class TestResponderTest {
 
         private void assertInstructionHas(Element instructionElement, String content) throws Exception {
             String instruction = XmlUtil.getTextValue(instructionElement, "instruction");
-            assertTrue(String.format("instruction %s should contain: %s", instruction, content), instruction.contains(content));
+            org.junit.Assert.assertTrue(String.format("instruction %s should contain: %s", instruction, content), instruction.contains(content));
         }
 
         private void assertResultHas(Element instructionElement, String content) throws Exception {
             String result = XmlUtil.getTextValue(instructionElement, "slimResult");
-            assertTrue(String.format("result %s should contain: %s", result, content), result.contains(content));
+            org.junit.Assert.assertTrue(String.format("result %s should contain: %s", result, content), result.contains(content));
         }
 
         private void assertHeaderOfXmlDocumentsInResponseIsCorrect() throws Exception {
