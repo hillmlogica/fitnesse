@@ -22,7 +22,6 @@ fitnesse*.zip
 fitnesse.jar
 .DS_Store
 target/*
-*.iml
 *.ipr
 *.iws
 desktop.ini
