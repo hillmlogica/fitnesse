@@ -105,8 +105,8 @@ public class ResponderFactory {
         return (argStart <= 0) ? fullQuery : fullQuery.substring(0, argStart);
     }
 
-    public Responder makeResponder(Request request, WikiPage root) throws InstantiationException {
-        Responder responder = new DefaultResponder();
+    public Responder makeResponder(Request request) throws InstantiationException {
+        Responder responder;
         String resource = request.getResource();
         String responderKey = getResponderKey(request);
         if (usingResponderKey(responderKey))
