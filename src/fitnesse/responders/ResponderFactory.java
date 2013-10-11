@@ -83,7 +83,7 @@ public class ResponderFactory {
     }
 
     public void addResponder(String key, String responderClassName) throws ClassNotFoundException {
-        responderMap.put(key, Class.forName(responderClassName));
+        addResponder(key, Class.forName(responderClassName));
     }
 
     public void addResponder(String key, Class<?> responderClass) {
