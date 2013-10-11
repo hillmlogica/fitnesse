@@ -17,7 +17,6 @@ import fitnesse.responders.versions.RollbackResponder;
 import fitnesse.responders.versions.VersionComparerResponder;
 import fitnesse.responders.versions.VersionResponder;
 import fitnesse.responders.versions.VersionSelectionResponder;
-import fitnesse.wiki.WikiPage;
 import fitnesse.wikitext.parser.WikiWordPath;
 import util.StringUtil;
 
