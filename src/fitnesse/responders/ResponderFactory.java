@@ -90,7 +90,7 @@ public class ResponderFactory {
         responderMap.put(key, responderClass);
     }
 
-    public String getResponderKey(Request request) {
+    /* exposed for test */ String getResponderKey(Request request) {
         String fullQuery;
         if (request.hasInput("responder"))
             fullQuery = (String) request.getInput("responder");
