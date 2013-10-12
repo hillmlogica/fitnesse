@@ -54,7 +54,10 @@ public class ResponderFactory {
         addResponder("new", NewPageResponder.class);
         addResponder("edit", EditResponder.class);
         addResponder("saveData", SaveResponder.class);
-        addResponder("search", SearchResponder.class);
+        addResponder("search", new ResponderCreator() {
+            public Responder create() {
+                return new SearchResponder();
+            }});
         addResponder("searchForm", SearchFormResponder.class);
         addResponder("stoptest", StopTestResponder.class);
         addResponder("test", TestResponder.class);
@@ -66,8 +69,14 @@ public class ResponderFactory {
         addResponder("names", NameWikiPageResponder.class);
         addResponder("properties", PropertiesResponder.class);
         addResponder("saveProperties", SavePropertiesResponder.class);
-        addResponder("executeSearchProperties", ExecuteSearchPropertiesResponder.class);
-        addResponder("whereUsed", WhereUsedResponder.class);
+        addResponder("executeSearchProperties", new ResponderCreator() {
+            public Responder create() {
+                return new ExecuteSearchPropertiesResponder();
+            }});
+        addResponder("whereUsed", new ResponderCreator() {
+            public Responder create() {
+                return new WhereUsedResponder();
+            }});
         addResponder("refactor", RefactorPageResponder.class);
         addResponder("deletePage", DeletePageResponder.class);
         addResponder("renamePage", RenamePageResponder.class);
@@ -96,7 +105,10 @@ public class ResponderFactory {
         addResponder("addChild", AddChildPageResponder.class);
         addResponder("purgeHistory", PurgeHistoryResponder.class);
         addResponder("compareHistory", HistoryComparerResponder.class);
-        addResponder("replace", SearchReplaceResponder.class);
+        addResponder("replace", new ResponderCreator() {
+            public Responder create() {
+                return new SearchReplaceResponder();
+            }});
         addResponder("overview", SuiteOverviewResponder.class);
         addResponder("compareVersions", VersionComparerResponder.class);
     }
@@ -107,7 +119,11 @@ public class ResponderFactory {
 
     // only used by this class and tests
     public void addResponder(String key, Class<?> responderClass) {
-        responderMap.put(key, new ClassInstantiatingResponderCreator(responderClass, rootPath));
+        addResponder(key, new ClassInstantiatingResponderCreator(responderClass, rootPath));
+    }
+
+    private void addResponder(String key, ResponderCreator responderCreator) {
+        responderMap.put(key, responderCreator);
     }
 
     /* exposed for test */ String getResponderKey(Request request) {
