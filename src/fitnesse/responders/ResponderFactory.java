@@ -27,11 +27,30 @@ import java.util.Map;
 
 public class ResponderFactory {
     private final String rootPath;
-    private final Map<String, Class<?>> responderMap;
+    private final Map<String, ResponderCreator> responderMap;
+
+    private interface ResponderCreator {
+        Responder create() throws InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException;
+    }
+
+    private static class ClassInstantiatingResponderCreator implements ResponderCreator {
+        private final Class<?> classToInstantiate;
+        private final String rootPath;
+
+        private ClassInstantiatingResponderCreator(Class<?> classToInstantiate, String rootPath) {
+            this.classToInstantiate = classToInstantiate;
+            this.rootPath = rootPath;
+        }
+
+        @Override
+        public Responder create() throws InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException {
+            return newResponderInstance(classToInstantiate, rootPath);
+        }
+    }
 
     public ResponderFactory(String rootPath) {
         this.rootPath = rootPath;
-        responderMap = new HashMap<String, Class<?>>();
+        responderMap = new HashMap<String, ResponderCreator>();
         addResponder("new", NewPageResponder.class);
         addResponder("edit", EditResponder.class);
         addResponder("saveData", SaveResponder.class);
@@ -88,7 +107,7 @@ public class ResponderFactory {
 
     // only used by this class and tests
     public void addResponder(String key, Class<?> responderClass) {
-        responderMap.put(key, responderClass);
+        responderMap.put(key, new ClassInstantiatingResponderCreator(responderClass, rootPath));
     }
 
     /* exposed for test */ String getResponderKey(Request request) {
@@ -130,7 +149,7 @@ public class ResponderFactory {
         Class<?> responderClass = getResponderClass(responderKey);
         if (responderClass != null) {
             try {
-                return newResponderInstance(responderClass);
+                return newResponderInstance(responderClass, rootPath);
             } catch (Exception e) {
                 e.printStackTrace();
                 throw new InstantiationException("Unable to instantiate responder " + responderKey);
@@ -139,7 +158,7 @@ public class ResponderFactory {
         throw new InstantiationException("No responder for " + responderKey);
     }
 
-    private Responder newResponderInstance(Class<?> responderClass)
+    private static Responder newResponderInstance(Class<?> responderClass, String rootPath)
             throws InstantiationException, IllegalAccessException, InvocationTargetException,
             NoSuchMethodException {
         try {
@@ -151,8 +170,13 @@ public class ResponderFactory {
         }
     }
 
+    // only used by this class and tests
     public Class<?> getResponderClass(String responderKey) {
-        return responderMap.get(responderKey);
+        try {
+            return responderMap.get(responderKey).create().getClass();
+        } catch (Exception e) {
+            throw new RuntimeException("Unexpected exception when looking up or creating responder", e);
+        }
     }
 
     private boolean usingResponderKey(String responderKey) {
