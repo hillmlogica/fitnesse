@@ -86,6 +86,7 @@ public class ResponderFactory {
         addResponder(key, Class.forName(responderClassName));
     }
 
+    // only used by this class and tests
     public void addResponder(String key, Class<?> responderClass) {
         responderMap.put(key, responderClass);
     }
