@@ -30,7 +30,7 @@ public class ResponderFactory {
     private final Map<String, ResponderCreator> responderMap;
 
     private interface ResponderCreator {
-        Responder create() throws InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException;
+        Responder create() throws InstantiationException;
     }
 
     private static class ClassInstantiatingResponderCreator implements ResponderCreator {
@@ -43,13 +43,21 @@ public class ResponderFactory {
         }
 
         @Override
-        public Responder create() throws InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException {
+        public Responder create() throws InstantiationException {
             try {
-                Constructor<?> constructor = classToInstantiate.getConstructor(String.class);
-                return (Responder) constructor.newInstance(rootPath);
+                try {
+                    Constructor<?> constructor = classToInstantiate.getConstructor(String.class);
+                    return (Responder) constructor.newInstance(rootPath);
+                } catch (NoSuchMethodException e) {
+                    Constructor<?> constructor = classToInstantiate.getConstructor();
+                    return (Responder) constructor.newInstance();
+                }
+            } catch (IllegalAccessException e) {
+                throw new InstantiationException(e.getMessage());
+            } catch (InvocationTargetException e) {
+                throw new InstantiationException(e.getMessage());
             } catch (NoSuchMethodException e) {
-                Constructor<?> constructor = classToInstantiate.getConstructor();
-                return (Responder) constructor.newInstance();
+                throw new InstantiationException(e.getMessage());
             }
         }
     }
