@@ -44,7 +44,13 @@ public class ResponderFactory {
 
         @Override
         public Responder create() throws InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException {
-            return newResponderInstance(classToInstantiate, rootPath);
+            try {
+                Constructor<?> constructor = classToInstantiate.getConstructor(String.class);
+                return (Responder) constructor.newInstance(rootPath);
+            } catch (NoSuchMethodException e) {
+                Constructor<?> constructor = classToInstantiate.getConstructor();
+                return (Responder) constructor.newInstance();
+            }
         }
     }
 
@@ -162,10 +168,10 @@ public class ResponderFactory {
 
     private Responder lookupResponder(String responderKey)
             throws InstantiationException {
-        Class<?> responderClass = getResponderClass(responderKey);
-        if (responderClass != null) {
+        ResponderCreator responderCreator = responderMap.get(responderKey);
+        if (responderCreator != null) {
             try {
-                return newResponderInstance(responderClass, rootPath);
+                return responderCreator.create();
             } catch (Exception e) {
                 e.printStackTrace();
                 throw new InstantiationException("Unable to instantiate responder " + responderKey);
@@ -174,22 +180,10 @@ public class ResponderFactory {
         throw new InstantiationException("No responder for " + responderKey);
     }
 
-    private static Responder newResponderInstance(Class<?> responderClass, String rootPath)
-            throws InstantiationException, IllegalAccessException, InvocationTargetException,
-            NoSuchMethodException {
-        try {
-            Constructor<?> constructor = responderClass.getConstructor(String.class);
-            return (Responder) constructor.newInstance(rootPath);
-        } catch (NoSuchMethodException e) {
-            Constructor<?> constructor = responderClass.getConstructor();
-            return (Responder) constructor.newInstance();
-        }
-    }
-
-    // only used by this class and tests
+    // only used by tests
     public Class<?> getResponderClass(String responderKey) {
         try {
-            return responderMap.get(responderKey).create().getClass();
+            return lookupResponder(responderKey).getClass();
         } catch (Exception e) {
             throw new RuntimeException("Unexpected exception when looking up or creating responder", e);
         }
