@@ -4,6 +4,7 @@ import fitnesse.FitNesseContext;
 import fitnesse.http.MockRequest;
 import fitnesse.http.MockResponseSender;
 import fitnesse.http.Response;
+import fitnesse.responders.search.ResultResponder;
 import fitnesse.testutil.FitNesseUtil;
 import fitnesse.wiki.*;
 import org.junit.Before;
@@ -16,7 +17,7 @@ import static org.junit.Assert.assertThat;
 public class SearchReplaceResponderTest {
     private WikiPage root;
     private PageCrawler crawler;
-    private SearchReplaceResponder responder;
+    private ResultResponder responder;
     private MockRequest request;
     private FitNesseContext context;
     private WikiPagePath pagePath;

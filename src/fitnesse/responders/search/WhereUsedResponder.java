@@ -11,7 +11,7 @@ public class WhereUsedResponder extends ResultResponder {
     private WhereUsedResponder() {
     }
 
-    public static WhereUsedResponder createWhereUsedResponder() {
+    public static ResultResponder createWhereUsedResponder() {
         return new WhereUsedResponder();
     }
 

@@ -16,7 +16,7 @@ public class SearchResponder extends ResultResponder {
     private SearchResponder() {
     }
 
-    public static SearchResponder createSearchResponder() {
+    public static ResultResponder createSearchResponder() {
         return new SearchResponder();
     }
 
