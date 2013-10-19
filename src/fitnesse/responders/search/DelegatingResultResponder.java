@@ -3,19 +3,19 @@ package fitnesse.responders.search;
 import fitnesse.components.TraversalListener;
 
 public class DelegatingResultResponder extends ResultResponder {
-    private final ResultResponder resultResponder;
+    private final ResultResponderStrategy strategy;
 
-    public DelegatingResultResponder(ResultResponder resultResponder) {
-        this.resultResponder = resultResponder;
+    public DelegatingResultResponder(ResultResponderStrategy strategy) {
+        this.strategy = strategy;
     }
 
     @Override
     public String getTitle() {
-        return resultResponder.getTitle();
+        return strategy.getTitle();
     }
 
     @Override
     public void traverse(TraversalListener<Object> observer) {
-        resultResponder.traverse(observer);
+        strategy.traverse(observer);
     }
 }
