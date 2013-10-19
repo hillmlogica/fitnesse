@@ -20,7 +20,7 @@ public class WhereUsedResponder extends ResultResponder {
         new WhereUsedPageFinder(page, observer).search(root);
     }
 
-    protected String getTitle() {
+    public String getTitle() {
         return "Where Used Results";
     }
 

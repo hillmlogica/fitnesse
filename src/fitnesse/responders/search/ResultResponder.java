@@ -50,7 +50,7 @@ public abstract class ResultResponder extends ChunkingResponder implements
         response.closeAll();
     }
 
-    protected abstract String getTitle();
+    public abstract String getTitle();
 
     public abstract void traverse(TraversalListener<Object> observer);
 

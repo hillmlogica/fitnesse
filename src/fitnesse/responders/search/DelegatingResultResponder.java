@@ -10,7 +10,7 @@ public class DelegatingResultResponder extends ResultResponder {
     }
 
     @Override
-    protected String getTitle() {
+    public String getTitle() {
         return resultResponder.getTitle();
     }
 

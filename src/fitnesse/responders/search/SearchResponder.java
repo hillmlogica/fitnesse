@@ -33,7 +33,7 @@ public class SearchResponder extends ResultResponder {
             return "Content";
     }
 
-    protected String getTitle() {
+    public String getTitle() {
         return getSearchType() + " Search Results for '" + getSearchString() + "'";
     }
 

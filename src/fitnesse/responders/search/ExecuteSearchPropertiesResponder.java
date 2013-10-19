@@ -94,7 +94,7 @@ public class ExecuteSearchPropertiesResponder extends ResultResponder {
     }
 
     @Override
-    protected String getTitle() {
+    public String getTitle() {
         return "Search Page Properties Results";
     }
 
