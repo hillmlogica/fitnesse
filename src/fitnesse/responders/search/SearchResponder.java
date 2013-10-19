@@ -13,6 +13,13 @@ import static java.util.regex.Pattern.LITERAL;
 
 public class SearchResponder extends ResultResponder {
 
+    private SearchResponder() {
+    }
+
+    public static SearchResponder createSearchResponder() {
+        return new SearchResponder();
+    }
+
     private String getSearchString() {
         return (String) request.getInput("searchString");
     }

@@ -24,6 +24,13 @@ public class ExecuteSearchPropertiesResponder extends ResultResponder {
     public static final String SECURITY = "Security";
     public static final String SPECIAL = "Special";
 
+    private ExecuteSearchPropertiesResponder() {
+    }
+
+    public static ExecuteSearchPropertiesResponder createExecuteSearchPropertiesResponder() {
+        return new ExecuteSearchPropertiesResponder();
+    }
+
     public SecureOperation getSecureOperation() {
         return new SecureReadOperation();
     }
