@@ -7,7 +7,6 @@ import fitnesse.components.TraversalListener;
 import fitnesse.http.ChunkedResponse;
 import fitnesse.http.Request;
 import fitnesse.responders.search.DelegatingResultResponder;
-import fitnesse.responders.search.ResultResponder;
 import fitnesse.responders.search.ResultResponderStrategy;
 import fitnesse.wiki.WikiPage;
 
@@ -19,7 +18,7 @@ public class SearchReplaceResponder implements ResultResponderStrategy, Traversa
     private SearchReplaceResponder() {
     }
 
-    public static ResultResponder createSearchReplaceResponder() {
+    public static DelegatingResultResponder createSearchReplaceResponder() {
         return new DelegatingResultResponder(new SearchReplaceResponder(), true);
     }
 

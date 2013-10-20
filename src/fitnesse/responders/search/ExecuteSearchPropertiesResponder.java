@@ -29,7 +29,7 @@ public class ExecuteSearchPropertiesResponder implements ResultResponderStrategy
     private ExecuteSearchPropertiesResponder() {
     }
 
-    public static ResultResponder createExecuteSearchPropertiesResponder() {
+    public static DelegatingResultResponder createExecuteSearchPropertiesResponder() {
         return new DelegatingResultResponder(new ExecuteSearchPropertiesResponder(), true);
     }
 

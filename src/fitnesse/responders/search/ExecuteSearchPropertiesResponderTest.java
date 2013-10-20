@@ -23,7 +23,7 @@ import static fitnesse.wiki.PageType.*;
 public class ExecuteSearchPropertiesResponderTest extends RegexTestCase {
     private WikiPage root;
     private PageCrawler crawler;
-    private ResultResponder responder;
+    private DelegatingResultResponder responder;
     private FitNesseContext context;
 
     @Before

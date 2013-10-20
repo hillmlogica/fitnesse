@@ -14,7 +14,7 @@ public class WhereUsedResponder implements ResultResponderStrategy {
     private WhereUsedResponder() {
     }
 
-    public static ResultResponder createWhereUsedResponder() {
+    public static DelegatingResultResponder createWhereUsedResponder() {
         return new DelegatingResultResponder(new WhereUsedResponder(), true);
     }
 

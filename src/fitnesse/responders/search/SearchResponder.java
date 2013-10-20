@@ -19,7 +19,7 @@ public class SearchResponder implements ResultResponderStrategy {
     private SearchResponder() {
     }
 
-    public static ResultResponder createSearchResponder() {
+    public static DelegatingResultResponder createSearchResponder() {
         return new DelegatingResultResponder(new SearchResponder(), false);
     }
 
