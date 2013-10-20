@@ -10,16 +10,16 @@ import fitnesse.responders.search.DelegatingResultResponder;
 import fitnesse.responders.search.ResultResponderStrategy;
 import fitnesse.wiki.WikiPage;
 
-public class SearchReplaceResponder implements ResultResponderStrategy, TraversalListener<WikiPage> {
+public class SearchReplaceStrategy implements ResultResponderStrategy, TraversalListener<WikiPage> {
 
     private TraversalListener<? super WikiPage> contentReplaceObserver;
     private TraversalListener<? super WikiPage> webOutputObserver;
 
-    private SearchReplaceResponder() {
+    private SearchReplaceStrategy() {
     }
 
     public static DelegatingResultResponder createSearchReplaceResponder() {
-        return new DelegatingResultResponder(new SearchReplaceResponder(), true);
+        return new DelegatingResultResponder(new SearchReplaceStrategy(), true);
     }
 
     public String getTitle(Request request) {

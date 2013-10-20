@@ -8,10 +8,10 @@ import fitnesse.responders.editing.*;
 import fitnesse.responders.files.*;
 import fitnesse.responders.refactoring.*;
 import fitnesse.responders.run.*;
-import fitnesse.responders.search.ExecuteSearchPropertiesResponder;
+import fitnesse.responders.search.ExecuteSearchPropertiesStrategy;
 import fitnesse.responders.search.SearchFormResponder;
-import fitnesse.responders.search.SearchResponder;
-import fitnesse.responders.search.WhereUsedResponder;
+import fitnesse.responders.search.SearchResponderStrategy;
+import fitnesse.responders.search.WhereUsedStategy;
 import fitnesse.responders.testHistory.*;
 import fitnesse.responders.versions.RollbackResponder;
 import fitnesse.responders.versions.VersionComparerResponder;
@@ -70,7 +70,7 @@ public class ResponderFactory {
         addResponder("saveData", SaveResponder.class);
         addResponder("search", new ResponderCreator() {
             public Responder create() {
-                return SearchResponder.createSearchResponder();
+                return SearchResponderStrategy.createSearchResponder();
             }});
         addResponder("searchForm", SearchFormResponder.class);
         addResponder("stoptest", StopTestResponder.class);
@@ -85,11 +85,11 @@ public class ResponderFactory {
         addResponder("saveProperties", SavePropertiesResponder.class);
         addResponder("executeSearchProperties", new ResponderCreator() {
             public Responder create() {
-                return ExecuteSearchPropertiesResponder.createExecuteSearchPropertiesResponder();
+                return ExecuteSearchPropertiesStrategy.createExecuteSearchPropertiesResponder();
             }});
         addResponder("whereUsed", new ResponderCreator() {
             public Responder create() {
-                return WhereUsedResponder.createWhereUsedResponder();
+                return WhereUsedStategy.createWhereUsedResponder();
             }});
         addResponder("refactor", RefactorPageResponder.class);
         addResponder("deletePage", DeletePageResponder.class);
@@ -121,7 +121,7 @@ public class ResponderFactory {
         addResponder("compareHistory", HistoryComparerResponder.class);
         addResponder("replace", new ResponderCreator() {
             public Responder create() {
-                return SearchReplaceResponder.createSearchReplaceResponder();
+                return SearchReplaceStrategy.createSearchReplaceResponder();
             }});
         addResponder("overview", SuiteOverviewResponder.class);
         addResponder("compareVersions", VersionComparerResponder.class);

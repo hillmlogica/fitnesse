@@ -14,13 +14,13 @@ import java.util.regex.Pattern;
 import static java.util.regex.Pattern.CASE_INSENSITIVE;
 import static java.util.regex.Pattern.LITERAL;
 
-public class SearchResponder implements ResultResponderStrategy {
+public class SearchResponderStrategy implements ResultResponderStrategy {
 
-    private SearchResponder() {
+    private SearchResponderStrategy() {
     }
 
     public static DelegatingResultResponder createSearchResponder() {
-        return new DelegatingResultResponder(new SearchResponder(), false);
+        return new DelegatingResultResponder(new SearchResponderStrategy(), false);
     }
 
     @Override

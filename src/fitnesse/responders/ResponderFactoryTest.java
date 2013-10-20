@@ -122,7 +122,7 @@ public class ResponderFactoryTest {
 
     @Test
     public void testSearchResponder() throws Exception {
-        assertResponderTypeMatchesInputForDelegatingResponder("search", SearchResponder.class);
+        assertResponderTypeMatchesInputForDelegatingResponder("search", SearchResponderStrategy.class);
     }
 
     @Test
@@ -192,12 +192,12 @@ public class ResponderFactoryTest {
 
     @Test
     public void testCreateExecuteSearchPropertiesResponder() throws Exception {
-        assertResponderTypeMatchesInputForDelegatingResponder("executeSearchProperties", ExecuteSearchPropertiesResponder.class);
+        assertResponderTypeMatchesInputForDelegatingResponder("executeSearchProperties", ExecuteSearchPropertiesStrategy.class);
     }
 
     @Test
     public void testCreateWhereUsedResponder() throws Exception {
-        assertResponderTypeMatchesInputForDelegatingResponder("whereUsed", WhereUsedResponder.class);
+        assertResponderTypeMatchesInputForDelegatingResponder("whereUsed", WhereUsedStategy.class);
     }
 
     @Test
@@ -257,7 +257,7 @@ public class ResponderFactoryTest {
 
     @Test
     public void testReplaceResponder() throws Exception {
-        assertResponderTypeMatchesInputForDelegatingResponder("replace", SearchReplaceResponder.class);
+        assertResponderTypeMatchesInputForDelegatingResponder("replace", SearchReplaceStrategy.class);
     }
 
     @Test

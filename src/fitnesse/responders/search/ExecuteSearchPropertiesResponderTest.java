@@ -14,8 +14,8 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
-import static fitnesse.responders.search.ExecuteSearchPropertiesResponder.ACTION;
-import static fitnesse.responders.search.ExecuteSearchPropertiesResponder.SPECIAL;
+import static fitnesse.responders.search.ExecuteSearchPropertiesStrategy.ACTION;
+import static fitnesse.responders.search.ExecuteSearchPropertiesStrategy.SPECIAL;
 import static fitnesse.wiki.PageData.PAGE_TYPE_ATTRIBUTE;
 import static fitnesse.wiki.PageData.PropertyPRUNE;
 import static fitnesse.wiki.PageType.*;
@@ -31,7 +31,7 @@ public class ExecuteSearchPropertiesResponderTest extends RegexTestCase {
         root = InMemoryPage.makeRoot("RooT");
         FitNesseUtil.makeTestContext(root);
         crawler = root.getPageCrawler();
-        responder = ExecuteSearchPropertiesResponder.createExecuteSearchPropertiesResponder();
+        responder = ExecuteSearchPropertiesStrategy.createExecuteSearchPropertiesResponder();
         context = FitNesseUtil.makeTestContext(root);
     }
 
@@ -129,7 +129,7 @@ public class ExecuteSearchPropertiesResponderTest extends RegexTestCase {
         List<PageType> types = Arrays.asList(pageTypes);
         final String commaSeparatedPageTypes = buildPageTypeListForRequest(pageTypes);
         request.addInput(PAGE_TYPE_ATTRIBUTE, commaSeparatedPageTypes);
-        assertEquals(types, ExecuteSearchPropertiesResponder.getPageTypesFromInput(request));
+        assertEquals(types, ExecuteSearchPropertiesStrategy.getPageTypesFromInput(request));
     }
 
     private String buildPageTypeListForRequest(PageType... pageTypes) {
@@ -149,13 +149,13 @@ public class ExecuteSearchPropertiesResponderTest extends RegexTestCase {
         MockRequest request = new MockRequest();
         request.addInput(ACTION, "Edit");
 
-        Map<String, Boolean> foundAttributes = ExecuteSearchPropertiesResponder.getAttributesFromInput(request);
+        Map<String, Boolean> foundAttributes = ExecuteSearchPropertiesStrategy.getAttributesFromInput(request);
         assertFalse(foundAttributes.containsKey("Version"));
         assertTrue(foundAttributes.containsKey("Edit"));
         assertTrue(foundAttributes.get("Edit"));
 
         request.addInput(ACTION, "Edit,Properties");
-        foundAttributes = ExecuteSearchPropertiesResponder.getAttributesFromInput(request);
+        foundAttributes = ExecuteSearchPropertiesStrategy.getAttributesFromInput(request);
         assertTrue(foundAttributes.get("Properties"));
     }
 

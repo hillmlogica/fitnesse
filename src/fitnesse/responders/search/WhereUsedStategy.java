@@ -8,14 +8,14 @@ import fitnesse.http.ChunkedResponse;
 import fitnesse.http.Request;
 import fitnesse.wiki.WikiPage;
 
-public class WhereUsedResponder implements ResultResponderStrategy {
+public class WhereUsedStategy implements ResultResponderStrategy {
 
 
-    private WhereUsedResponder() {
+    private WhereUsedStategy() {
     }
 
     public static DelegatingResultResponder createWhereUsedResponder() {
-        return new DelegatingResultResponder(new WhereUsedResponder(), true);
+        return new DelegatingResultResponder(new WhereUsedStategy(), true);
     }
 
     @Override

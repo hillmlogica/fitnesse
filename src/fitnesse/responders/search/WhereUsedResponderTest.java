@@ -29,7 +29,7 @@ public class WhereUsedResponderTest extends RegexTestCase {
     public void testResponse() throws Exception {
         MockRequest request = new MockRequest();
         request.setResource("PageOne");
-        DelegatingResultResponder responder = WhereUsedResponder.createWhereUsedResponder();
+        DelegatingResultResponder responder = WhereUsedStategy.createWhereUsedResponder();
 
         Response response = responder.makeResponse(FitNesseUtil.makeTestContext(root), request);
         MockResponseSender sender = new MockResponseSender();

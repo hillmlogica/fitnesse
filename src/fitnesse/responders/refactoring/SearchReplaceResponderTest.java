@@ -29,7 +29,7 @@ public class SearchReplaceResponderTest {
         crawler = root.getPageCrawler();
         pagePath = PathParser.parse("SomePage");
         somePage = crawler.addPage(root, pagePath, "has something in it");
-        responder = SearchReplaceResponder.createSearchReplaceResponder();
+        responder = SearchReplaceStrategy.createSearchReplaceResponder();
         request = new MockRequest();
         request.setResource("SomePage");
         context = FitNesseUtil.makeTestContext(root);

@@ -28,7 +28,7 @@ public class SearchResponderTest extends RegexTestCase {
         request.addInput("searchString", "blah");
         request.addInput("searchType", "blah");
         context = FitNesseUtil.makeTestContext(root);
-        responder = SearchResponder.createSearchResponder();
+        responder = SearchResponderStrategy.createSearchResponder();
     }
 
     public void tearDown() throws Exception {
