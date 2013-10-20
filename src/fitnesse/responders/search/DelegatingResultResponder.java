@@ -11,7 +11,7 @@ public class DelegatingResultResponder extends ResultResponder {
 
     @Override
     public String getTitle() {
-        return strategy.getTitle();
+        return strategy.getTitle(request);
     }
 
     @Override

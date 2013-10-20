@@ -96,7 +96,7 @@ public class ExecuteSearchPropertiesResponder implements ResultResponderStrategy
     }
 
     @Override
-    public String getTitle() {
+    public String getTitle(Request request) {
         return "Search Page Properties Results";
     }
 

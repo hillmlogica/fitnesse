@@ -257,7 +257,7 @@ public class ResponderFactoryTest {
 
     @Test
     public void testReplaceResponder() throws Exception {
-        assertResponderTypeMatchesInput("replace", SearchReplaceResponder.class);
+        assertResponderTypeMatchesInputForDelegatingResponder("replace", SearchReplaceResponder.class);
     }
 
     @Test

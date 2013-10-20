@@ -23,7 +23,7 @@ public class WhereUsedResponder implements ResultResponderStrategy {
         new WhereUsedPageFinder(page, observer).search(root);
     }
 
-    public String getTitle() {
+    public String getTitle(Request request) {
         return "Where Used Results";
     }
 
