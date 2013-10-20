@@ -4,19 +4,20 @@ package fitnesse.responders.search;
 
 import fitnesse.components.TraversalListener;
 import fitnesse.components.WhereUsedPageFinder;
+import fitnesse.wiki.WikiPage;
 
-public class WhereUsedResponder extends ResultResponder {
+public class WhereUsedResponder implements ResultResponderStrategy {
 
 
     private WhereUsedResponder() {
     }
 
     public static ResultResponder createWhereUsedResponder() {
-        return new WhereUsedResponder();
+        return new DelegatingResultResponder(new WhereUsedResponder());
     }
 
     @Override
-    public void traverse(TraversalListener<Object> observer) {
+    public void traverse(TraversalListener<Object> observer, WikiPage page, WikiPage root) {
         new WhereUsedPageFinder(page, observer).search(root);
     }
 

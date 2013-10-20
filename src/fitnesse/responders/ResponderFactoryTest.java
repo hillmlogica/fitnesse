@@ -8,10 +8,7 @@ import fitnesse.responders.editing.*;
 import fitnesse.responders.files.*;
 import fitnesse.responders.refactoring.*;
 import fitnesse.responders.run.*;
-import fitnesse.responders.search.ExecuteSearchPropertiesResponder;
-import fitnesse.responders.search.SearchFormResponder;
-import fitnesse.responders.search.SearchResponder;
-import fitnesse.responders.search.WhereUsedResponder;
+import fitnesse.responders.search.*;
 import fitnesse.responders.testHistory.HistoryComparerResponder;
 import fitnesse.responders.testHistory.PageHistoryResponder;
 import fitnesse.responders.testHistory.PurgeHistoryResponder;
@@ -200,7 +197,7 @@ public class ResponderFactoryTest {
 
     @Test
     public void testCreateWhereUsedResponder() throws Exception {
-        assertResponderTypeMatchesInput("whereUsed", WhereUsedResponder.class);
+        assertResponderTypeMatchesInputForDelegatingResponder("responder", WhereUsedResponder.class);
     }
 
     @Test
@@ -283,6 +280,14 @@ public class ResponderFactoryTest {
     private void assertResponderTypeMatchesInput(String responderType, Class<?> responderClass) throws Exception {
         request.addInput("responder", responderType);
         assertResponderType(responderClass);
+    }
+
+    private void assertResponderTypeMatchesInputForDelegatingResponder(String input, Class<WhereUsedResponder> expected) throws InstantiationException {
+        request.addInput(input, "whereUsed");
+        Responder responder = factory.makeResponder(request);
+        assertEquals(DelegatingResultResponder.class, responder.getClass());
+        DelegatingResultResponder delegatingResultResponder = (DelegatingResultResponder) responder;
+        assertEquals(expected, delegatingResultResponder.strategyClass());
     }
 
     @Test
