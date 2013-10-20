@@ -5,8 +5,10 @@ import fitnesse.authentication.SecureReadOperation;
 import fitnesse.components.AttributeWikiPageFinder;
 import fitnesse.components.PageFinder;
 import fitnesse.components.TraversalListener;
+import fitnesse.http.ChunkedResponse;
 import fitnesse.http.Request;
 import fitnesse.wiki.PageType;
+import fitnesse.wiki.WikiPage;
 
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
@@ -17,7 +19,7 @@ import static fitnesse.responders.search.SearchFormResponder.SEARCH_ACTION_ATTRI
 import static fitnesse.responders.search.SearchFormResponder.SPECIAL_ATTRIBUTES;
 import static fitnesse.wiki.PageData.*;
 
-public class ExecuteSearchPropertiesResponder extends ResultResponder {
+public class ExecuteSearchPropertiesResponder implements ResultResponderStrategy {
 
     public static final String IGNORED = "Any";
     public static final String ACTION = "Action";
@@ -28,7 +30,7 @@ public class ExecuteSearchPropertiesResponder extends ResultResponder {
     }
 
     public static ResultResponder createExecuteSearchPropertiesResponder() {
-        return new ExecuteSearchPropertiesResponder();
+        return new DelegatingResultResponder(new ExecuteSearchPropertiesResponder());
     }
 
     public SecureOperation getSecureOperation() {
@@ -99,7 +101,7 @@ public class ExecuteSearchPropertiesResponder extends ResultResponder {
     }
 
     @Override
-    public void traverse(TraversalListener<Object> observer) {
+    public void traverse(TraversalListener<Object> observer, WikiPage page, WikiPage root, Request request, ChunkedResponse response) {
         List<PageType> pageTypes = getPageTypesFromInput(request);
         Map<String, Boolean> attributes = getAttributesFromInput(request);
         String suites = getSuitesFromInput(request);

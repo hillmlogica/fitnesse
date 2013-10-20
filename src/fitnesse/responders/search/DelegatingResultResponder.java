@@ -16,7 +16,7 @@ public class DelegatingResultResponder extends ResultResponder {
 
     @Override
     public void traverse(TraversalListener<Object> observer) {
-        strategy.traverse(observer, page, root);
+        strategy.traverse(observer, page, root, request, response);
     }
 
     public Class<? extends ResultResponderStrategy> strategyClass() {

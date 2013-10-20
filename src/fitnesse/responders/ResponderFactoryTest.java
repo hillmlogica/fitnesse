@@ -192,12 +192,12 @@ public class ResponderFactoryTest {
 
     @Test
     public void testCreateExecuteSearchPropertiesResponder() throws Exception {
-        assertResponderTypeMatchesInput("executeSearchProperties", ExecuteSearchPropertiesResponder.class);
+        assertResponderTypeMatchesInputForDelegatingResponder("executeSearchProperties", ExecuteSearchPropertiesResponder.class);
     }
 
     @Test
     public void testCreateWhereUsedResponder() throws Exception {
-        assertResponderTypeMatchesInputForDelegatingResponder("responder", WhereUsedResponder.class);
+        assertResponderTypeMatchesInputForDelegatingResponder("whereUsed", WhereUsedResponder.class);
     }
 
     @Test
@@ -282,8 +282,8 @@ public class ResponderFactoryTest {
         assertResponderType(responderClass);
     }
 
-    private void assertResponderTypeMatchesInputForDelegatingResponder(String input, Class<WhereUsedResponder> expected) throws InstantiationException {
-        request.addInput(input, "whereUsed");
+    private void assertResponderTypeMatchesInputForDelegatingResponder(String input, Class<?> expected) throws InstantiationException {
+        request.addInput("responder", input);
         Responder responder = factory.makeResponder(request);
         assertEquals(DelegatingResultResponder.class, responder.getClass());
         DelegatingResultResponder delegatingResultResponder = (DelegatingResultResponder) responder;
