@@ -20,7 +20,7 @@ public class SearchReplaceResponder implements ResultResponderStrategy, Traversa
     }
 
     public static ResultResponder createSearchReplaceResponder() {
-        return new DelegatingResultResponder(new SearchReplaceResponder());
+        return new DelegatingResultResponder(new SearchReplaceResponder(), true);
     }
 
     public String getTitle(Request request) {

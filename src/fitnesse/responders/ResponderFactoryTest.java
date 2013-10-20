@@ -122,7 +122,7 @@ public class ResponderFactoryTest {
 
     @Test
     public void testSearchResponder() throws Exception {
-        assertResponderTypeMatchesInput("search", SearchResponder.class);
+        assertResponderTypeMatchesInputForDelegatingResponder("search", SearchResponder.class);
     }
 
     @Test
