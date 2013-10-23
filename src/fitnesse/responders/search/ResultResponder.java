@@ -7,26 +7,25 @@ import fitnesse.authentication.SecureReadOperation;
 import fitnesse.authentication.SecureResponder;
 import fitnesse.components.TraversalListener;
 import fitnesse.components.Traverser;
-import fitnesse.http.ChunkedResponse;
-import fitnesse.http.Request;
 import fitnesse.responders.ChunkingResponder;
 import fitnesse.responders.templateUtilities.HtmlPage;
 import fitnesse.responders.templateUtilities.PageTitle;
 import fitnesse.wiki.PageCrawler;
 import fitnesse.wiki.PathParser;
-import fitnesse.wiki.WikiPage;
 
-public abstract class ResultResponder extends ChunkingResponder implements
-        SecureResponder, Traverser<Object>, ResultResponderStrategy {
+public class ResultResponder extends ChunkingResponder implements
+        SecureResponder, Traverser<Object> {
 
     private final boolean shouldRespondWith404;
+    private final ResultResponderStrategy resultResponderStrategy;
 
-    protected ResultResponder() {
-        this(true);
+    public ResultResponder(ResultResponderStrategy resultResponderStrategy) {
+        this(true, resultResponderStrategy);
     }
 
-    protected ResultResponder(boolean shouldRespondWith404) {
+    public ResultResponder(boolean shouldRespondWith404, ResultResponderStrategy resultResponderStrategy) {
         this.shouldRespondWith404 = shouldRespondWith404;
+        this.resultResponderStrategy = resultResponderStrategy;
     }
 
     protected PageCrawler getPageCrawler() {
@@ -64,11 +63,11 @@ public abstract class ResultResponder extends ChunkingResponder implements
     }
 
     protected String getTitle() {
-        return getTitleForStrategy(request);
+        return resultResponderStrategy.getTitleForStrategy(request);
     }
 
     public void traverse(TraversalListener<Object> observer) {
-        traverseForStrategy(observer, page, request, response, root);
+        resultResponderStrategy.traverseForStrategy(observer, page, request, response, root);
     }
 
     public SecureOperation getSecureOperation() {

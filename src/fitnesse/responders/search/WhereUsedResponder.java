@@ -8,12 +8,9 @@ import fitnesse.http.ChunkedResponse;
 import fitnesse.http.Request;
 import fitnesse.wiki.WikiPage;
 
-public class WhereUsedResponder extends ResultResponder {
-    private WhereUsedResponder() {
-    }
-
+public class WhereUsedResponder implements ResultResponderStrategy {
     public static ResultResponder createWhereUsedResponder() {
-        return new WhereUsedResponder();
+        return new ResultResponder(new WhereUsedResponder());
     }
 
     @Override

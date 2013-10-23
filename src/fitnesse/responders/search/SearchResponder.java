@@ -14,13 +14,9 @@ import java.util.regex.Pattern;
 import static java.util.regex.Pattern.CASE_INSENSITIVE;
 import static java.util.regex.Pattern.LITERAL;
 
-public class SearchResponder extends ResultResponder {
-    private SearchResponder() {
-        super(false);
-    }
-
+public class SearchResponder implements ResultResponderStrategy {
     public static ResultResponder createSearchResponder() {
-        return new SearchResponder();
+        return new ResultResponder(false, new SearchResponder());
     }
 
     private String getSearchString(Request request) {

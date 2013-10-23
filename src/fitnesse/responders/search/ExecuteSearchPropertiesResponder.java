@@ -19,17 +19,14 @@ import static fitnesse.responders.search.SearchFormResponder.SEARCH_ACTION_ATTRI
 import static fitnesse.responders.search.SearchFormResponder.SPECIAL_ATTRIBUTES;
 import static fitnesse.wiki.PageData.*;
 
-public class ExecuteSearchPropertiesResponder extends ResultResponder {
+public class ExecuteSearchPropertiesResponder implements ResultResponderStrategy {
     public static final String IGNORED = "Any";
     public static final String ACTION = "Action";
     public static final String SECURITY = "Security";
     public static final String SPECIAL = "Special";
 
-    private ExecuteSearchPropertiesResponder() {
-    }
-
     public static ResultResponder createExecuteSearchPropertiesResponder() {
-        return new ExecuteSearchPropertiesResponder();
+        return new ResultResponder(new ExecuteSearchPropertiesResponder());
     }
 
     public SecureOperation getSecureOperation() {

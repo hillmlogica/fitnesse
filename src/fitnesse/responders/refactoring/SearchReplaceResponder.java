@@ -7,17 +7,15 @@ import fitnesse.components.TraversalListener;
 import fitnesse.http.ChunkedResponse;
 import fitnesse.http.Request;
 import fitnesse.responders.search.ResultResponder;
+import fitnesse.responders.search.ResultResponderStrategy;
 import fitnesse.wiki.WikiPage;
 
-public class SearchReplaceResponder extends ResultResponder implements TraversalListener<WikiPage> {
+public class SearchReplaceResponder implements TraversalListener<WikiPage>, ResultResponderStrategy {
     private TraversalListener<? super WikiPage> contentReplaceObserver;
     private TraversalListener<? super WikiPage> webOutputObserver;
 
-    private SearchReplaceResponder() {
-    }
-
     public static ResultResponder createSearchReplaceResponder() {
-        return new SearchReplaceResponder();
+        return new ResultResponder(new SearchReplaceResponder());
     }
 
     public String getTitleForStrategy(Request request) {
