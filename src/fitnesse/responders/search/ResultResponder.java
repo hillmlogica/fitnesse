@@ -50,9 +50,17 @@ public abstract class ResultResponder extends ChunkingResponder implements
         response.closeAll();
     }
 
-    protected abstract String getTitle();
+    protected String getTitle() {
+        return getTitleForStrategy();
+    }
 
-    public abstract void traverse(TraversalListener<Object> observer);
+    protected abstract String getTitleForStrategy();
+
+    public void traverse(TraversalListener<Object> observer) {
+        traverseForStrategy(observer);
+    }
+
+    protected abstract void traverseForStrategy(TraversalListener<Object> observer);
 
     public SecureOperation getSecureOperation() {
         return new SecureReadOperation();

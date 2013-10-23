@@ -18,7 +18,7 @@ public class SearchReplaceResponder extends ResultResponder implements Traversal
         return new SearchReplaceResponder();
     }
 
-    protected String getTitle() {
+    protected String getTitleForStrategy() {
         return String.format("Replacing matching content \"%s\" with content \"%s\"",
                 getSearchString(), getReplacementString());
     }
@@ -37,7 +37,7 @@ public class SearchReplaceResponder extends ResultResponder implements Traversal
     }
 
     @Override
-    public void traverse(TraversalListener<Object> observer) {
+    public void traverseForStrategy(TraversalListener<Object> observer) {
         webOutputObserver = observer;
         String searchString = getSearchString();
         String replacementString = getReplacementString();

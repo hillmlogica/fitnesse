@@ -93,12 +93,12 @@ public class ExecuteSearchPropertiesResponder extends ResultResponder {
     }
 
     @Override
-    protected String getTitle() {
+    protected String getTitleForStrategy() {
         return "Search Page Properties Results";
     }
 
     @Override
-    public void traverse(TraversalListener<Object> observer) {
+    public void traverseForStrategy(TraversalListener<Object> observer) {
         List<PageType> pageTypes = getPageTypesFromInput(request);
         Map<String, Boolean> attributes = getAttributesFromInput(request);
         String suites = getSuitesFromInput(request);

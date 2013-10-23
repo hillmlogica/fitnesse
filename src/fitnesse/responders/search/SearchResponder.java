@@ -32,12 +32,12 @@ public class SearchResponder extends ResultResponder {
             return "Content";
     }
 
-    protected String getTitle() {
+    protected String getTitleForStrategy() {
         return getSearchType() + " Search Results for '" + getSearchString() + "'";
     }
 
     @Override
-    public void traverse(TraversalListener<Object> observer) {
+    public void traverseForStrategy(TraversalListener<Object> observer) {
         String searchString = getSearchString();
         if (!"".equals(searchString)) {
             String searchType = getSearchType();

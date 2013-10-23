@@ -14,11 +14,11 @@ public class WhereUsedResponder extends ResultResponder {
     }
 
     @Override
-    public void traverse(TraversalListener<Object> observer) {
+    public void traverseForStrategy(TraversalListener<Object> observer) {
         new WhereUsedPageFinder(page, observer).search(root);
     }
 
-    protected String getTitle() {
+    protected String getTitleForStrategy() {
         return "Where Used Results";
     }
 }
