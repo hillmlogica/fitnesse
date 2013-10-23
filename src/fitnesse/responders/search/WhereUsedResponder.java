@@ -14,11 +14,11 @@ public class WhereUsedResponder implements ResultResponderStrategy {
     }
 
     @Override
-    public void traverseForStrategy(TraversalListener<Object> observer, WikiPage page, Request request, ChunkedResponse response, WikiPage root) {
+    public void traverse(TraversalListener<Object> observer, WikiPage page, Request request, ChunkedResponse response, WikiPage root) {
         new WhereUsedPageFinder(page, observer).search(root);
     }
 
-    public String getTitleForStrategy(Request request) {
+    public String getTitle(Request request) {
         return "Where Used Results";
     }
 }

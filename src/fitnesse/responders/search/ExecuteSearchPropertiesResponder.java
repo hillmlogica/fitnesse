@@ -92,12 +92,12 @@ public class ExecuteSearchPropertiesResponder implements ResultResponderStrategy
     }
 
     @Override
-    public String getTitleForStrategy(Request request) {
+    public String getTitle(Request request) {
         return "Search Page Properties Results";
     }
 
     @Override
-    public void traverseForStrategy(TraversalListener<Object> observer, WikiPage page, Request request, ChunkedResponse response, WikiPage root) {
+    public void traverse(TraversalListener<Object> observer, WikiPage page, Request request, ChunkedResponse response, WikiPage root) {
         List<PageType> pageTypes = getPageTypesFromInput(request);
         Map<String, Boolean> attributes = getAttributesFromInput(request);
         String suites = getSuitesFromInput(request);

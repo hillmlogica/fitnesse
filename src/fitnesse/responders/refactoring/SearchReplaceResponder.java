@@ -18,7 +18,7 @@ public class SearchReplaceResponder implements TraversalListener<WikiPage>, Resu
         return new ResultResponder(new SearchReplaceResponder());
     }
 
-    public String getTitleForStrategy(Request request) {
+    public String getTitle(Request request) {
         return String.format("Replacing matching content \"%s\" with content \"%s\"",
                 getSearchString(request), getReplacementString(request));
     }
@@ -37,7 +37,7 @@ public class SearchReplaceResponder implements TraversalListener<WikiPage>, Resu
     }
 
     @Override
-    public void traverseForStrategy(TraversalListener<Object> observer, WikiPage page, Request request, ChunkedResponse response, WikiPage root) {
+    public void traverse(TraversalListener<Object> observer, WikiPage page, Request request, ChunkedResponse response, WikiPage root) {
         webOutputObserver = observer;
         String searchString = getSearchString(request);
         String replacementString = getReplacementString(request);

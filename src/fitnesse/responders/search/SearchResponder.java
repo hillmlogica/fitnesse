@@ -32,12 +32,12 @@ public class SearchResponder implements ResultResponderStrategy {
             return "Content";
     }
 
-    public String getTitleForStrategy(Request request) {
+    public String getTitle(Request request) {
         return getSearchType(request) + " Search Results for '" + getSearchString(request) + "'";
     }
 
     @Override
-    public void traverseForStrategy(TraversalListener<Object> observer, WikiPage page, Request request, ChunkedResponse response, WikiPage root) {
+    public void traverse(TraversalListener<Object> observer, WikiPage page, Request request, ChunkedResponse response, WikiPage root) {
         String searchString = getSearchString(request);
         if (!"".equals(searchString)) {
             String searchType = getSearchType(request);

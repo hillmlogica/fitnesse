@@ -63,11 +63,11 @@ public class ResultResponder extends ChunkingResponder implements
     }
 
     protected String getTitle() {
-        return resultResponderStrategy.getTitleForStrategy(request);
+        return resultResponderStrategy.getTitle(request);
     }
 
     public void traverse(TraversalListener<Object> observer) {
-        resultResponderStrategy.traverseForStrategy(observer, page, request, response, root);
+        resultResponderStrategy.traverse(observer, page, request, response, root);
     }
 
     public SecureOperation getSecureOperation() {
