@@ -14,7 +14,7 @@ public class SearchReplaceResponder extends ResultResponder implements Traversal
     private SearchReplaceResponder() {
     }
 
-    public static SearchReplaceResponder createSearchReplaceResponder() {
+    public static ResultResponder createSearchReplaceResponder() {
         return new SearchReplaceResponder();
     }
 

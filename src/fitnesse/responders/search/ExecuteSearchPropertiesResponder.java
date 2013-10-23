@@ -26,7 +26,7 @@ public class ExecuteSearchPropertiesResponder extends ResultResponder {
     private ExecuteSearchPropertiesResponder() {
     }
 
-    public static ExecuteSearchPropertiesResponder createExecuteSearchPropertiesResponder() {
+    public static ResultResponder createExecuteSearchPropertiesResponder() {
         return new ExecuteSearchPropertiesResponder();
     }
 
@@ -34,7 +34,7 @@ public class ExecuteSearchPropertiesResponder extends ResultResponder {
         return new SecureReadOperation();
     }
 
-    protected List<PageType> getPageTypesFromInput(Request request) {
+    protected static List<PageType> getPageTypesFromInput(Request request) {
         String requestedPageTypes = (String) request.getInput(PAGE_TYPE_ATTRIBUTE);
         if (requestedPageTypes == null) {
             return null;
@@ -59,7 +59,7 @@ public class ExecuteSearchPropertiesResponder extends ResultResponder {
         return request.hasInput(PropertySUITES);
     }
 
-    protected Map<String, Boolean> getAttributesFromInput(Request request) {
+    protected static Map<String, Boolean> getAttributesFromInput(Request request) {
         Map<String, Boolean> attributes = new LinkedHashMap<String, Boolean>();
 
         getListboxAttributesFromRequest(request, ACTION, SEARCH_ACTION_ATTRIBUTES,
@@ -78,7 +78,7 @@ public class ExecuteSearchPropertiesResponder extends ResultResponder {
         return attributes;
     }
 
-    private void getListboxAttributesFromRequest(Request request,
+    private static void getListboxAttributesFromRequest(Request request,
                                                  String inputAttributeName, String[] attributeList,
                                                  Map<String, Boolean> attributes) {
         String requested = (String) request.getInput(inputAttributeName);

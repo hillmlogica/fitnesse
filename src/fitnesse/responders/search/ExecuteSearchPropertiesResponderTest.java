@@ -23,7 +23,7 @@ import static fitnesse.wiki.PageType.*;
 public class ExecuteSearchPropertiesResponderTest extends RegexTestCase {
     private WikiPage root;
     private PageCrawler crawler;
-    private ExecuteSearchPropertiesResponder responder;
+    private ResultResponder responder;
     private FitNesseContext context;
 
     @Before
@@ -129,7 +129,7 @@ public class ExecuteSearchPropertiesResponderTest extends RegexTestCase {
         List<PageType> types = Arrays.asList(pageTypes);
         final String commaSeparatedPageTypes = buildPageTypeListForRequest(pageTypes);
         request.addInput(PAGE_TYPE_ATTRIBUTE, commaSeparatedPageTypes);
-        assertEquals(types, responder.getPageTypesFromInput(request));
+        assertEquals(types, ExecuteSearchPropertiesResponder.getPageTypesFromInput(request));
     }
 
     private String buildPageTypeListForRequest(PageType... pageTypes) {
@@ -149,13 +149,13 @@ public class ExecuteSearchPropertiesResponderTest extends RegexTestCase {
         MockRequest request = new MockRequest();
         request.addInput(ACTION, "Edit");
 
-        Map<String, Boolean> foundAttributes = responder.getAttributesFromInput(request);
+        Map<String, Boolean> foundAttributes = ExecuteSearchPropertiesResponder.getAttributesFromInput(request);
         assertFalse(foundAttributes.containsKey("Version"));
         assertTrue(foundAttributes.containsKey("Edit"));
         assertTrue(foundAttributes.get("Edit"));
 
         request.addInput(ACTION, "Edit,Properties");
-        foundAttributes = responder.getAttributesFromInput(request);
+        foundAttributes = ExecuteSearchPropertiesResponder.getAttributesFromInput(request);
         assertTrue(foundAttributes.get("Properties"));
     }
 

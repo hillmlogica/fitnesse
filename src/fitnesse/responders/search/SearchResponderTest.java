@@ -16,7 +16,7 @@ import util.RegexTestCase;
 public class SearchResponderTest extends RegexTestCase {
     private WikiPage root;
     private PageCrawler crawler;
-    private SearchResponder responder;
+    private ResultResponder responder;
     private MockRequest request;
     private FitNesseContext context;
 
