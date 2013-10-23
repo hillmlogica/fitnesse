@@ -5,6 +5,9 @@ package fitnesse.responders.search;
 import fitnesse.components.RegularExpressionWikiPageFinder;
 import fitnesse.components.TitleWikiPageFinder;
 import fitnesse.components.TraversalListener;
+import fitnesse.http.ChunkedResponse;
+import fitnesse.http.Request;
+import fitnesse.wiki.WikiPage;
 
 import java.util.regex.Pattern;
 
@@ -19,11 +22,11 @@ public class SearchResponder extends ResultResponder {
         return new SearchResponder();
     }
 
-    private String getSearchString() {
+    private String getSearchString(Request request) {
         return (String) request.getInput("searchString");
     }
 
-    private String getSearchType() {
+    private String getSearchType(Request request) {
         String searchType = (String) request.getInput("searchType");
 
         if (searchType == null || searchType.toLowerCase().contains("title"))
@@ -32,15 +35,15 @@ public class SearchResponder extends ResultResponder {
             return "Content";
     }
 
-    protected String getTitleForStrategy() {
-        return getSearchType() + " Search Results for '" + getSearchString() + "'";
+    protected String getTitleForStrategy(Request request) {
+        return getSearchType(request) + " Search Results for '" + getSearchString(request) + "'";
     }
 
     @Override
-    public void traverseForStrategy(TraversalListener<Object> observer) {
-        String searchString = getSearchString();
+    public void traverseForStrategy(TraversalListener<Object> observer, WikiPage page, Request request, ChunkedResponse response, WikiPage root) {
+        String searchString = getSearchString(request);
         if (!"".equals(searchString)) {
-            String searchType = getSearchType();
+            String searchType = getSearchType(request);
             if ("Title".equals(searchType))
                 new TitleWikiPageFinder(searchString, observer).search(root);
             else {

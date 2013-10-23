@@ -7,11 +7,14 @@ import fitnesse.authentication.SecureReadOperation;
 import fitnesse.authentication.SecureResponder;
 import fitnesse.components.TraversalListener;
 import fitnesse.components.Traverser;
+import fitnesse.http.ChunkedResponse;
+import fitnesse.http.Request;
 import fitnesse.responders.ChunkingResponder;
 import fitnesse.responders.templateUtilities.HtmlPage;
 import fitnesse.responders.templateUtilities.PageTitle;
 import fitnesse.wiki.PageCrawler;
 import fitnesse.wiki.PathParser;
+import fitnesse.wiki.WikiPage;
 
 public abstract class ResultResponder extends ChunkingResponder implements
         SecureResponder, Traverser<Object> {
@@ -51,16 +54,16 @@ public abstract class ResultResponder extends ChunkingResponder implements
     }
 
     protected String getTitle() {
-        return getTitleForStrategy();
+        return getTitleForStrategy(request);
     }
 
-    protected abstract String getTitleForStrategy();
+    protected abstract String getTitleForStrategy(Request request);
 
     public void traverse(TraversalListener<Object> observer) {
-        traverseForStrategy(observer);
+        traverseForStrategy(observer, page, request, response, root);
     }
 
-    protected abstract void traverseForStrategy(TraversalListener<Object> observer);
+    protected abstract void traverseForStrategy(TraversalListener<Object> observer, WikiPage page, Request request, ChunkedResponse response, WikiPage root);
 
     public SecureOperation getSecureOperation() {
         return new SecureReadOperation();

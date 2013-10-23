@@ -4,6 +4,9 @@ package fitnesse.responders.search;
 
 import fitnesse.components.TraversalListener;
 import fitnesse.components.WhereUsedPageFinder;
+import fitnesse.http.ChunkedResponse;
+import fitnesse.http.Request;
+import fitnesse.wiki.WikiPage;
 
 public class WhereUsedResponder extends ResultResponder {
     private WhereUsedResponder() {
@@ -14,11 +17,11 @@ public class WhereUsedResponder extends ResultResponder {
     }
 
     @Override
-    public void traverseForStrategy(TraversalListener<Object> observer) {
+    public void traverseForStrategy(TraversalListener<Object> observer, WikiPage page, Request request, ChunkedResponse response, WikiPage root) {
         new WhereUsedPageFinder(page, observer).search(root);
     }
 
-    protected String getTitleForStrategy() {
+    protected String getTitleForStrategy(Request request) {
         return "Where Used Results";
     }
 }

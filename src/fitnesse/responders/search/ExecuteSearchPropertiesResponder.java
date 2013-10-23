@@ -5,8 +5,10 @@ import fitnesse.authentication.SecureReadOperation;
 import fitnesse.components.AttributeWikiPageFinder;
 import fitnesse.components.PageFinder;
 import fitnesse.components.TraversalListener;
+import fitnesse.http.ChunkedResponse;
 import fitnesse.http.Request;
 import fitnesse.wiki.PageType;
+import fitnesse.wiki.WikiPage;
 
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
@@ -93,12 +95,12 @@ public class ExecuteSearchPropertiesResponder extends ResultResponder {
     }
 
     @Override
-    protected String getTitleForStrategy() {
+    protected String getTitleForStrategy(Request request) {
         return "Search Page Properties Results";
     }
 
     @Override
-    public void traverseForStrategy(TraversalListener<Object> observer) {
+    public void traverseForStrategy(TraversalListener<Object> observer, WikiPage page, Request request, ChunkedResponse response, WikiPage root) {
         List<PageType> pageTypes = getPageTypesFromInput(request);
         Map<String, Boolean> attributes = getAttributesFromInput(request);
         String suites = getSuitesFromInput(request);

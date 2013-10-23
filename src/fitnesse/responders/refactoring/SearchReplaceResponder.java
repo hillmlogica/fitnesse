@@ -4,6 +4,8 @@ import fitnesse.components.ContentReplacingSearchObserver;
 import fitnesse.components.PageFinder;
 import fitnesse.components.RegularExpressionWikiPageFinder;
 import fitnesse.components.TraversalListener;
+import fitnesse.http.ChunkedResponse;
+import fitnesse.http.Request;
 import fitnesse.responders.search.ResultResponder;
 import fitnesse.wiki.WikiPage;
 
@@ -18,16 +20,16 @@ public class SearchReplaceResponder extends ResultResponder implements Traversal
         return new SearchReplaceResponder();
     }
 
-    protected String getTitleForStrategy() {
+    protected String getTitleForStrategy(Request request) {
         return String.format("Replacing matching content \"%s\" with content \"%s\"",
-                getSearchString(), getReplacementString());
+                getSearchString(request), getReplacementString(request));
     }
 
-    private String getReplacementString() {
+    private String getReplacementString(Request request) {
         return (String) request.getInput("replacementString");
     }
 
-    private String getSearchString() {
+    private String getSearchString(Request request) {
         return (String) request.getInput("searchString");
     }
 
@@ -37,10 +39,10 @@ public class SearchReplaceResponder extends ResultResponder implements Traversal
     }
 
     @Override
-    public void traverseForStrategy(TraversalListener<Object> observer) {
+    public void traverseForStrategy(TraversalListener<Object> observer, WikiPage page, Request request, ChunkedResponse response, WikiPage root) {
         webOutputObserver = observer;
-        String searchString = getSearchString();
-        String replacementString = getReplacementString();
+        String searchString = getSearchString(request);
+        String replacementString = getReplacementString(request);
 
         contentReplaceObserver = new ContentReplacingSearchObserver(searchString, replacementString);
         PageFinder finder = new RegularExpressionWikiPageFinder(searchString, this);
