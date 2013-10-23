@@ -18,11 +18,17 @@ import static fitnesse.responders.search.SearchFormResponder.SPECIAL_ATTRIBUTES;
 import static fitnesse.wiki.PageData.*;
 
 public class ExecuteSearchPropertiesResponder extends ResultResponder {
-
     public static final String IGNORED = "Any";
     public static final String ACTION = "Action";
     public static final String SECURITY = "Security";
     public static final String SPECIAL = "Special";
+
+    private ExecuteSearchPropertiesResponder() {
+    }
+
+    public static ExecuteSearchPropertiesResponder createExecuteSearchPropertiesResponder() {
+        return new ExecuteSearchPropertiesResponder();
+    }
 
     public SecureOperation getSecureOperation() {
         return new SecureReadOperation();
@@ -106,5 +112,4 @@ public class ExecuteSearchPropertiesResponder extends ResultResponder {
                 attributes, suites);
         finder.search(page);
     }
-
 }

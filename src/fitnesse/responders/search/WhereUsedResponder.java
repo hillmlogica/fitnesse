@@ -6,6 +6,12 @@ import fitnesse.components.TraversalListener;
 import fitnesse.components.WhereUsedPageFinder;
 
 public class WhereUsedResponder extends ResultResponder {
+    private WhereUsedResponder() {
+    }
+
+    public static WhereUsedResponder createWhereUsedResponder() {
+        return new WhereUsedResponder();
+    }
 
     @Override
     public void traverse(TraversalListener<Object> observer) {
@@ -15,5 +21,4 @@ public class WhereUsedResponder extends ResultResponder {
     protected String getTitle() {
         return "Where Used Results";
     }
-
 }

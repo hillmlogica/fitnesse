@@ -8,9 +8,15 @@ import fitnesse.responders.search.ResultResponder;
 import fitnesse.wiki.WikiPage;
 
 public class SearchReplaceResponder extends ResultResponder implements TraversalListener<WikiPage> {
-
     private TraversalListener<? super WikiPage> contentReplaceObserver;
     private TraversalListener<? super WikiPage> webOutputObserver;
+
+    private SearchReplaceResponder() {
+    }
+
+    public static SearchReplaceResponder createSearchReplaceResponder() {
+        return new SearchReplaceResponder();
+    }
 
     protected String getTitle() {
         return String.format("Replacing matching content \"%s\" with content \"%s\"",
@@ -40,5 +46,4 @@ public class SearchReplaceResponder extends ResultResponder implements Traversal
         PageFinder finder = new RegularExpressionWikiPageFinder(searchString, this);
         finder.search(page);
     }
-
 }

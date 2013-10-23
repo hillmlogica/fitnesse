@@ -31,7 +31,7 @@ public class ExecuteSearchPropertiesResponderTest extends RegexTestCase {
         root = InMemoryPage.makeRoot("RooT");
         FitNesseUtil.makeTestContext(root);
         crawler = root.getPageCrawler();
-        responder = new ExecuteSearchPropertiesResponder();
+        responder = ExecuteSearchPropertiesResponder.createExecuteSearchPropertiesResponder();
         context = FitNesseUtil.makeTestContext(root);
     }
 

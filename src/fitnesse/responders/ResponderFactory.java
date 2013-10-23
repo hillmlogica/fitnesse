@@ -70,7 +70,7 @@ public class ResponderFactory {
         addResponder("saveData", SaveResponder.class);
         addResponder("search", new ResponderCreator() {
             public Responder create() {
-                return new SearchResponder();
+                return SearchResponder.createSearchResponder();
             }});
         addResponder("searchForm", SearchFormResponder.class);
         addResponder("stoptest", StopTestResponder.class);
@@ -85,11 +85,11 @@ public class ResponderFactory {
         addResponder("saveProperties", SavePropertiesResponder.class);
         addResponder("executeSearchProperties", new ResponderCreator() {
             public Responder create() {
-                return new ExecuteSearchPropertiesResponder();
+                return ExecuteSearchPropertiesResponder.createExecuteSearchPropertiesResponder();
             }});
         addResponder("whereUsed", new ResponderCreator() {
             public Responder create() {
-                return new WhereUsedResponder();
+                return WhereUsedResponder.createWhereUsedResponder();
             }});
         addResponder("refactor", RefactorPageResponder.class);
         addResponder("deletePage", DeletePageResponder.class);
@@ -121,7 +121,7 @@ public class ResponderFactory {
         addResponder("compareHistory", HistoryComparerResponder.class);
         addResponder("replace", new ResponderCreator() {
             public Responder create() {
-                return new SearchReplaceResponder();
+                return SearchReplaceResponder.createSearchReplaceResponder();
             }});
         addResponder("overview", SuiteOverviewResponder.class);
         addResponder("compareVersions", VersionComparerResponder.class);
