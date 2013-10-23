@@ -16,6 +16,7 @@ import static java.util.regex.Pattern.LITERAL;
 
 public class SearchResponder extends ResultResponder {
     private SearchResponder() {
+        super(false);
     }
 
     public static ResultResponder createSearchResponder() {
@@ -51,9 +52,5 @@ public class SearchResponder extends ResultResponder {
                 new RegularExpressionWikiPageFinder(regularExpression, observer).search(root);
             }
         }
-    }
-
-    protected boolean shouldRespondWith404() {
-        return false;
     }
 }

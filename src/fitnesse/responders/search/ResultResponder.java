@@ -19,6 +19,16 @@ import fitnesse.wiki.WikiPage;
 public abstract class ResultResponder extends ChunkingResponder implements
         SecureResponder, Traverser<Object> {
 
+    private final boolean shouldRespondWith404;
+
+    protected ResultResponder() {
+        this(true);
+    }
+
+    protected ResultResponder(boolean shouldRespondWith404) {
+        this.shouldRespondWith404 = shouldRespondWith404;
+    }
+
     protected PageCrawler getPageCrawler() {
         return root.getPageCrawler();
     }
@@ -69,6 +79,9 @@ public abstract class ResultResponder extends ChunkingResponder implements
         return new SecureReadOperation();
     }
 
+    protected boolean shouldRespondWith404() {
+        return shouldRespondWith404;
+    }
 }
 
 
