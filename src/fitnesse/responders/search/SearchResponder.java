@@ -36,7 +36,7 @@ public class SearchResponder extends ResultResponder {
             return "Content";
     }
 
-    protected String getTitleForStrategy(Request request) {
+    public String getTitleForStrategy(Request request) {
         return getSearchType(request) + " Search Results for '" + getSearchString(request) + "'";
     }
 

@@ -21,7 +21,7 @@ public class WhereUsedResponder extends ResultResponder {
         new WhereUsedPageFinder(page, observer).search(root);
     }
 
-    protected String getTitleForStrategy(Request request) {
+    public String getTitleForStrategy(Request request) {
         return "Where Used Results";
     }
 }

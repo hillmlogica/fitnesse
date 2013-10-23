@@ -17,7 +17,7 @@ import fitnesse.wiki.PathParser;
 import fitnesse.wiki.WikiPage;
 
 public abstract class ResultResponder extends ChunkingResponder implements
-        SecureResponder, Traverser<Object> {
+        SecureResponder, Traverser<Object>, ResultResponderStrategy {
 
     private final boolean shouldRespondWith404;
 
@@ -67,13 +67,9 @@ public abstract class ResultResponder extends ChunkingResponder implements
         return getTitleForStrategy(request);
     }
 
-    protected abstract String getTitleForStrategy(Request request);
-
     public void traverse(TraversalListener<Object> observer) {
         traverseForStrategy(observer, page, request, response, root);
     }
-
-    protected abstract void traverseForStrategy(TraversalListener<Object> observer, WikiPage page, Request request, ChunkedResponse response, WikiPage root);
 
     public SecureOperation getSecureOperation() {
         return new SecureReadOperation();

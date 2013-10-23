@@ -20,7 +20,7 @@ public class SearchReplaceResponder extends ResultResponder implements Traversal
         return new SearchReplaceResponder();
     }
 
-    protected String getTitleForStrategy(Request request) {
+    public String getTitleForStrategy(Request request) {
         return String.format("Replacing matching content \"%s\" with content \"%s\"",
                 getSearchString(request), getReplacementString(request));
     }
